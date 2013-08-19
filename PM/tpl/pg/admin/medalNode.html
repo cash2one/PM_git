@@ -1,0 +1,26 @@
+<h2><{$title}></h2>
+<hr>
+<dl class="nodeInfo clearfix show_skill_dl">
+
+	<dt></dt>
+	<dd class="node_time">
+    	<strong>获得情况：</strong><br/>
+    </dd>
+    <hr>
+	<dd class="node_time">
+		<ul class="skill_user">
+		
+    	<{foreach name=table from=$users item=rs}>
+    	<li>
+						<span>
+    		<{ $smarty.foreach.table.iteration }>.<{$rs.user_name}>
+    	</span>
+					</li>
+    	<{/foreach}>
+    	</ul>
+    </dd>
+
+</dl>
+<div class="btn_list">
+	<a class="btn_close" onclick="_$.closewin('#myMessage_popwin')" title="关闭"></a>
+</div>

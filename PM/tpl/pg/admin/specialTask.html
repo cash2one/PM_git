@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh"> 
+<head>
+<meta charset="utf-8">
+<{include file="inc/base.html"}>
+</head>
+<body class="pgAdmin mission-special">
+<{include file="inc/header.html"}>
+<div class="wrap">
+<{include file="pg/admin/pgadminNav.html"}>
+<article class="content">
+<section class="search">
+	<h1>列表 - 特殊任务一览</h1>
+    <div class="tab searchTab1">
+        <a id="searchTab1">表</a>
+        <span class="dot">&nbsp;</span>
+        <a id="searchTab2" href="<{spUrl c=project a=project_add specialtask=1}>" title="添加任务模板">加</a>
+    </div>
+</section>
+<table class="table3">
+<thead>
+  <tr class="btop">
+    <td class="bleft">序号</td>
+    <td class="bright">任务名称</td>
+  </tr>
+  </thead>
+  <{foreach name=table from=$result item=rs}>
+  <tr>
+    <td class="bleft"><{ $smarty.foreach.table.iteration }></td>
+    <td class="bright">
+    	<a href="<{spUrl c=project_bll a=project_show id=$rs.proj_id}>">
+    		<{$rs.proj_name}>
+      	</a>
+    </td>
+  </tr>
+  <{/foreach}>
+	<tfoot>
+	  	<tr>
+			<td colspan="6">
+			<{if $pager}>
+			<div class="pager">
+			页码：<{$pager.current_page}>/<{$pager.total_page}>
+			<{foreach from=$pager.all_pages item=thepage}>
+			    <{if $thepage!=$pager.current_page}>
+					<a href="<{spUrl c=pgadmin a=specialtask topage=$thepage}>"><{$thepage}></a>
+			    <{else}>
+			    	<span><{$thepage}></span>
+			    <{/if}>
+			<{/foreach}>
+			</div>
+			<{/if}>
+			</td>
+		</tr>
+	  </tfoot>	  
+</table>
+</article>
+</div>
+<{include file="inc/footer.html"}>
+</body>
+</html>

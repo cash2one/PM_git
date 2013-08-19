@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh"> 
+<head>
+<meta charset="utf-8">
+<{include file="inc/base.html"}>
+</head>
+<body class="pgAdmin pgAdminJobEdit jobs">
+<{include file="inc/header.html"}>
+<div class="wrap">
+    <{include file="pg/admin/pgadminNav.html"}>
+<article class="content">
+
+<section class="search">
+	<h1>
+	<{if $joblist}>    
+          			修改 - 职业
+     <{else}>
+     			添加 - 职业
+     <{/if}>
+	</h1>
+	<div class="tab searchTab2">
+	<{include file="pg/admin/pgadminJobNav.html"}>
+	</div>
+</section>
+
+<form action="<{if $joblist}><{spUrl c=pgadmin a=jobEditDo job_id=$joblist.job_id}><{else}><{spUrl c=pgadmin a=jobAddDo}><{/if}>" method="post" >
+	<section class="header clearfix"></section>
+	<section class="boxstyle1 top clearfix">
+	<table class="table_node">
+	  <tr>
+	    <td class="label">职业名</td>
+	    <td><span class="li2">
+	      <input name="job_name" type="text" id="job_name" value="<{$joblist.job_name}>" maxlength="45"  datatype="Require" msg="职业名不能为空" class="itext stitle"/>
+	    </span></td>
+	  </tr>
+	  <tr>
+	    <td class="label">职业描述</td>
+	    <td><span class="li2">
+	      <input name="job_desc" type="text" id="job_desc" value="<{$joblist.job_desc}>" maxlength="100"  datatype="Require" msg="职业描述不能为空" class="itext title"/>
+	    </span></td>
+	  </tr>
+	</table>
+	
+	</section>
+	<section class="boxstyle2 bottom">
+		<input name="" type="submit" value="提交" class="btn btn_main1"/> <a href="<{spUrl c=pgadmin a=joblist}>" class="btn btn_main2">返回列表</a>
+	</section>
+	<section class="footer"></section>
+	</form>
+</article>
+</div>
+<{include file="inc/footer.html"}>
+<script type="text/javascript">
+ /*
+PMS.showSelectList("users","user_id","user_name");
+
+$('#btn_select').click(function(){$('#user_name').val('');$('#user_id').val('0');});
+
+PMS.selected=function(type,user_id,user_name)
+{
+	var obj_uid=$('#'+$('#inputid_'+type+'_id').val());
+	var obj_una=$('#'+$('#inputid_'+type+'_name').val());
+	if(obj_uid.val()==0)
+	{
+		obj_uid.val(user_id);
+		obj_una.val(user_name);
+	}
+	else
+	{
+		obj_uid.val(obj_uid.val()+'|'+user_id);
+		obj_una.val(obj_una.val()+'|'+user_name);
+	}
+}
+*/
+</script>
+</body>
+</html>

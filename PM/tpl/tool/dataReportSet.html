@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>数据导出</title>
+<script src="themes/js/jquery.last.js?<{$smarty.const.RD}>"></script>
+</head>
+<body>
+	<form id="contentFrom" action="<{spUrl c=toolDataReport a=show}>" method="post" target="_blank">
+    开始时间: <input type="datetime" name="timeS" value="2012-01-01 00:00:00"/>
+    结束时间：<input type="datetime" name="timeE" value="2012-04-01 00:00:00"/>
+    <br />
+    <input type="submit" value="查看综合" onclick="setType(0)"/>
+    <input type="submit" value="生成项目详细EXCEL表"  onclick="setType(1)"/>
+    <input type="submit" value="生成流程详细EXCEL表"  onclick="setType(2)"/>
+    </form>
+    <script type="text/javascript">
+    	function setType(o)
+		{
+			var url='<{spUrl c=toolDataReport}>';
+			var target=$("#contentFrom")
+			switch(o)
+			{
+				case 0:
+					target.attr("action",url+'&a=show');
+					break;
+				case 1:
+					target.attr("action",url+'&a=exportExcel&target=project');
+					break;
+				case 2:
+					target.attr("action",url+'&a=exportExcel&target=pnode');
+					break;
+			}
+			
+		}
+    </script>
+</body>
+</html>

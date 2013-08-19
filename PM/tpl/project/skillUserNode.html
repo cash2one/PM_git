@@ -1,0 +1,272 @@
+<h2>
+<{if $allSkill }> 
+	技能值发放-<{$user_name}>
+</h2>
+<hr>
+<dl class="nodeInfo clearfix show_skill_dl">
+
+	<dt>技能信息:</dt>
+	<dd class="node_time">
+		<table>
+		<tr><td>技能</td><td>所需等级</td><td>评价等级</td></tr>
+    	<{foreach name=table from=$allSkill item=rs1}>
+    	<tr><td>
+    	<{if $rs1.skill_id==0}>
+    		无
+    	<{else}>
+           	<{foreach from=$skill item=irs}>
+       			<{if $rs1.skill_id == $irs.skill_id}> 
+         		   <{$irs.skill_name}>
+            	<{/if}>
+            <{/foreach}>
+         <{/if}>
+         </td>
+         <td>
+         	<{$rs1.skill_lv}>
+         </td>
+         <td>
+         	<select id="score_lv<{ $smarty.foreach.table.iteration }>" class="score_lv" <{if $allSkill_enable}> disabled="true" <{/if}> >
+		    <option value="1"  <{if $rs1.score_lv==1 }> selected  <{/if}> >A</option>
+		    <option value="2"  <{if $rs1.score_lv==2 or $rs1.score_lv== null}> selected  <{/if}> >B</option>
+		    <option value="3"  <{if $rs1.score_lv==3 }> selected  <{/if}> >C</option>
+		</select>
+         </td>
+         </tr>
+    	<{/foreach}> 
+    	</table>
+    </dd>
+    <hr>
+
+</dl>
+<p style="text-align: center;">
+        <{if not $allSkill_enable}><a href="javascript:;" class="edit-sure" id="skill_send_sure">确定评价</a><{/if}>
+</p>
+<{else}>
+	技能配置-<{$user_name}>
+</h2>
+<hr>
+<dl class="nodeInfo clearfix slelect_skill_dl">
+
+	<dt></dt>
+	<dd>
+    	<span class="flow-item-one"><label>选择技能1：</label>
+             <select id="skill1" class="skill-exp-sel skill1-id" which="1">
+				 <option value="0">无</option>
+                 <{foreach from=$skill item=irs}>
+                 <option value="<{$irs.skill_id}>"><{$irs.skill_name}></option>
+                 <{/foreach}>
+             </select>
+             <label class="ml10">所需等级:</label>
+             <select id="skill1_lv" class="sk-lv skill1-lv">
+                 <option value="1">1</option>
+                 <option value="2">2</option>
+                 <option value="3">3</option>
+                 <option value="4">4</option>
+             </select>
+         </span>
+         <span class="flow-item-one span_which_1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         	对该学生已经用了<label>0</label>个。/剩余<label>0</label>个。
+         </span>
+         <span class="flow-item-one"><label>选择技能2：</label>
+             <select id="skill2" class="skill-exp-sel skill2-id"  which="2">
+				 <option value="0">无</option>
+                 <{foreach from=$skill item=irs}>
+                 <option value="<{$irs.skill_id}>"><{$irs.skill_name}></option>
+                 <{/foreach}>
+             </select>
+             <label class="ml10">所需等级:</label>
+             <select id="skill2_lv" class="sk-lv skill2-lv">
+                 <option value="1">1</option>
+                 <option value="2">2</option>
+                 <option value="3">3</option>
+                 <option value="4">4</option>
+             </select>
+         </span>
+         <span class="flow-item-one span_which_2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         	对该学生已经用了<label>0</label>个。/剩余<label>0</label>个。
+         </span>
+         <span class="flow-item-one"><label>选择技能3：</label>
+             <select id="skill3" class=" skill-exp-sel skill3-id"  which="3">
+				<option value="0">无</option>
+                 <{foreach from=$skill item=irs}>
+                 <option value="<{$irs.skill_id}>"><{$irs.skill_name}></option>
+                 <{/foreach}>
+             </select>
+             <label class="ml10">所需等级:</label>
+             <select id="skill3_lv" class="sk-lv skill3-lv">
+                 <option value="1">1</option>
+                 <option value="2">2</option>
+                 <option value="3">3</option>
+                 <option value="4">4</option>
+             </select>
+         </span>
+         <span class="flow-item-one span_which_3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         	对该学生已经用了<label>0</label>个。/剩余<label>0</label>个。
+         </span>
+    </dd>
+    <br>
+    <hr>
+</dl>
+	<p style="text-align: center;">
+        <a href="javascript:;" class="btn btn_main1" id="skill_sure">确定配置</a>
+        <a href="javascript:;" class="btn btn_main2" id="no_skill_sure">不配置技能</a>
+    </p>
+<{/if}>
+<div class="btn_list">
+	<a class="btn_close" onclick="_$.closewin('#skill_user_popwin')" title="关闭"></a>
+</div>
+<script>
+<{if $allSkill_enable}> 
+debugger;
+$('#score_lv').val(<{$score_lv}>);
+<{/if}>
+//渲染select2
+$('.score_lv').select2({width:'50px'});
+$('.sk-lv').select2({width:'50px'});
+$('.skill-exp-sel').select2({width:'150px'});
+
+$('.select2-choice').click(function(){
+	$('.select2-drop').css('z-index',10000);
+});
+
+
+
+$('#skill_sure').click(function(){
+	debugger;
+	if(confirm('配置后不可修改，确定配置这些技能？'))
+	{
+		for(var i = 1;i < 4;i++){
+			var labels = $('.span_which_'+i).find('label');
+			var canUse =  $(labels[1]).html();
+			var skill_val = $('#skill'+i).val();
+			if(parseInt(skill_val)!=0&&0>=parseInt(canUse)) {
+				alert("配置失败，第"+i+"个技能的所拥有的数量不够。");
+				return;
+			}
+		}
+		if($('#skill1').val()==0&&$('#skill2').val()==0&&$('#skill3').val()==0) {
+			alert("配置失败，不能不配置技能。");
+			return;
+		}
+		var a = $('#skill1').val();
+		var b = $('#skill2').val();
+		var c = $('#skill3').val();
+		debugger;
+		if(($('#skill1').val()==0&&$('#skill2').val()==0)||($('#skill1').val()==0&&$('#skill3').val()==0)||($('#skill3').val()==0&&$('#skill2').val()==0)) {
+			
+		} else 
+		if($('#skill1').val()==$('#skill2').val()||$('#skill1').val()==$('#skill3').val()||$('#skill3').val()==$('#skill2').val()) {
+			alert("不能配置两个及以上相同的技能。");
+			return;
+		}
+		
+		
+		$.ajax({
+            url:'index.php?c=pgadmin&a=skill_sure_ajax'+ '&user_id=<{$user_id}>&proj_id=<{$proj_id}>',
+            type:'POST',
+            data:{skill1:$('#skill1').val(),skill1_lv:$('#skill1_lv').val(),
+            	  skill2:$('#skill2').val(),skill2_lv:$('#skill2_lv').val(),
+            	  skill3:$('#skill3').val(),skill3_lv:$('#skill3_lv').val(),
+            		},
+            success:function (data) {
+            	debugger;
+            	var result = JSON.parse(data);
+                if(result['return_msg']==true)
+               	{
+               		alert("配置成功");
+               		location.reload();
+               	}else
+                	alert(result['msg']);
+
+            },
+            error:function () {
+                alert('出错了！')
+            }
+        })
+	}
+})
+$('#no_skill_sure').click(function(){
+	if(confirm('不配置任何技能？该学生将会无法在该项目得到技能！\n确定后不能修改！'))
+	{
+		$.ajax({
+            url:'index.php?c=pgadmin&a=no_skill_sure_ajax'+ '&user_id=<{$user_id}>&proj_id=<{$proj_id}>',
+            type:'GET',
+            success:function (data) {
+            	debugger;
+            	var result = JSON.parse(data);
+                if(result['return_msg']==true)
+               	{
+               		alert("操作成功");
+               		location.reload();
+               	}else
+                	alert(result['msg']);
+
+            },
+            error:function () {
+                alert('出错了！')
+            }
+        })
+	}
+})
+$('#skill_send_sure').click(function(){
+	if(confirm('评价后不可修改，确定评价？'))
+	{
+		$.ajax({
+            url:'index.php?c=pgadmin&a=skill_send_sure_ajax'+ '&user_id=<{$user_id}>&proj_id=<{$proj_id}>'
+            		+'&score_lv1='+$('#score_lv1').val()+'&score_lv2='+$('#score_lv2').val()+'&score_lv3='+$('#score_lv3').val(),
+            type:'GET',
+            success:function (data) {
+            	debugger;
+            	var result = JSON.parse(data);
+                if(result['return_msg']==true)
+               	{
+               		alert("评价成功");
+               		location.reload();
+               	}else
+               		alert(result['msg']);
+
+            },
+            error:function () {
+                alert('出错了！')
+            }
+        })
+	}
+})
+$('.skill-exp-sel').change(function(){
+	var skill_id = $(this).val();
+	var skill_lv_select = $(this).parent().find('.sk-lv');
+	var skill_lv = $(skill_lv_select[1]).val();
+	var which = $(this).attr('which');
+	debugger;
+	getData(skill_id,skill_lv,which);
+});
+$('.sk-lv').change(function(){
+	var skill_lv = $(this).val();
+	var skill_id_selest = $(this).parent().find('.skill-exp-sel');
+	var skill_id = $(skill_id_selest[1]).val();
+	var which = $(skill_id_selest[1]).attr('which');
+	debugger;
+	getData(skill_id,skill_lv,which);
+});
+function getData(skill_id,skill_lv,which) {
+	$.ajax({
+        url:'index.php?c=pgadmin&a=get_oneSkillNum_ajax'+ '&user_id=<{$user_id}>'
+        		+'&skill_id='+skill_id+'&skill_lv='+skill_lv+'&which='+which,
+        type:'GET',
+        success:function (data) {
+        	debugger;
+        	var result = JSON.parse(data);
+            var hadAndUse = result['hadAndUse'];
+            var hadUseIn = result['hadUseIn'];
+            var which = result['which'];
+            var skill_lv = result['skill_lv'];
+			var labels = $('.span_which_'+which).find('label');
+			$(labels[0]).html(hadUseIn);
+			$(labels[1]).html(hadAndUse['lv'+skill_lv+'_g']-hadAndUse['lv'+skill_lv+'_u']);
+        },
+        error:function () {
+            alert('出错了！')
+        }
+    })
+}
+</script>

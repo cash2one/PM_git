@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh"> 
+<head>
+<meta charset="utf-8">
+<{include file="inc/base.html"}>
+</head>
+<body class="manage products">
+<{include file="inc/header.html"}>
+<article class="content">
+<section class="search">
+	<h1>列表 - 产品</h1>
+	<div class="tab searchTab1">
+	<{include file="project/productNav.html"}>
+	</div>
+</section>
+<table class="table3">
+<thead>
+  <tr class="btop">
+    <td class="bleft">产品id</td>
+    <td class="tleft">产品名</td>
+    <td class="tleft">英文缩写</td>
+	<td class="tleft">分类</td>
+	<td>产品负责人</td>
+    <td class="bright">&nbsp;</td>
+  </tr>
+  </thead>
+  <{foreach from=$plist item=rs}>  
+  <tr>
+    <td class="bleft"><{$rs.prod_id}></td>
+    <td class="tleft"><{$rs.prod_name}></td>
+    <td class="tleft"><{$rs.prod_ename}></td>
+	<td class="tleft"><{$productType[$rs.prod_type]}></td>
+	<td><{$rs.prod_unamelist|default:"待定"}></td>
+    <td class="bright"><{if $isManager}><a href="<{spUrl c=product a=edit prod_id=$rs.prod_id}>">修改</a><{/if}></td>
+  </tr>
+  <{/foreach}>
+	<tfoot>
+	  	<tr>
+			<td colspan="6">
+			<{if $pager}>
+			<div class="pager">
+			页码：<{$pager.current_page}>/<{$pager.total_page}>
+			<{foreach from=$pager.all_pages item=thepage}>
+			    <{if $thepage!=$pager.current_page}>
+					<a href="<{spUrl c=product a=slist topage=$thepage}>"><{$thepage}></a> 
+			    <{else}>
+			    	<span><{$thepage}></span>
+			    <{/if}>
+			<{/foreach}>
+			</div>
+			<{/if}>
+			</td>
+		</tr>
+	  </tfoot>	  
+  
+</table>
+</article>
+<{include file="inc/footer.html"}>
+</body>
+</html>

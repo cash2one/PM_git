@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<{include file="inc/base.html"}>
+<style type="text/css"></style>
+</head><body class="mywork week-report">
+<{include file="inc/header.html"}>
+<article class="content">
+  <section class="search">
+    <h1 class="pageTitle">周报 - 我的周报</h1>
+    <div class="tab searchTab3"> <{include file="toolWeekReport/nav.html"}> </div>
+  </section>
+  <table class="table3" id="reportTable">
+    <thead>
+      <tr class="btop">
+        <td width="10%" class="bleft">我的周报</td>
+        <td class="bright">&nbsp;</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="rowcolor20">
+        <td class="bleft" style="text-align:right;padding-right:10px">[{@user_name}]</td>
+        <td class="tleft bright"><a href="<{spUrl c=toolWeekReport a=details}>&id={@report_id}">{@start} 至 {@end}</a></td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="2">
+        <div class="pager" id="main-pager">
+              页码：<span class="pager_current_page"></span>/<span class="pager_total_page"></span>
+              <input type="button" value="上一页" class="pagerPrev"/>
+              <input type="button" value="下一页" class="pagerNext"/>
+              <input type="text" class="itext ipage pagerToPage"/>
+              <input type="button" value="GO" class="pagerGo"/>
+          </div>
+          </td>
+      </tr>
+    </tfoot>
+  </table>
+</article>
+<{include file="inc/footer.html"}>
+<script type="text/javascript">
+$(function(){
+	var template=$("#reportTable tbody:eq(0)").html();
+	PMS.listPageAjax($("#main-pager"),"<{spUrl c=toolWeekReport a=getList userId=my}>&page={@page}",function(data){
+		var rows=data.des.data;
+		var length=rows.length;
+		var html="";
+		for(var i=0;i<length;i++)
+		{
+			html+=template.replace(/{@user_name}/g,rows[i].user_name).replace(/{@start}/g,rows[i].start).replace(/{@end}/g,rows[i].end).replace(/{@report_id}/g,rows[i].report_id).replace(/%7B@report_id%7D/,rows[i].report_id);
+		}
+		$("#reportTable tbody:eq(0)").html(html);
+	})
+})
+</script>
+</body>

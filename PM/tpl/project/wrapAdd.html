@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh"> 
+<head>
+<{include file="inc/base.html"}>
+<link type="text/css"  rel="stylesheet" href="themes/css/jquery.ui.all.css" />
+<script type="text/javascript" src="themes/js/jquery-ui.last.js"></script>
+<script type="text/javascript" src="themes/js/jquery.ui.datepicker-zh-CN.js"></script>
+<script type="text/javascript" src="themes/js/vilidate.js"></script>
+</head>
+<body class="manage wraps">
+<{include file="inc/header.html"}>
+<article class="content">
+<form id="addform" action="<{spUrl c=wrap a=addDo}>" method="post">
+
+	<section class="search">
+		<h1>添加 - 项目集</h1>
+		<div class="tab searchTab2">
+		<{include file="project/wrapsNav.html"}>
+		</div>
+	</section>
+	
+	<section class="header"></section>
+	<section class="boxstyle1 top clearfix">
+	<table class="table1">
+	  <tr>
+	    <td height="25" width="100">项目集名称</td>
+	    <td class="tleft"><input type="text" name="wrap_name" id="wrap_name"  datatype="Require" msg="节点名不能为空"  class="itext title" style="width:600px"/></td>
+	  </tr>
+	  <tr>
+	    <td height="25">所属产品</td>
+	    <td class="tleft">
+			<input type="text" class="itext select" id="prod_id_text" autocomplete="off" readonly />
+			<input type="hidden" name="prod_id" id="prod_id" datatype="Require" msg="请选择产品" value="" datatype="Require" msg="请选择产品" />
+	    </td>
+	  </tr>
+	<!--  <tr>
+	    <td height="25">需求方e-mail：</td>
+	    <td class="tleft"><input type="text" name="wrap_mail" id="wrap_mail" datatype="Email" msg="邮件格式不正确。" class="itext mail"/></td>
+	  </tr> -->
+	</table>
+	</section>
+	<section class="boxstyle2">
+	    <table id="wnodes" class="table_node">
+	      <tr id="wnodes_row_{@numTem}">
+	        <td height="25" width="10%">节点名</td>
+	        <td width="30%"><input type="text" name="wnod_name_{@num}" id="wnod_name_{@numTem}" datatype="Require" msg="节点名不能为空" class="itext stitle"/></td>
+	        <td width="10%">节点日期</td>
+	        <td width="20%"><input type="text" name="wnod_time_{@num}" id="wnod_time_{@numTem}" readonly class="itext date select"/></td>
+	        <td width="30%"><input type="button" value="" title="删除"  class="btnc btnc_del" id="wnodes_rowDelBtn_{@numTem}" /></td>
+	        </tr>
+	    </table>
+	    <div class="row_add" id="wnodes_rowAddBtn"/><a></a></div>
+		<input type="hidden" id="wnodes_rowCounter" name="nodecount" value="0"/>
+	</section>
+
+	<section class="boxstyle1 bottom">
+	  <input name="input" type="submit" value="提交" class="btn btn_main1"/>
+	</section>
+	<section class="footer"></section>
+	
+</form>
+
+</article>
+<{include file="inc/footer.html"}>
+
+
+<script type="text/javascript">
+	
+    $(function(){
+			PMS.showSelectList("products","prod_id","prod_id_text");
+			PMS.rowEditorCreate('wnodes','#wnodes tr',{
+				added:function(rowid){$("#wnod_time_"+rowid).datepicker();},
+				form:"addform",
+				});
+	 });
+
+</script>
+</body>
+</html>

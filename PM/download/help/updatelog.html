@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title>项目管理系统更新日志</title>
+<style type="text/css">
+.contnet{width:1000px;margin:0 auto}
+	.contnet ol{font-size:14px;border-bottom:dashed 1px #999}
+	.contnet ol li{line-height:22px;margin-bottom:10px}
+	.contnet ol li strong{color:#360}
+</style>
+</head>
+<body>
+<h1 style="text-align:center">项目管理系统更新日志</h1>
+<p align="center">2012　2011</p>
+<hr/>
+
+<div class="contnet">
+
+	<h2>2012-10-24</h2>
+	<ol>
+		<li>
+        	<strong>增加：</strong>全新设计的权限系统。原有的权限系统设计得很简陋，只是简单地分为“普通，审核员，管理员”三级权限，随着日渐增多的权限种类，原有的设计显然已经无法很好地满足需求，于是我设计了一个全新的权限系统及权限管理系统，帮助新增的权限种类有更好的独立授权及可视化管理，同时为了兼容旧的权限体系，新的权限体系暂时只关联新增的权限种类，比如这次新增的“项目评分”权限。
+        </li>
+		<li><strong>修改：</strong>评分模块分值的重要逻辑</li>
+	</ol>
+
+	<h2>2012-09-07</h2>
+	<ol>
+		<li>
+        	<strong>增加：</strong>评分模块。
+        </li>
+	</ol>
+
+	<h2>2012-07-03</h2>
+	<ol>
+		<li>
+        	<strong>增加：</strong>
+统一了所有流程流向，过往只为设计流程特别写了成完前审核逻辑，现在编辑、设计、前端都统一走这一套逻辑，也就是说，以后其它职位的流程都可以进行完成前审核。
+        </li>
+		<li><strong>增加：</strong>重写了数据行编辑前端库和后端处理，修改流程时允许一健批量保存；</li>
+		<li><strong>优化</strong>信息提示内容更具体和明确</li>
+		<li><strong>优化：</strong>优化某些体验，比如进入项目时突出显示自己审核的流程，并在该页面上完成操作等。</li>
+		<li><strong>优化：</strong>更新了客户端，解决了内存泄漏问题。这是由于微软的框架引起的</li>
+	</ol>
+
+	<h2>2012-03-14</h2>
+	<ol>
+		<li><strong>增加:</strong>设计流程审核添加“退回”功能(提交错了现在可以找nicole退回)</li>
+		<li><strong>增加:</strong>项目审核添加“退回”功能（顺手一块做了）</li>
+		<li><strong>增加:</strong>附件添加支持gif,png</li>
+		<li><strong>更改：</strong>项目在归档前的任何阶段都可以提交反馈，上传附件</li>
+	</ol>
+	
+	<h2>2012-01-17</h2>
+	<ol>
+		<li><a href="../intro/20120117/index.html" target="_blank">[查看详情]</a></li>
+	</ol>
+	
+	<h2>2011-7-x</h2>
+	<ol>
+		<li><strong>修改权限：</strong>所有职能用户都可以创建项目。</li>
+	</ol>
+
+	<h2>2011-7-4</h2>
+	<ol>
+		<li><strong>新增恢复项目功能：</strong>取消项目后，工作数据不会出现在当前工作列表中，但会保持状态记录，恢复时直接还原取消前的状态,恢复时也可以将未完成的流程整体移动到某个日期。</li>
+		<li><strong>增加通讯录功能：</strong>新增手机、座机、个人标签和生日（含新历和旧历），当月和当天生日统计（新历和旧历均能统计），实现了分类+全文关键字检索的功能,查找更方便。</li>
+		<li><strong>增加修改个人信息功能：</strong>供修改个人信息、密码等。</li>
+		<li><strong>增加产品与多人绑定：</strong>当产品项目发生改变时绑定人进行通知。</li>
+		<li><strong>加强权限安全</strong></li>
+	</ol>
+
+	<h2>2011-6-20</h2>
+	<ol>
+		<li><strong>代码优化，查看功能优化等，改动较多，具体请点击：</strong><br/><a href="images/2011-06-20.png" target="_blank">[查看详情]</a></li>
+	</ol>
+
+
+	<h2>2011-5-23</h2>
+	<ol>
+		<li><strong>优化了上传附件功能：</strong><br/><a href="images/20110523.png" target="_blank">[查看详情]</a></li>
+	</ol>
+
+
+	<h2>2011-5-09</h2>
+	<ol>
+		<li><strong>添加了【取消项目】的功能：</strong>取消时填写理由，并将消息发送到项目所有相关人员和管理组人员。</li>
+		<li><strong>修复流程添加时间丢失问题</strong></li>
+	</ol>
+
+
+	<h2>2011-5-06 【客户端更新，版本：2011.05.06.1】</h2>
+	<ol>
+		<li><strong>修复神秘的灰色块状物体：</strong>客户端启动时彻底隐藏主窗口，解决灰色块状物没事跑出来的状况。</li>
+		<li><strong>修复客户端多开问题：</strong>禁止了重复运行，只能运行一个进程。</li>
+		<li><strong style="color:#900">优化消息提示：</strong>消息框可进行最小化，供方便时再阅读；每条消息都添加到任务栏，供切换查看。</li>
+		<li><strong>优化连网失败提示：</strong>在外网启动时，优化提示。</li>
+	</ol>
+
+
+	<h2>2011-5-05</h2>
+	<ol>
+		<li><strong>增加项目分类：</strong>项目增加【分类】字段，在【我的项目页】可以分类查看，以往的项目分类全部默认为【其它】，可根据实际需求自行修改。</li>
+		<li><strong>增加产品负责人：</strong>可以将产品将某个编辑绑定关系。</li>
+		<li><strong>限制了项目集使用：</strong>项目集用于某种大型项目或推广，其有明确的里程碑计划时间，也便于查看整个项目集的相关资源，如仅仅是日常项目分类，请使用新增的【项目分类】功能，如需要创建项目集，请向相关人员联系。</li>
+	</ol>
+
+	<h2>2011-5-04</h2>
+	<ol>
+		<li><strong>增加等待安排流程：</strong>添加流程时，开始时间、结束时间和负责人都允许留空，留空即为待定，并在“我的工作”页显示这些待定流程和操作入口。</li>
+	</ol>
+
+
+	<h2>2011-5-03</h2>
+	<ol>
+		<li><strong>更改项目完成的逻辑：</strong>解决了项目在不知情下自动设为完成的问题，<span style="color:#F00">现在当项目下所有流程完成时，会向编辑提醒，由编辑手动将项目设为完成。</span></li>	
+		<li><strong>项目状态发生改变时，提醒的对象有变：</strong>在原来的基础上增加对<span style="color:#F00">经理、组长</span>职能的用户提醒。</li>	
+		<li><strong>优化和封装项目状态设置代码。</strong></li>		
+	</ol>
+
+
+	<h2>2011-4-28</h2>
+	<ol>
+		<li><strong>更改项目集完成的条件逻辑：</strong>解决了项目集提早结束的问题，<span style="color:#F00">现在的结束条件是：当前日期晚于最后的项目集节点日期时，项目集自动设为完成。</span></li>	
+		<li><strong>增加项目集状态设置：</strong>可自由设置其开始与结束</li>		
+		<li><strong>更改项目归档逻辑：</strong>项目完成时，只有职能“经理”(大仙)处客户端收到提醒和可以操作归档。</li>	
+	</ol>
+
+	<h2>2011-4-27</h2>
+	<ol>
+		<li><strong>更改了设计师的流程走向：</strong>设计师负责的流程提交后都要经过审核，提交后权限组合“设计师-审核员”（nicole）处客户端提醒，并进行审核操作。权限组合“组长-审核员”及以上的用户也可以进行审核操作，但不会在客户端提醒。</li>
+		<li><strong>项目增加“访问地址”字段：</strong>方便查询项目的访问地址。</li>		
+		<li><strong>优化和封装流程状态设置代码</strong>。</li>
+	</ol>
+	
+</div>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<{include file="inc/base.html"}>
+<link rel="stylesheet" href="themes/css/popwin.css?cache=<{$smarty.const.RD}>" />
+</head>
+<body class="pgAdmin skill">
+<{include file="inc/header.html"}>
+<div class="wrap">
+<{include file="pg/admin/pgadminNav.html"}>
+<article class="content">
+<section class="search">
+	<h1>列表 - 技能一览</h1>
+	<div class="tab searchTab1">
+        <a id="searchTab1" href="<{spUrl c=pgadmin a=skilllist}>">表</a>
+        <{if $smarty.const.PM_power==0}>
+        <span class="dot">&nbsp;</span>
+        <a id="searchTab2" href="<{spUrl c=pgadmin a=skillAdd}>" title="添加技能">加</a>
+        <{/if}>
+	</div>
+</section>
+		<p class="user-skill-select">
+         类别：<select class="skilltypelist">
+            <option value="1">专业能力</option>
+            <option value="2">胜任力</option>
+            <option value="3">知识结构</option>
+            <option value="4">工具运用能力</option>
+        </select>
+            <span class="loading">Loading……</span>
+        </p>
+        <br>
+<table class="table3">
+<thead>
+<tr class="btop">
+    <td class="bleft">序号</td>
+    <td class="tleft" width="30%">技能名称</td>
+    <td class="tleft">等级</td>
+    <td class="tleft">技能标题</td>
+    <td class="bright">操作</td>
+</tr>
+  </thead>
+  <{foreach name=table from=$skilllist item=rs}>
+    <tr class="skill-name">
+        <td class="bleft"><{ $smarty.foreach.table.iteration }></td>
+        <td class="tleft"><a onclick="javascript:selectedNode(<{$rs.skill_id}>,0);";><{$rs.skill_name}><a></a></td>
+        <td class="tleft">&nbsp;</td>
+        <td class="tleft">&nbsp;</td>
+        <td class="bright"><{if $isManager}><a href="<{spUrl c=pgadmin a=skillEdit skill_id=$rs.skill_id}>">修改</a><{/if}></td>
+    </tr>
+    <{if $rs.lv}>
+    <{foreach from=$rs.lv item=rsitem}>
+    <tr>
+        <td class="bleft">&nbsp;</td>
+        <td class="tleft">&nbsp;</td>
+        <td class="tleft"><{$rsitem.skill_lv}></td>
+        <td class="tleft"><a onclick="javascript:selectedNode(<{$rsitem.skilllv_id}>,1);";><{$rsitem.skill_title}></a></td>
+        <td class="bright">&nbsp;</td>
+    </tr>
+
+    <{/foreach}>
+    <{/if}>
+
+  <{/foreach}>
+	<tfoot>
+	  	<tr>
+			<td colspan="6">
+			<{if $pager}>
+			<div class="pager">
+			页码：<{$pager.current_page}>/<{$pager.total_page}>
+			<{foreach from=$pager.all_pages item=thepage}>
+			    <{if $thepage!=$pager.current_page}>
+					<a href="<{spUrl c=pgadmin a=skillList topage=$thepage}>"><{$thepage}></a>
+			    <{else}>
+			    	<span><{$thepage}></span>
+			    <{/if}>
+			<{/foreach}>
+			</div>
+			<{/if}>
+			</td>
+		</tr>
+	  </tfoot>	  
+  
+</table>
+</article>
+</div>
+<div id="skill_popwin" class="popwin">
+    <div class="popwin_inner clearfix">
+
+    </div>
+</div>
+<{include file="inc/footer.html"}>
+</body>
+<script>
+$("#skill_popwin").hide();
+$('.skilltypelist').val(<{$type}>);
+$('.skilltypelist').select2({
+    width:'150px'
+});
+
+$('.skilltypelist').change(function(){
+	location.href="<{spUrl c=pgadmin a=skillList}>&type="+$(this).val();
+});
+function selectedNode(id,type)
+{
+    var url= "<{spUrl c=pgadmin a=skillNode}>" + "&id="+id+ "&type="+type;
+    $('#skill_popwin div').load(url,function(){_$.popWin("skill_popwin");});
+}
+</script>
+</html>

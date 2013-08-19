@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh"> 
+<head>
+<meta charset="utf-8">
+<{include file="inc/base.html"}>
+<script type="text/javascript" src="themes/js/jquery.last.js"></script>
+<script type="text/javascript" src="themes/js/comm.ui.js"></script>
+<style type="text/css">
+.table3 a{color:#0165B0;text-decoration:underline}
+.table3 a:hover{text-decoration:none}
+.table3 .event{font-size:12px;line-height: 20px;padding-left:15px;background:url(themes/images/icon3.png) 0 5px no-repeat;margin-bottom:5px;}
+.table3 .time{color:#989898;display:block;}
+.table3 td p{height:auto}
+</style>
+</head>
+<body class="manage projects">
+<{include file="inc/header.html"}>
+<article class="content">
+
+	<section class="search">
+		<h1>项目动态</h1>
+		<div class="tab searchTab4">
+			<a id="searchTab1" href="<{spUrl c=project a=show}>">全</a>
+            <span class="dot">&nbsp;</span>
+			<a id="searchTab2" href="<{spUrl c=project a=show type=2}>" title="今天需要完成的项目">今</a>
+            <span class="dot">&nbsp;</span>
+			<a id="searchTab3" href="<{spUrl c=project a=show type=3}>" title="已经延期的项目">延</a>
+            <span class="dot">&nbsp;</span>
+			<a id="searchTab4" href="<{spUrl c=project a=news}>" title="项目的新动态">新</a>
+		</div>
+	</section>
+	
+<{if $events}>
+    <table class="table3">
+      <thead>
+      <tr class="btop">
+      	<td width="10%" class="bleft">产品</td>
+		<td width="10%">类型</td>
+        <td width="50%" class="tleft">项目/最新动态</td>
+        <td width="10%">负责人</td>
+        <td width="20%" class="bright">进度</td>
+      </tr>
+      </thead>
+      <{foreach from=$events item=rs}>
+      <tr class="rowcolor<{$rs[0].proj_state}>">
+        <td class="bleft" valign="top"><{$rs[0].prod_name}></td>
+		<td valign="top"><{$rs[0].className|default:"其它"}></td>
+        <td class="tleft" valign="top">
+			<p class="title"><a href="<{spUrl c=project_bll a=project_show id=$rs[0].proj_id}>" target="_blank"><{$rs[0].proj_name}></a></p>
+			<{foreach from=$rs item=rows}>
+			<p class="event"> <{$rows.user_name}> <{$rows.even_name}> <{if $rows.pnod_name}>（<a onclick="PMS.showNode(<{$rows.pnod_id}>)"><{$rows.pnod_name}></a>）<{/if}><{$rows.even_content}> <span class="time fNum"><{$rows.even_time|date_format:"%m/%d %h:%n:%s"}></span></p>
+			<{/foreach}>
+		</td>
+        <td valign="top"><{$rs[0].user_name}></td>
+        <td valign="top" class="bright"><span class="stateicon stateicon_<{$rs[0].proj_state}>"><{$rs[0].stateName}></span></td>
+      </tr>
+      <{/foreach}>
+	  <tfoot>
+	  	<tr>
+			<td colspan="5">
+			<{if $pager}>
+			<div class="pager">
+			页码：<{$pager.current_page}>/<{$pager.total_page}>
+			<{foreach from=$pager.all_pages item=thepage}>
+			    <{if $thepage!=$pager.current_page}>
+					<a href="<{spUrl c=project_bll a=projects p=$thepage ssid=$proj_state spid=$prod_id sd1=$search_dates sd2=$search_datee}>"><{$thepage}></a> 
+			    <{else}>
+			    	<span><{$thepage}></span>
+			    <{/if}>
+			<{/foreach}>
+			</div>
+			<{/if}>
+			</td>
+		</tr>
+	  </tfoot>
+    </table>
+<{else}>
+<p>查无记录。</p>
+<{/if}>
+
+</article>
+<{include file="inc/footer.html"}>
+</body>
+</html>

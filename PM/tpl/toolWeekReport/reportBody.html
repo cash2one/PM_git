@@ -1,0 +1,70 @@
+<div id="mailBody">
+<p><{$mailTitle}></p>
+<p style="font-size:18px;margin-top:30px;font-weight:bold">hi,大家好</p>
+<h2>上周工作小结</h2>
+<ul class="report-list" id="report-summary">
+<{foreach from=$lastWeekDataProjects item=rs}>
+	<li>
+	    <span class="report-title">【<{$rs.prod_name}>】 -- 【<{$rs.proj_name}>】<span style="color:#CC640B"><{$rs.pnod_name}></span>----<{$rs.state}>。</span>
+        <span class="report-row-note">
+        	<input type="text" name="describe" value="" class="report-row-notetxt" maxlength="50"/>
+        	<a onclick="showNoteOfRow(this)" class="report-row-act write">[填写说明]</a>
+            <a onclick="cancelNote(this)" class="report-row-act cancel" style="display:none">[取消]</a>
+            <a onclick="comfirmNote(this)" class="report-row-act comfirm" style="display:none">[确定]</a>
+            <a onclick="modifyNote(this)" class="report-row-act modify" style="display:none">[修改]</a>
+            <a onclick="modifyNote(this)" class="report-row-act delete" style="display:none">[修改]</a>
+            <i></i>
+        </span>
+	    <input type="hidden" value="projectlast_<{$rs.prod_id}>_<{$rs.proj_id}>" name="row_id"/>
+    </li>
+<{/foreach}>
+
+<{foreach from=$lastWeekDataNodes item=rs}>
+	<li>
+	    <span class="report-title">【<{$rs.prod_name}>】 -- 【<{$rs.proj_name}>】<span style="color:#CC640B"><{$rs.pnod_name}></span>----<{$rs.state}>。</span>
+        <span class="report-row-note">
+        	<input type="text" name="describe" value="" class="report-row-notetxt" maxlength="50"/>
+        	<a onclick="showNoteOfRow(this)" class="report-row-act write">[填写说明]</a>
+            <a onclick="cancelNote(this)" class="report-row-act cancel" style="display:none">[取消]</a>
+            <a onclick="comfirmNote(this)" class="report-row-act comfirm" style="display:none">[确定]</a>
+            <a onclick="modifyNote(this)" class="report-row-act modify" style="display:none">[修改]</a>
+            <i></i>
+        </span>
+	    <input type="hidden" value="projectlast_<{$rs.prod_id}>_<{$rs.proj_id}>_<{$rs.pnod_id}>" name="row_id"/>
+    </li>
+<{/foreach}>
+
+</ul>
+<h2>本周工作计划</h2>
+<ul class="report-list" id="report-plan">
+
+<{foreach from=$thisWeekDataProjects item=rs}>
+	<li>
+    	<span class="report-title">【<{$rs.prod_name}>】 -- 【<{$rs.proj_name}>】<span style="color:#CC640B"><{$rs.pnod_name}></span></span>
+    	<span class="report-row-note">
+        	<input type="text" name="describe" value="" class="report-row-notetxt" maxlength="50"/>
+        	<a onclick="showNoteOfRow(this)" class="report-row-act write">[填写说明]</a>
+            <a onclick="cancelNote(this)" class="report-row-act cancel" style="display:none">[取消]</a>
+            <a onclick="comfirmNote(this)" class="report-row-act comfirm" style="display:none">[确定]</a>
+            <a onclick="modifyNote(this)" class="report-row-act modify" style="display:none">[修改]</a>
+            <i></i>
+    	</span>
+    </li>
+<{/foreach}>
+
+<{foreach from=$thisWeekDataNodes item=rs}>
+	<li>
+    	<span class="report-title">【<{$rs.prod_name}>】 -- 【<{$rs.proj_name}>】<span style="color:#CC640B"><{$rs.pnod_name}></span></span>
+    	<span class="report-row-note">
+        	<input type="text" name="describe" value="" class="report-row-notetxt" maxlength="50"/>
+        	<a onclick="showNoteOfRow(this)" class="report-row-act write">[填写说明]</a>
+            <a onclick="cancelNote(this)" class="report-row-act cancel" style="display:none">[取消]</a>
+            <a onclick="comfirmNote(this)" class="report-row-act comfirm" style="display:none">[确定]</a>
+            <a onclick="modifyNote(this)" class="report-row-act modify" style="display:none">[修改]</a>
+            <i></i>
+    	</span>
+	    <input type="hidden" value="projectlast_<{$rs.prod_id}>_<{$rs.proj_id}>_<{$rs.pnod_id}>" name="row_id"/>
+    </li>
+<{/foreach}>
+</ul>
+</div>

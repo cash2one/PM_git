@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+</head>
+<body>
+<div style="width:800px">
+<h1>PM数据导出</h1>
+<p >
+数据说明：<br />
+<span style="color:#666666;font-size:12px"></span>导出规则为 工作实际完成时间在<{$startTime}>（含） - <{$endTime}>（不含）之间的数据。
+</p>
+<h2>总体数据</h2>
+<table width="100%" border="1" style="border-collapse:collapse;border:1px solid #333">
+	<tr>
+		<td>类别</td>
+		<td>完成数量</td>
+		<td>delay数量</td>
+	</tr>
+	<tr>
+		<td>项目</td>
+		<td><{$p_total}></td>
+		<td><{$p_delay}></td>
+	</tr>
+	<tr>
+		<td>流程</td>
+		<td><{$n_total}></td>
+		<td><{$n_delay}></td>
+	</tr>
+<!-- 	<tr>
+		<td>附件</td>
+		<td>229(合163.73MB)&nbsp;</td>
+		<td>&nbsp;</td>
+	</tr> -->
+</table>
+
+<h3>细分数据</h3>
+<table width="100%" border="1" style="border-collapse:collapse;text-align:center">
+	<tr>
+		<td>产品</td>
+		<td>完成项目数量</td>
+		<td>项目delay数量</td>
+		<td>完成流程数量</td>
+		<td>流程delay数量</td>
+        <td>已完的成项目<br />总计划工作日</td>
+        <td>已完成的项目<br />总实际工作日</td>
+	</tr>
+	<{foreach from=$projectInfo item=rs}>
+	<tr>
+		<td><{$rs.prod_name}></td>
+		<td><{$rs.p_total}></td>
+		<td><{$rs.p_delay}></td>
+		<td><{$rs.n_total}></td>
+		<td><{$rs.n_delay}></td>
+        <td><{$rs.projectPlanDayCount}></td>
+        <td><{$rs.projectRealDayCount}></td>
+	</tr>
+	<{/foreach}>
+</table>
+</div>
+</body>
+</html>

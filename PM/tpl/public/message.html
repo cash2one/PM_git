@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh"> 
+<head>
+<meta charset="utf-8">
+<{include file="inc/base.html"}>
+<style type="text/css">
+.msgbox {background: none repeat scroll 0 0 #8ADFF7;border: 1px solid #FFFFFF;border-radius: 5px 5px 5px 5px;height: 200px;margin: 100px auto 0;padding-top: 40px;text-align: center;width: 600px;}
+.msgbox p{line-height:25px;}
+.ussallynav1,.ussallynav2{text-align:left;padding-left:50px;padding-top:20px;}
+.ussallynav1 a{color:#FF0000;}
+.ussallynav2{padding-top:20px;font-size:12px}
+.ussallynav2 span{color:#666666}
+</style>
+</head>
+<body>
+<{include file="inc/header.html"}>
+<article class="content">
+	
+<div class="msgbox">
+        <p style="background: none repeat scroll 0% 0% rgb(255, 255, 255); margin-top: 50px; padding: 10px;" class="ussallyNav"><{$msg}>!</p>
+		<p class="ussallynav1"><a href="<{$url1}>"><{$urltxt1}></a>　<a href="<{$url2}>"><{$urltxt2}></a></p>
+		<p class="ussallynav2">
+			<span>快捷跳转:</span>
+			<a class="mywork" href="<{spUrl c=project_bll a=myWork}>">我的工作</a> | 
+			<a class="manage" href="<{spUrl c=project_bll a=projects}>">查询管理</a> | 
+			<a class="create" href="<{spUrl c=project a=project_add}>">创建项目</a> | 
+			<a class="projects" href="<{spUrl c=project_bll a=projects}>">全部项目</a> | 
+            <a class="projects" href="<{spUrl c=user a=showlist}>">通讯录</a> | 
+			<a class="wraps" href="<{spUrl c=wrap}>">项目集列表</a>
+		</p>
+</div>
+	
+	
+</article>
+
+
+<{include file="inc/footer.html"}>
+</body>
+</html>

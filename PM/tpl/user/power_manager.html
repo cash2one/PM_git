@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh"> 
+<head>
+<meta charset="utf-8">
+<{include file="inc/base.html"}>
+<style type="text/css">
+.user-list{width:700px}
+.user-list li{border:1px #999 solid;overflow:hidden;background:#FFF;}
+.user-name{float:left;width:100px;padding:10px;border-right:#CCC dotted 1px}
+.power-list{float:left;border:#FFFFCC dotted 1px;overflow:hidden;min-height:35px}
+.over-target{border:#009900 1px dotted;background:#66FFFF}
+.power-list span{display:block;float:left;padding:5px;border:#0066FF 1px dotted;background:#66CCFF;font-size:12px;margin:5px;/* CSS3 transition rules */
+    -webkit-transition: all 0.2s ease;
+    -moz-transition: all 0.2s ease;
+    -o-transition: all 0.2s ease;
+    transition: all 0.2s ease}
+.power-list span:hover{background:#FFF;cursor:pointer}
+.power-list i{float:left;background: url("themes/images/sprites.png") no-repeat 6px 5px #0CF;height: 25px;width: 25px;margin:5px;cursor:pointer}
+.power-list i:hover{background-color:#F90}
+#main-wrap{position:relative}
+.target-power-contenter{width:575px;position:relative;
+	/* CSS3 transition rules */
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;}
+.target-power-contenter span:hover{background:url(themes/images/icon.png) no-repeat 4px -145px;padding-left:20px}
+.target-power-contenter span.loading{background:url(themes/images/loading3.gif) no-repeat 4px 4px;background-size:15px auto;padding-left:20px}
+#all-power2-list{position:absolute;width:240px;top:0;right:0;padding:5px;}
+#all-power2-list span{display:block;float:none;margin:0}
+#all-power2-list p{background:#FFF;font-size:12px;padding:5px 15px;color:#666666}
+#all-power2-list span:hover{cursor:move}
+#power-options-box{position:absolute;width:565px;background:#EEF7FF;border:#09F 1px dotted;padding:15px 5px;min-height:50px;font-size:12px;}
+#power-options-box .btn_close{position:absolute;right: 2px;bottom: 2px;}
+
+</style>
+</head>
+<body class="manage power2">
+<{include file="inc/header.html"}>
+<article class="content">
+<section class="search">
+	<h1>权限2.0管理</h1>
+</section>
+<section id="main-wrap">
+	<ul class="user-list" id="user-list">
+		<{foreach from=$userArray item=rs}>
+		<li>
+			<div class="user-name"><{$rs.user_name}></div>
+			<div class="power-list target-power-contenter" id="">
+				<{foreach from=$rs.power2Array item=v key=k}>
+				<span onClick="deletePower2(<{$rs.user_id}>,<{$k}>,this)"><{$v}></span>
+				<{/foreach}>
+				<i id="add-btn-<{$rs.user_id}>" class="add" data="<{$rs.user_id}>"></i>
+			</div>
+		</li>
+		<{/foreach}>
+	</ul>
+	<div id="all-power2-list" class="power-list">
+		<div style="margin-bottom:10px">权限列表</div>
+		<{foreach from=$power2 item=v key=k}>
+		<span draggable="true"><{$v}></span>
+		<p><{$power2DescribeArray[$k]}></p>
+		<{/foreach}>
+	</div>
+</section>
+</article>
+<{include file="inc/footer.html"}>
+<div id="power-options-box" style="display:none" class="popwin">
+	<div id="power-options-list" class="power-list">
+	</div>
+	<a class="btn_close" onclick="closeList()" title="关闭"></a>
+</div>
+<script type="text/javascript">
+	var uid;
+	var powerOptionsBox=$("#power-options-box");
+	var powerOptionsList=$("#power-options-list");
+	var parentBox;
+	$("#user-list .add").click(function(){
+		if(uid) $("#add-btn-"+uid).show();
+		var btn=$(this);
+		btn.hide();
+		parentBox=$(this).parent();
+		uid=btn.attr("data");
+		powerOptionsBox.hide("fast",function(){
+			powerOptionsList.html('<img src="themes/images/loading.gif" width="30" height="30">');
+			powerOptionsBox.css({"left":parentBox.offset().left,"top":parentBox.offset().top+37}).show("fast",function(){
+				$.getJSON("<{spUrl c=user a=getCanUsePower2}>&user_id="+uid,function(rs){
+					if(rs.rs==200)
+					{
+						var html='';
+						for(var i=0;i<(rs.des).length;i++)
+						{
+							html+='<span onclick="addPower2('+uid+','+rs.des[i].key+',\''+rs.des[i].value+'\',this)">'+rs.des[i].value+'</span>';
+						}
+						powerOptionsList.html(html);
+					}
+					else
+					{
+						powerOptionsList.html('该用户没有可选的权限');
+					}
+				});
+			});
+		});
+	});
+	
+	var addPower2=function(_uid,_powerkey,_powerName,source)
+	{
+		$(source).css({"position":"absolute","left":$(source).position().left})
+		.animate({"top":-40,"left":0},200,function(){
+			$(this).remove();
+			parentBox.prepend('<span onClick="deletePower2('+uid+','+_powerkey+',this)" class="loading">'+_powerName+'</span>');
+			$.getJSON("<{spUrl c=user a=addPower2}>&user_id="+uid+"&power2="+_powerkey,function(rs){
+				if(rs.rs==200)
+				{
+					parentBox.find(".loading").removeClass("loading");
+				}
+				else
+					alert(rs.des);
+			});
+		});
+	}
+	
+	var deletePower2=function(_uid,_powerkey,source)
+	{
+		var btn=$(source);
+		btn.addClass("loading");
+		$.getJSON("<{spUrl c=user a=deletePower2}>&user_id="+_uid+"&power2="+_powerkey,function(rs){
+			if(rs.rs==200)
+			{
+					btn.css({"position":"absolute","left":btn.position().left,"top":-50});
+					setTimeout(function(){btn.remove();},400);
+					
+			}
+			else
+			{
+				btn.removeClass("loading");
+				alert(rs.des);
+			}
+		});
+		
+	}
+	
+	var closeList=function()
+	{
+		$("#add-btn-"+uid).show();
+		powerOptionsBox.hide("fast");
+	}
+	
+	$("#all-power2-list span").bind("dragstart",function()
+	{
+		
+	});
+	$(".target-power-contenter").bind("dragover",function(ev)
+	{
+		ev.preventDefault();
+		$(this).addClass("over-target");
+    	return true;
+	})
+	$(".target-power-contenter").bind("dragleave",function(ev)
+	{
+		ev.preventDefault();
+		$(this).removeClass("over-target");
+	})
+	$(".target-power-contenter").bind("drop",function(ev)
+	{
+		$(this).removeClass("over-target");
+		alert("拖拉设定正在开发中....");
+	})
+</script>
+</body>
+</html>

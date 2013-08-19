@@ -1,0 +1,14 @@
+eclipse.preferences.version=1
+encoding//controller/main.php=UTF-8
+encoding//model/m_pg_skill_to_user.php=gbk
+encoding//themes/css/base.css=utf-8
+encoding//tpl/inc/header.html=utf-8
+encoding//tpl/pg/admin/pgadminNav.html=utf-8
+encoding//tpl/pg/user/myInformation.html=utf-8
+encoding//tpl/pg/user/myMessageNode.html=utf-8
+encoding//tpl/project/myProjects.html=utf-8
+encoding//tpl/project/node.html=utf-8
+encoding//tpl/project/projectAdd.html=utf-8
+encoding//tpl/project/projectEdit.html=UTF-8
+encoding//tpl/user/work.html=utf-8
+encoding/<project>=utf-8

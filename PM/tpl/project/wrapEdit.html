@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh"> 
+<head>
+<{include file="inc/base.html"}>
+<link type="text/css"  rel="stylesheet" href="themes/css/jquery.ui.all.css" />
+<script type="text/javascript" src="themes/js/jquery-ui.last.js"></script>
+<script type="text/javascript" src="themes/js/jquery.ui.datepicker-zh-CN.js"></script>
+<script type="text/javascript" src="themes/js/vilidate.js"></script>
+</head>
+<body class="manage wraps">
+<{include file="inc/header.html"}>
+<article class="content">
+
+	<section class="search">
+		<h1>修改 - 项目集 - <{$wrap.wrap_name}></h1>
+		<div class="tab">
+		<{include file="project/wrapsNav.html"}>
+		</div>
+	</section>
+
+	<section class="header clearfix"></section>
+	<section class="boxstyle1 top clearfix">
+	<h2>项目集基本资料修改</h2>
+	<form action="<{spUrl c=wrap a=editDo wrap_id=$wrap.wrap_id}>" method="post">
+	<table class="table1" >
+	  <tr>
+	    <td width="123" height="25" align="right">项目集名称</td>
+	    <td width="477" class="tleft"><input name="wrap_name" type="text" id="wrap_name" value="<{$wrap.wrap_name}>"  class="itext title"/></td>
+	  </tr>
+	  <tr>
+	    <td height="25" align="right">所属产品</td>
+	    <td class="tleft">
+			<input type="text" class="itext select" id="prod_id_text" autocomplete="off" readonly value="<{$wrap.prod_name}>" />
+			<input type="hidden" name="prod_id" id="prod_id" datatype="Require" msg="请选择产品" value="<{$wrap.prod_id}>" datatype="Require" msg="请选择产品" />	
+	    </td>
+	  </tr>
+	  <tr>
+	    <td height="25" align="right">状态</td>
+	    <td class="tleft">
+	      <select name="wrap_state" id="wrap_state">
+	      	<{foreach from=$wrap_state item=ws key=v}>
+			<{if $v==$wrap.wrap_state}>
+	        	<option value="<{$v}>" selected="selected"><{$wrap_state[$v]}></option>
+			<{else}>
+				<option value="<{$v}>"><{$wrap_state[$v]}></option>
+			<{/if}>
+	        <{/foreach}>
+	      </select>
+	    </td>
+	  </tr>  
+	</table>
+	<p align="center"><input type="submit" value="保存修改"  class="btn btn_main1" style="margin:0 auto"/></p>
+	</form>
+	</section>
+	
+	<section class="boxstyle2">
+		<h2>节点修改</h2>
+		<table id="wnodes" class="table_node">
+		   <tr id="wnodes_row_{@numTem}">
+		      <td height="25" width="10%">节点名</td>
+		      <td width="30%"><input type="text" name="wnod_name" id="wnod_name_{@numTem}" class="itext stitle" value="{@wnod_name}"/></td>
+		      <td width="10%">节点日期</td>
+		      <td width="20%"><input type="text" name="wnod_time" id="wnod_time_{@numTem}" readonly class="itext date select" value="{@wnod_time}"/></td>
+		      <td width="30%">
+			  	<input type="hidden" name="wnod_id" value="{@wnod_id}">
+			  	<input type="button" value="" title="删除" class="btnc btnc_del" id="wnodes_rowDelBtn_{@numTem}"/> 
+				<input type="button" value="" title="保存" class="btnc btnc_save" id="wnodes_rowSaveBtn_{@numTem}"/>
+			</td>
+		    </tr>
+		</table>
+		<div class="row_add" id="wnodes_rowAddBtn"/><a></a></div>
+	</section>
+	<section class="boxstyle1 bottom">
+	<a href="<{spUrl c=wrap}>"  class="btn btn_main1">返回列表</a>
+	</section>
+	<section class="footer"></section>
+	
+<article class="content">
+<{include file="inc/footer.html"}>
+
+<script type="text/javascript">
+
+
+	$(function(){
+		PMS.showSelectList("products","prod_id","prod_id_text");
+		PMS.rowEditorEdit("wnodes","wnod_id","#wnodes tr",<{$wnods}>,{
+		"editSaveUrl":"<{spUrl c=wrap a=wnodSave}>",
+		"addRowFn":function(n){rowadded(n);},
+		"addSaveUrl":"<{spUrl c=wrap a=wnodAddDo}>&wrap_id=<{$wrap.wrap_id}>",
+		"rowDelUrl":"<{spUrl c=wrap a=wnodDel}>"
+		});	
+			
+	})
+	
+	function rowadded(rowid)
+	{
+		$("#wnod_time_"+rowid).datepicker();
+	}	
+	
+	function editSave(rowid,wrapid)
+	{
+		var data2=getData(rowid);
+		$.ajax({
+			type:"GET",
+			url:"<{spUrl c=wrap a=wnodSave}>",
+			async:false,
+			data:data2,
+			success:function(data){
+				  if(data==1){$("#"+wrapid+"_row_"+rowid).addClass("rowReadMode"); }
+				  else{alert("修改流程失败："+data);}	
+			}})
+	}
+	
+	function addSave(rowid,wrapid)
+	{
+		var rs;
+		var data2=getData(rowid);
+		$.ajax({
+			type:"GET",
+			url:"<{spUrl c=wrap a=wnodAddDo}>",
+			async:false,
+			data:data2,
+			error:function(e){alert(e)},
+			success:function(data){
+				  if(data==0){alert("添加流程操作失败！");return false}
+				  else
+				  {
+					var wnod_id=parseInt(data);
+					rs=[[wnod_id,data2.wnod_name,data2.wnod_time]];
+					$("#"+wrapid+"_row_"+rowid).remove();
+			}}})
+			return rs;
+	}
+	
+	function getData(rowid)
+	{
+		var wnod_name=$('#wnod_name_'+rowid).val();
+		var wnod_time=$('#wnod_time_'+rowid).val();	
+		return data={'wnod_id':rowid,'wnod_name':wnod_name,'wnod_time':wnod_time,'wrap_id':<{$wrap.wrap_id}>};
+	}
+	
+	function rowDel(rowid,wrapid)
+	{
+		if(confirm('删除后不可恢复，确认删除？'))
+		{
+		$.get("<{spUrl c=wrap a=wnodDel}>",{'wnod_id':rowid},function(data){
+				  if(data==1)
+				  {
+					$("#"+wrapid+"_row_"+rowid).remove();
+				  }
+				  else
+				  {
+					alert("操作失败:"+data);
+				  }
+				  
+				  });
+		}
+	}
+
+
+	function edit(rowid)
+	{
+		$('#row_edit_'+rowid).show();
+		$('#row_read_'+rowid).hide();
+	}
+	
+	function changeRead(rowid)
+	{
+		$('#row_edit_'+rowid).hide();
+		$('#row_read_'+rowid).show();
+	}
+	
+	function save(rowid)
+	{
+		var wnod_name=$('#wnod_name'+rowid).val();
+		var wnod_time=$('#wnod_time'+rowid).val();	
+		var a=wnod_name;
+		var b=wnod_time;
+		var data={'wnod_id':rowid,'wnod_name':wnod_name,'wnod_time':wnod_time};
+		//alert(data);
+		if(wnod_name=''||wnod_time=='')
+		{
+			alert('节点名称和时间不能为空!');
+			return null;
+		}		
+		
+		
+		$.get("<{spUrl c=wrap a=wnodSave}>",data,function(msg){
+				  if(msg==1)
+				  {
+					$('#r_wnod_name'+rowid).html(a);
+					$('#r_wnod_time'+rowid).html(b);
+					changeRead(rowid);
+				  }
+				  else
+				  {
+					alert("修改失败！");
+					//alert(data);
+				  }
+				  
+				  });
+	}
+	
+
+	function add()
+	{
+		
+		var twnod_name=$.trim($('#wnod_name').val());
+		var twnod_time=$('#wnod_time').val();
+		
+		if(twnod_name==''||twnod_time=='')
+		{
+			alert('节点名称和时间不能为空!');
+			return null;
+		}
+		var htmls='';
+		$.get("<{spUrl c=wrap a=wnodAddDo}>",{
+			 'wrap_id':<{$wrap.wrap_id}>,
+			 'wnod_name':twnod_name,
+			 'wnod_time':twnod_time,
+			  },function(data){
+				  if(data==0)
+				  {
+					alert(data);
+				  }
+				  else
+				  {
+					var wnod_id=parseInt(data);
+					htmls=makeHtml(wnod_id);	
+					htmls=htmls.replace(/{@wnod_name}/g,twnod_name);
+					htmls=htmls.replace(/{@wnod_time}/g,twnod_time);
+					$('#wnodes #row_edit_0').before(htmls);		
+					$("#wnod_time"+wnod_id).datepicker();
+					$('#wnod_name').val('');
+					$('#wnod_time').val('');	
+				  }
+				  });
+	}
+	
+	
+	function wnodDel(rowid)
+	{
+		if(confirm('删除后不可恢复，确认删除？'))
+		{
+		$.get("<{spUrl c=wrap a=wnodDel}>",{'wnod_id':rowid},function(data){
+				  if(data==1)
+				  {
+					$('#row_edit_'+rowid).remove();
+					$('#row_read_'+rowid).remove();
+				  }
+				  else
+				  {
+					alert("操作失败！");
+					//alert(data);
+				  }
+				  });
+		}
+	}
+</script>
+</body>
+</html>

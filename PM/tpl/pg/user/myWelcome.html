@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <{include file="inc/base.html"}>
+    <link type="text/css" rel="stylesheet" href="themes/css/jquery.ui.all.css?cache=<{$smarty.const.RD}>"/>
+    <script type="text/javascript" src="themes/js/jquery-ui.last.js?cache=<{$smarty.const.RD}>"></script>
+    <link>
+    <style>
+        .bubblingG {
+            text-align: center;
+            width:100px;
+            height:63px;
+            margin: 10px auto;
+        }
+
+        .bubblingG span {
+            display: inline-block;
+
+            vertical-align: middle;
+            width: 13px;
+            height: 13px;
+            margin: 31px auto;
+            background: #3697EB;
+            -webkit-border-radius: 63px;
+            -webkit-animation: bubblingG 1.2s infinite alternate;
+        }
+
+        #bubblingG_1 {
+            -webkit-animation-delay: 0s;
+        }
+
+        #bubblingG_2 {
+            -webkit-animation-delay: 0.36s;
+        }
+
+        #bubblingG_3 {
+            -webkit-animation-delay: 0.72s;
+        }
+
+        @-webkit-keyframes bubblingG {
+            0% {
+                width: 13px;
+                height: 13px;
+                background-color:#3697EB;
+                -webkit-transform: translateY(0);
+            }
+
+            100% {
+                width: 30px;
+                height: 30px;
+                background-color:#fff;
+                -webkit-transform: translateY(-26px);
+            }
+        }
+
+    </style>
+
+</head>
+<body class="pgAdmin  userDeafult">
+<{include file="inc/header.html"}>
+
+<div class="wrap">
+    <section class="clearfix myGrowBox_content"
+             style="padding-top: 20px;padding-bottom: 20px;margin-top: 30px;text-align: center;">
+        <{if $isInit}>
+        <div class="isinit-box" style="width: 90%;margin: 0 auto;text-align: left;">
+            <h2>欢迎，<{$user_nickname}>(<{$user_name}>)</h2>
+            <p style="font-family: microsoft yahei;">根据以往的贡献和经验，，我们为你专门配置了初始化礼包，请领取！</p>
+            <ul style="margin-top: 10px;border: 1px solid #ddd;font-family: microsoft yahei;padding: 10px;background: #fff;width: 80%;">
+                <li>经验：<{$exp}></li>
+                <li>贡献：<{$gongxian}></li>
+                <li>称谓：<{if $titleArr}><{foreach from=$titleArr item=rs name=mycount}><{$rs.title_name}><{if $smarty.foreach.mycount.last eq
+                    1}><{else}>、<{/if}><{/foreach}><{else}>暂无<{/if}></li>
+            </ul>
+            <a href="<{spUrl c=pguser a=mygrowrecord}>" class="myInfo-btn" style="float: left;" id="get-btn">点击领取</a>
+        </div>
+        <{else}>
+        <h2>HI,请联系造物主为你造一个P&G系统的角色人偶吧！</h2>
+
+        <p style="font-family: microsoft yahei;line-height: 24px;">（该帐号下暂无PG角色）</p>
+        <a href="<{spUrl c=project_bll a=mywork}>" class="myInfo-btn" style="float: none;display: block;width: 300px;margin: 10px auto;">帮你订好离开的飞机票了！点我吧</a>
+        <div class="bubblingG">
+            <span id="bubblingG_1">
+            </span>
+            <span id="bubblingG_2">
+            </span>
+            <span id="bubblingG_3">
+            </span>
+        </div>
+
+        <{/if}>
+    </section>
+</div>
+
+</body>
+<script>
+    $(function(){
+        $(".myInfo-btn").hover(function(){
+            $(this).addClass('current');
+        },function(){
+            $(this).removeClass('current');
+        })
+    })
+</script>
+</html>

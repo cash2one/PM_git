@@ -1,0 +1,127 @@
+<p class="title">【<{$pnod.proj_name}>】-【<{$pnod.pnod_name}>】 by <{$pnod.user_name}></p>
+<dl class="nodeInfo clearfix">
+
+	<dt></dt>
+	<dd class="node_time">
+    	<strong>起止时间：</strong><{$pnod.pnod_time_s|date_format:"%Y-%m-%d"}> >> <{$pnod.pnod_time_e|date_format:"%Y-%m-%d"}> <br/>
+        <{if $pnod.pnod_time_r}>
+        <strong>实际完成：</strong>　　　　　　　<{$pnod.pnod_time_r|date_format:"%Y-%m-%d"}>
+        <{/if}>
+    </dd>
+    
+	<dt style="padding-bottom:0">相关附件</dt>
+	<dd>
+			<ul class="adjunct-list clearfix">
+			<{foreach from=$files item=rs2}>
+				<li id="file_row_<{$rs2.file_id}>">
+					<a href="<{$rs2.file_url}>" target="_blank" class="file <{$rs2.ext|default:'floder'}>"><img src="<{$rs2.file_url}>" width="128" height="128"/></a>
+					<div class="fileInfo">
+						<p><{$rs2.file_name}></p>
+					</div>
+				</li>
+			<{/foreach}>
+			</ul>
+	</dd>
+	<!-- 
+    <dt style="line-height:25px;padding-bottom:0">流程描述</dt>
+    <dd style="max-height:200px;overflow:auto;" >
+        <p><{$pnod.pnod_desc}></p>
+    </dd>
+ 	-->
+	<dt style="line-height:25px;padding-bottom:0">相关事件</dt>
+	<dd style="max-height:200px;overflow:auto;" id="popwin-event-box">
+        <{foreach from=$events item=rs2}>
+		<ul class="event_list clearfix eventType<{$rs2.even_type}>">
+			<li class="date"><{$rs2.even_time}></li>
+			<li class="userName"><{$rs2.user_name}></li>
+			<li class="evenName"><{$rs2.even_name}></li>
+			<li class="evenContent"><{$rs2.even_content}><span></span></li>
+		</ul>
+        <{/foreach}>
+	</dd>
+	
+	<dt style="line-height:25px;padding-bottom:0">反馈/建议</dt>
+	<dd style="max-height:200px;overflow:auto;" id="popwin-event-box">
+	<form name="event_form" id="event_form" method="post" action="<{spUrl c=event a=add}>" onSubmit="return Validator.Validate(event_form,2)" >
+		<input type="hidden" name="pnod_id" id="pnod_id" value="<{$pnod_id}>">
+        <textarea name="even_content" id="even_content" cols="70" rows="5" datatype="Require" msg="内容不能为空"></textarea>
+		<input type="hidden" name="proj_id" value="<{$proj_id}>"/>
+		<input type="submit" value="提 交" class="sumbit"/>
+	</form>
+	</dd>
+
+</dl>
+
+<div class="btn_list">
+<{if $isShowPassBtn||$setScore}>
+<div>
+                	<dl class="clearfix comment-box">
+						<{if $pmDelayReasonArray}>
+                    	<dt>延期说明</dt>
+						<dd>
+                        	<select name="score" datatype="Require" msg="请选择分数。" id="node-delayinfo">
+                            	<option value="" selected>请选择延期说明</option>
+								<{foreach from=$pmDelayReasonArray item=v key=k}>
+                                <option value="<{$k}>"><{$v}></option>
+								<{/foreach}>
+                            </select>
+						</dd>
+						<{/if}>
+                    	<dt>项目评分</dt>
+                        <dd>
+                        	<select name="score" datatype="Require" msg="请选择分数。" id="node-score">
+                            	<option value="" selected>请选择分数</option>
+								<{foreach from=$scoreNameArray item=v key=k}>
+                                <option value="<{$k}>" <{if $k=='C'}> selected="selected"<{/if}>><{$v}></option>
+								<{/foreach}>
+                            </select>
+                        </dd>
+                        <dt>评价内容</dt>
+                        <dd>
+                        	<textarea name="comment" id="node-comment"></textarea>
+                        </dd>
+						<{if $isShowPassBtn}>
+                        <dt></dt>
+                        <dd>
+                        	<!-- <label><input type="checkbox" id="isPnodeFinishOnCommitTime" value="no"/> 完成日期设为提交审核日期</label> -->
+                        </dd>
+						<{/if}>
+                    </dl>
+</div>
+<{/if}>
+
+<{if $isShowPassBtn}>
+<input type="button" onClick="pass_pnod(<{$pnod.pnod_id}>,18)" value="通过审核" class="btn btn_main2" style=""/>
+<input type="button" onClick="pass_pnod(<{$pnod.pnod_id}>,20)" value="退回修改" class="btn btn_main1" style=""/>
+<{/if}>
+
+<{if $checkProject}>
+<a href="<{spUrl c=project_bll a=project_show id=$pnod.proj_id}>" class="btn btn_main1" target="_blank" onclick="_$.closewin('#pnod_details_box')">查看项目</a>
+<{/if}>
+
+<{if $setScore}>
+<a class="btn btn_main2" target="_blank" onclick="setScoreWithPnodId(<{$pnod.pnod_id}>)">打  分</a>
+<{/if}>
+
+<a class="btn_close" onclick="_$.closewin('#pnod_details_box')" title="关闭"></a>
+</div>
+<script type="text/javascript">
+var setScoreWithPnodId=function(id)
+{
+	var postData={"score":$("#node-score").val(),"comment":$("#node-comment").val(),"pnod_id":"<{$pnod.pnod_id}>"};
+	//alert(url);return;
+	$.post("<{spUrl c=pnode a=setScore}>",postData,function(msg)
+	{
+		if(msg.rs==200)
+		{
+			alert("打分成功！");
+			location.reload();
+		}
+		else
+		{
+			alert(msg.des);
+		}
+	},"json")
+}
+//$("#popwin-event-box").scrollTop(
+</script>

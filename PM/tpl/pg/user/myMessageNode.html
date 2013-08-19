@@ -1,0 +1,18 @@
+<h2><{$message.message_title}></h2>
+<hr>
+<dl class="nodeInfo clearfix">
+
+	<dt></dt>
+	<dd class="node_time">
+    	<strong>时间：</strong><{$message.create_date}><br/>
+    </dd>
+    <hr>
+	<dt style="line-height:25px;padding-bottom:0"><strong>内容：</strong></dt>
+	<dd style="max-height:200px;width:400px;overflow:auto;" id="popwin-event-box">
+    	<{$message.message_content}>
+    </dd>
+
+</dl>
+<div class="btn_list">
+	<a class="btn_close" onclick="_$.closewin('#myMessage_popwin')" title="关闭"></a>
+</div>

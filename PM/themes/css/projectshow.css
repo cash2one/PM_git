@@ -1,0 +1,98 @@
+/* CSS Document */
+h1.pageTitle{margin-bottom:20px}
+
+#toolPageCheck{color:#FF6600}
+
+#calendarView_tab{right:260px;}
+
+
+#btn_getMeta{float:right;left: 800px; position: absolute;top:-25px;}
+#metaConetnt{padding:20px;border:#33CCFF 1px dashed;border-radius:10px;background:#EEF7FF;display:none;position:relative}
+#metaConetnt .btn_close{position:absolute;right:0px;top:0px}
+.project_show .proj_info{}
+.project_show .proj_info .info{position:relative;width:450px;padding-left:20px}
+.project_show .proj_info .info dt,.project_show .proj_info .info dd{float:left;height:35px;line-height:35px}
+.project_show .proj_info .info dt{width:90px;text-align:left;color:#666666;}
+.project_show .proj_info .info dd{width:300px;overflow:hidden}
+.project_show .proj_info dt.ps,.project_show .proj_info dd.ps_data{position:absolute;top:0px;left:420px}
+.project_show .proj_info dd.ps_data{left:500px;height:110px;overflow:hidden;width:425px;line-height:20px}
+.project_show .proj_info dd.url{font-size:12px;}
+.project_show .proj_info dd.url input{background:none;border:none;width:100%}
+.project_show .proj_info .project-score{font-size: 18px;position: absolute;right: 20px;top: 0;}
+.project_show .proj_info .project-score strong{color:#FF0000}
+
+.proj_gra{position:relative;padding:0;bor}
+.proj_gra header{height:60px;}
+.proj_gra header h2{padding:20px}
+.proj_gra header .btns_edit{position:absolute;top:20px;left:800px}
+
+/*附件*/
+.adjunct-list{position:relative;float:left;font-size:12px;}
+	.adjunct-list li{float:left;width:128px;_display:inline;padding:10px;margin:5px;position:relative;height:160px;overflow:hidden}
+	.adjunct-list li .file{display:block;width:128px;height:128px;border:2px solid #53B8EC}
+	.adjunct-list li .zip{background:url(../images/fileext/zip.png)}
+	.adjunct-list li .floder{background:url(../images/fileext/floder.png)}
+	.adjunct-list li .jpg{background:url(../images/fileext/jpg.png)}
+	.adjunct-list li .add{display:block;width:80x;height:98px;background:url(../images/btn_add.png) no-repeat;text-indent:-9999px;}
+	.adjunct-list li .loading{width:132px;height:160px;position:absolute;top:10px;opacity: 0.7;filter:alpha(opacity=70);background:url(../images/loading.gif) no-repeat center center #000;}
+	.adjunct-list .fileInfo{width:128px;opacity: 0.7;filter:alpha(opacity=70);background:#000;color:#FFF;position:absolute;top:100px;left:12px;height:40px;overflow:hidden;text-align:center;}
+	.adjunct-list .waitfile {top: 85px;height: 55px;}
+	.adjunct-list .a_waitfile {background:url(../images/waitfile.jpg) no-repeat}
+	.adjunct-list .fileInfo p{height:18px;line-height:18px;;overflow:hidden}
+	.adjunct-list .fileInfo a{color:#FFFFFF;text-decoration:none}
+	.adjunct-list .fileControl{text-align:center;margin-top:8px;}
+
+	
+.file_add{width:520px;}
+.file_add .title{font-weight:bold;border-bottom:1px solid #CCCCCC;padding-bottom:10px}
+.file_add #table_file td{padding:5px;}
+.file_add .row_add{padding-left:0px;}
+
+/*相关事件*/
+#event_details{width:400px;position:absolute;top:100px;left:50%;margin-left:-200px;background:#FFF;min-height:300px;border:1px solid #CCC;}
+
+.event #event_add_btn{position:absolute;right:50px;top:20px}
+
+.event_list{font-size:12px;padding:20px;}
+.event_list dt{font-size:14px;font-weight:bold;padding-top:20px;}
+.event_list dt .score{color:#FFFFFF;font-weight:bold;background:#F00;padding:3px;display:inline-block;margin-left:10px}
+.event_list dt .set-score{margin-left:10px}
+.event_list dd{padding-left:20px;}
+.event_list li {float: left;height: 25px;line-height: 25px;overflow: hidden;}
+.event_list .date{float:right;font-family:Arial, Helvetica, sans-serif;font-size:8pt;color:#666666}
+.event_list .userName{width:80px;}
+.event_list .evenName{width:100px;}
+.event_list .evenContent{height: auto;width: 550px;}
+.event_list .evenContent strong{color:#CC0000;font-weight:normal}
+.eventType2 .evenName{color:#CC0000}
+.event_list .eventType3 .evenContent {background: none repeat scroll 0 0 #FFFFFF;border: 1px solid #CCCCCC;border-radius: 3px 3px 3px 3px;color: #666666;line-height: 18px;margin-bottom: 10px;overflow: visible;padding: 5px;position: relative;width: 535px;white-space:normal; word-break:break-all;}
+.event_list .eventType3 .evenContent span{width:6px;height:9px;background:url(../images/arrow.png);position:absolute;left:-5px;top:8px;display:block}
+.event_list .eventType3 .evenContent .score{color:#FF0000;font-weight:bold}
+#project-event dd{display:none}
+#project-event dt{cursor:pointer}
+#project-event dt:hover{color:#3366FF}
+
+#event_add {background: none repeat scroll 0 0 #CCFFFF;border: 1px solid #BABED9;font-size: 12px;margin: 20px 150px 20px 120px;padding: 20px;text-align: center;}
+#event_add select{border:1px solid #7F9DB9}
+#event_add .coin_add{background:url(../images/coin_add2.png) no-repeat scroll 0 0 transparent;height: 22px;left: 100px;position: absolute; top: 0;width: 22px;}
+#event_add .event_add{position:absolute;width:500px;top:0;left:100px;background:#FFF;border:#CCC 1px solid;padding:5px;display:none;}
+#event_form{position:relative}
+#event_form select{font-size:12px;}
+#event_form dl dt,#event_form dl dd{margin-bottom:10px;text-align:left;}
+#event_form dl dt {float: left;padding-right: 10px;text-align: right;width: 60px;}
+#event_form dl dd {float: left;width:530px;}
+#even_content {border: 1px solid #7F9DB9;height: 35px;overflow: auto;padding: 3px;width:520px;}
+#event_add .sumbit {height: 24px;width: 75px;}
+/*项目控制图*/
+.pnode_gra{display:block;overflow:hidden;_height:1%;width:100%}
+	.pnode_gra li {float:left;margin:3px;_display:inline;}
+	.pnode_gra li a{height:25px;line-height:25px;display:block;text-decoration:none;border:solid #99999b 1px;cursor:default;padding:0 5px;background:#CCCCCC}
+	.pnode_gra li a.state18{background:rgb(211, 174, 252);color:#333;cursor:pointer;border:1px solid #8DB6D6}
+	.pnode_gra li a.state18:hover{background:rgb(224, 174, 252);color:#333;border:1px solid #E29B70}
+	.pnode_gra li a.state20{background:#A6E3FF;color:#333;cursor:pointer;border:1px solid #8DB6D6}
+	.pnode_gra li a.state20:hover{background:#FFC2A6;color:#333;border:1px solid #E29B70}
+	.pnode_gra li a.state40,.pnode_gra li a.state17{background:#FFC2A6;color:#333;border:1px solid #E29B70}
+	.pnode_gra li a span{color:#FFF;font-size:12px;padding-top:1px;padding-bottom:1px;margin-left:10px;}
+	.pnode_gra li a.controlEnable{background:#BEFD99;cursor:pointer;border:#009900 solid 1px}
+	.pnode_gra li a.controlEnable:hover{background:#80FF80;}
+	

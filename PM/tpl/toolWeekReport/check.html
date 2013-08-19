@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<{include file="inc/base.html"}>
+<link type="text/css"  rel="stylesheet" href="themes/css/jquery.ui.all.css" />
+<script type="text/javascript" src="themes/js/jquery-ui.last.js"></script>
+<script type="text/javascript" src="themes/js/jquery.ui.datepicker-zh-CN.js"></script>
+<style type="text/css">
+.table3 {border-top:1px dotted #999999;}
+.table3 thead td { background:#E9E9E9; border-left:#96999E solid 1px; border-right:#96999E solid 1px;  font-size:18px; color:#000; padding-left:20px; font-weight:bold }
+.configSetting{padding-top:10px}
+</style>
+</head><body class="mywork week-report">
+<{include file="inc/header.html"}>
+<article class="content">
+  <section class="search">
+    <h1 class="pageTitle">周报 - 我收到的周报</h1>
+    <div class="tab searchTab2"> <{include file="toolWeekReport/nav.html"}> </div>
+  </section>
+  <section class="header"></section>
+  <section class="boxstyle1 top">
+    <div id="user-checkbox-container"></div>
+    <div class="configSetting"> 
+      <strong>选择时间：</strong>
+      <input type="text" class="itext select date datelittle" id="sd1" name="sd1" readonly value="<{$Start}>"/>
+      <span>-</span>
+      <input type="text" class="itext select date datelittle" id="sd2" name="sd2" readonly value="<{$End}>"/>
+      <input type="button" value="确定" id="btnGetWeekReport">
+    </div>
+  </section>
+  <table class="table3" id="reportTable">
+    <tbody>
+      <tr class="rowcolor20">
+        <td class="bleft" style="text-align:right;padding-right:10px" width="10%">[{@user_name}]</td>
+        <td class="tleft bright"><a href="<{spUrl c=toolWeekReport a=details}>&id={@report_id}">{@start} 至 {@end}</a></td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="2"><div class="pager" id="main-pager"> 页码：<span class="pager_current_page"></span>/<span class="pager_total_page"></span>
+            <input type="button" value="上一页" class="pagerPrev"/>
+            <input type="button" value="下一页" class="pagerNext"/>
+            <input type="text" class="itext ipage pagerToPage"/>
+            <input type="button" value="GO" class="pagerGo"/>
+          </div></td>
+      </tr>
+    </tfoot>
+  </table>
+</article>
+<{include file="inc/footer.html"}> 
+<script type="text/javascript">
+var template=$("#reportTable tbody:eq(0)").html();
+$("#reportTable tbody:eq(0)").html('')
+$(function(){
+/*<{if PM_power==0}>*/
+	PMS.loadUserCheckBoxTo($("#user-checkbox-container"));
+/*<{/if}>*/
+	$("#sd1").datepicker();
+	$("#sd2").datepicker();
+	$("#main-pager").hide();
+})
+
+$("#btnGetWeekReport").click(function(){
+	var noticeUserArray=$("#user-checkbox input").serializeArray();
+	PMS.listPageAjax($("#main-pager"),"<{spUrl c=toolWeekReport a=getList}>&page={@page}",function(data){
+		var rows=data.des.data;
+		var length=rows.length;
+		var html="";
+		if(length>0)
+		{
+			for(var i=0;i<length;i++)
+			{
+				html+=template.replace(/{@user_name}/g,rows[i].user_name).replace(/{@start}/g,rows[i].start).replace(/{@end}/g,rows[i].end).replace(/{@report_id}/g,rows[i].report_id).replace(/%7B@report_id%7D/,rows[i].report_id);
+			}
+			$("#main-pager").show();
+		}
+		else
+			html+='<tr class="rowcolor20" colspan="2"><td class="bleft"></td><td class="tleft bright">没有数据。</td></tr>';
+		$("#reportTable tbody:eq(0)").html(html);
+	},{"post":{"start":$("#sd1").val(),"end":$("#sd2").val(),"userId":noticeUserArray}});
+})
+
+$("#btnGetWeekReport").click();
+</script>
+</body>

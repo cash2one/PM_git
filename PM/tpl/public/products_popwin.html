@@ -1,0 +1,20 @@
+	<ul class="pop_item_list game">
+		<li class="title">游戏产品</li>
+		<{foreach from=$rs item=v}>
+		<{if $v.prod_type==0}>
+		<li class="iconGame iconGame_<{$v.prod_ename}>"><a onClick="PMS.selected('products','<{$v.prod_id}>','<{$v.prod_name}>')" class="<{$v.prod_ename}>"><{$v.prod_name}></a></li>
+		<{/if}>
+		<{/foreach}>
+	</ul>
+	<ul class="pop_item_list order">
+		<li class="title">其它产品</li>
+		<{foreach from=$rs item=v}>
+		<{if $v.prod_type==1}>
+		<li class="iconGame iconGame_<{$v.prod_ename}>"><a onClick="PMS.selected('products','<{$v.prod_id}>','<{$v.prod_name}>')" class="<{$v.prod_ename}>"><{$v.prod_name}></a></li>
+		<{/if}>
+		<{/foreach}>
+		<li><a onClick="PMS.selected('products','','全部产品')" class="all">全部产品</a></li>
+	</ul>
+	<!-- <a class="btn_close" onclick="_$.closewin('#products_popwin')" title="关闭"></a> -->
+	<input type="hidden" id="inputid_products_id"/>
+	<input type="hidden" id="inputid_products_name"/>

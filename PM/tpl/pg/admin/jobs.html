@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh"> 
+<head>
+<meta charset="utf-8">
+<{include file="inc/base.html"}>
+</head>
+<body class="pgAdmin jobs">
+<{include file="inc/header.html"}>
+<div class="wrap">
+<{include file="pg/admin/pgadminNav.html"}>
+<article class="content">
+<section class="search">
+	<h1>列表 - 职业一览</h1>
+	<div class="tab searchTab1">
+	<{include file="pg/admin/pgadminJobNav.html"}>
+	</div>
+</section>
+<table class="table3">
+<thead>
+  <tr class="btop">
+    <td class="bleft">职业id</td>
+    <td class="tleft">职业名</td>
+    <td class="tleft">职业描述</td>
+    <td class="bright">&nbsp;</td>
+  </tr>
+  </thead>
+  <{foreach from=$joblist item=rs}>
+  <tr>
+    <td class="bleft"><{$rs.job_id}></td>
+    <td class="tleft"><{$rs.job_name}></td>
+    <td class="tleft"><{$rs.job_desc}></td>
+    <td class="bright"><{if $isManager}><a href="<{spUrl c=pgadmin a=jobEdit job_id=$rs.job_id}>">修改</a><{/if}></td>
+  </tr>
+  <{/foreach}>
+	<tfoot>
+	  	<tr>
+			<td colspan="6">
+			<{if $pager}>
+			<div class="pager">
+			页码：<{$pager.current_page}>/<{$pager.total_page}>
+			<{foreach from=$pager.all_pages item=thepage}>
+			    <{if $thepage!=$pager.current_page}>
+					<a href="<{spUrl c=pgadmin a=jobList topage=$thepage}>"><{$thepage}></a>
+			    <{else}>
+			    	<span><{$thepage}></span>
+			    <{/if}>
+			<{/foreach}>
+			</div>
+			<{/if}>
+			</td>
+		</tr>
+	  </tfoot>	  
+  
+</table>
+</article>
+</div>
+<{include file="inc/footer.html"}>
+</body>
+</html>

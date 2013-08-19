@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title>无标题文档</title>
+</head>
+<body>
+<style type="text/css">
+/*reset*/
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td{margin:0;padding:0;}
+table{border-collapse:collapse;border-spacing:0;}
+fieldset,img{border:0;}
+li{list-style:none;}
+caption,th{text-align:left;}
+h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}
+q:before,q:after{content:'';}
+abbr,acronym{border:0;font-variant:normal;}
+a{outline:none;cursor:pointer;color:#000}
+a:link,a:visited{}
+a:hover,a:active{}
+sup{vertical-align:text-top;}
+sub{vertical-align:text-bottom;}
+input,textarea,select{font-family:inherit;font-size:inherit;font-weight:inherit;}
+input,textarea,select{}
+select{font-size:14px;}
+legend{color:#000;}
+h1{font-size:12px;font-weight:bold;text-align:left;font-family:"Microsoft YaHei", "SimHei";height:28px;line-height:28px;color:#244669;padding-left:10px}
+/*reset end*/
+.popwin{width:700px;height:370px;position:relative}
+.introduction_n{height:20px;text-align:center;position:absolute;width:100%;height:20px;bottom:0px;z-index:1000}
+.introduction_n span{display:inline-block;width:20px;height:20px;background:url(../../../themes/images/intro/point2.png);margin:0 10px;line-height:20px;text-align:center;color:#FFFFFF;cursor:defaults}
+.introduction_n span.current {display: inline-block !important;background:url(../../../themes/images/intro/point1.png);}
+#introduction_c img{position:absolute;top:0;left:0;display:none;cursor:pointer}
+
+</style>
+<script src="../../../themes/js/jquery.last.js"></script>
+<div id="introduction" class="popwin">
+	<div>
+		<div style="width:100%;height:100%;position:relative" id="introduction_c">
+			<img src="0.jpg">
+			<img src="1.jpg">
+			<img src="2.jpg">
+			<img src="3.jpg">
+			<img src="4.jpg">
+			<img src="5.jpg">
+			<img src="6.jpg">
+			<img src="7.jpg">
+			<img src="8.jpg">
+			<img src="9.jpg">
+			<img src="10.jpg">
+			<img src="11.jpg">
+			<img src="12.jpg">
+			<img src="13.jpg">
+		</div>
+		<div class="introduction_n" id="introduction_n"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span></div>
+	</div>
+</div>
+<script type="text/javascript">
+//introduction
+var _$2=function(obj){return document.getElementById(obj)}
+_$2.getPara=function(params,val,defaultVal){return (typeof params!="undefined" &&typeof params[val]!="undefined")?params[val]:defaultVal;};
+		/**
+	* _$.fadeSlide
+	* 单图可控切换，淡入淡出
+	* @ main {string(JquerySelectString)} 内容选择
+	* @ params{json} 其它参数
+			@ btnLeft {string(JquerySelectString)} 上一内容按钮选择
+			@ btnRight {string(JquerySelectString)} 下一内容按钮选择
+			@ nav {string(JquerySelectString)} 每个内容独立导航选择，默认:不使用。
+			@ auto{bool} 是否自动切换 默认:false
+	**/
+	_$2.fadeSlide=function(main,params)
+	{
+		var mainItem=$(main)
+		var nav=_$2.getPara(params,"nav",false);
+		var isAutoChange=_$2.getPara(params,"auto",false);
+		var btnLeft=_$2.getPara(params,"btnLeft",false);
+		var btnRight=_$2.getPara(params,"btnRight",false);
+		var current=0;
+		var itemCount=mainItem.length;
+		function change(num)
+		{
+			if(num=='prev') current--;
+			else if(num=='next') current++;
+			else current=num;
+			if(current>itemCount-1) current=0;
+			else if(current<0) current=itemCount-1;
+			mainItem.stop(true,true).fadeOut("fast");
+			$(main+':eq('+current+')').stop(true,true).fadeIn("fast");
+			if(nav){$(nav).removeClass("current");$(nav+":eq("+current+")").addClass("current");}
+		}
+		if(nav) $(nav).bind("mouseover",function(){
+			var index=$(nav).index($(this));
+			if(current!=index) change(index);
+			$(nav).removeClass("current");
+			$(this).addClass("current");
+			});
+		if(isAutoChange==true) {setInterval(function(){change('next')},5000)};
+		if(btnLeft) $(btnLeft).click(function(){change('prev')});
+		if(btnRight) $(btnRight).click(function(){change('next')})
+		change(0);
+	}
+	_$2.fadeSlide("#introduction_c img",{nav:"#introduction_n span",btnRight:"#introduction_c img"})
+
+
+</script>
+</body>
+</html>

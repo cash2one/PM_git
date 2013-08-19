@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<{include file="inc/base.html"}>
+<style type="text/css">
+#checkResult dt,#checkResult dd{float:left;height:30px;line-height:30px;margin-top:100px}
+#checkResult dt{width:100px}
+#checkResult dd{width:800px}
+.right{color:#360;font-weight:bold}
+.alert{color:#F90;font-weight:bold}
+.error{color:#FF0000;font-weight:bold}
+#btnStart.disable{background-position: 0 -168px;color: #E9E9E9;}
+</style>
+</head>
+<body>
+<{include file="inc/header.html"}>
+
+<article class="content">
+	<h1 class="pageTitle">PageChecker</h1>
+	<section class="header"></section>
+	<section class="boxstyle1 top">
+		页面地址：<input type="text" class="itext title" id="checkUrl" value="http://tx3.163.com/fab/"/> <input type="button" value="开始检查" class="btn btn_main1" id="btnStart"/>
+	</section>
+	<section  class="boxstyle2">
+		<dl id="checkResult" class="clearfix"></dl>
+	</section>
+	<section class="boxstyle1 bottom"><textarea name="" id="htmlContent" cols="30" rows="10" style="width:100%;height:300px;display:none"></textarea></section>
+	<section class="footer"></section>
+</article>
+
+<{include file="inc/footer.html"}>
+
+<script type="text/javascript">
+	var checkResult=$("#checkResult");
+	var roleList=["",'编辑','设计','前端'];
+	var txtStyleList=["","right","alert","error"];
+	var rowId=0;
+	var btnStartCheck=$("#btnStart");
+	var pmidGet=(location.hash).replace('#','');
+	function checkStart()
+	{
+		checkResult.html("");
+		btnStartCheck.val('checking..').addClass("disable").attr('disabled','disabled');
+		var url=$("#checkUrl").val();
+		append('查询地址','<a href="'+url+'" target="_blank">'+url+'</a>');
+		if(pmidGet){
+			//alert(getPmid());
+			url=getBaseInfo(pmidGet);
+			$("#checkUrl").val(url);
+			checkResult.find("dd:eq(0)").html(url);
+			};
+		$.get("<{spUrl c=toolPageCheck a=check}>&url="+url,function(html)
+		{
+			$("#htmlContent").val(html);
+			if(html=="") {append(['3','错误'],['3','您查询的地址无法访问。']);btnChange();return}
+			checkPageInfo(html);
+			if(!pmidGet) getBaseInfo(getPmid(html));
+			getClickCounter(html);
+			getAllyesCounter(html);
+			getPromark(html);
+			//alert(txt);
+			btnChange();
+		});
+	}
+	
+	if(pmidGet) checkStart();
+	
+	btnStartCheck.click(function(){pmidGet=false;checkStart()});
+	
+	function btnChange()
+	{
+		btnStartCheck.fadeOut(function(){btnStartCheck.val('检查完毕!').removeAttr('disabled').removeClass('disable').fadeIn()});
+		setTimeout(function(){btnStartCheck.fadeOut(function(){btnStartCheck.val('开始检查').fadeIn()})},2000);
+	}
+	
+	
+	function checkPageInfo(html)
+	{
+		var regx=new RegExp('<meta http-equiv="refresh"|http-equiv=refresh');
+		if(regx.test(html)) 
+			append(['2','警告'],['2','这可能是一个跳转页面！']);
+		regx=new RegExp('<meta http-equiv="refresh" content="0;url=.*|<meta http-equiv=refresh content="0;url=.*');
+		var tUrl=html.match(regx)
+		if(tUrl)
+		{
+			tUrl=tUrl[0].replace('<meta http-equiv="refresh" content="0;url=','').replace('<meta http-equiv=refresh content="0;url=','').replace('/">',"").replace('">',"");
+			append('','页面可能跳转到:'+tUrl+',您可以偿试输入这个地址进行查询。');
+		}
+	}
+	
+	function getPmid(html)
+	{
+		if(!pmidGet)
+		{
+			var regx=new RegExp('<meta name="pmid" content=".*"');
+			var pmid=html.match(regx);
+			if(!pmid){append(['3','错误'],['3','没有检测到页面有pmid的meta信息，因此无法进行一些查询，比如项目名、相关负责人等。']);return };
+			return pmid[0].replace('<meta name="pmid" content="27','').replace('"',"");
+		}
+		else
+		{
+			return pmidGet;
+		}
+	}
+	
+	function getBaseInfo(pmid)
+	{
+		var pmUrl='<{spUrl c=project_bll a=project_show}>&id='+pmid;
+		var url;
+		$.ajax({
+			type:"get",
+			async:false,
+			dataType:"json",
+			url:"<{spUrl c=project a=getJson}>&projId="+pmid,
+			success:function(rs){
+				//append('查询地址','<a href="'+rs[0].proj_url+'" target="_blank">'+rs[0].proj_url+'</a>');
+				append('项目名称','<strong>'+rs[0].proj_name+'</strong>');
+				append('PM查看地址','<a href="'+pmUrl+'" target="_blank">http://192.168.22.101'+pmUrl+'</a>');
+				append('项目负责人',rs[0].user_name);
+				var usersLength=rs[0][0].length;
+				for(var i=1;i<4;i++)
+				{
+					var _users="";
+					for(var j=0;j<usersLength;j++)
+					{
+						if(rs[0][0][j].role_id==i){_users+=(_users==""?rs[0][0][j].user_name:'、'+rs[0][0][j].user_name)};
+					}
+					append('　　　'+roleList[i],_users);
+				}
+				url=rs[0].proj_url;
+			}
+		})
+		return url;
+	}
+	
+	function getPromark(html)
+	{
+		var regx=new RegExp('name="promark" value=".*"');
+		var promark=html.match(regx);
+		if(promark)
+		{
+			promark=promark[0].replace('name="promark" value="','').replace('"',"");
+			append('注册端口',['1',promark]);
+		}
+		else
+			append('注册端口',['2',"没有检测到"]);
+	}
+	
+	function getClickCounter(html)
+	{
+		var regx=new RegExp('nie\.config\.stats\.clickStats=true;');
+		var isClick=regx.test(html);
+		isClick=isClick==true?['1',"已开启"]:['2',"没有检测到"];
+		append('点击统计',isClick);
+	}
+	
+	function getAllyesCounter(html)
+	{
+		var regx=/http:\/\/allyes\.nie\.163\.com\/main\/adftrack\?db=afanie\&point=\d*\&cache=/gi;
+		var regx2=/<!-- AdForward I-Point:.*Begin -->/gi;
+		var allYes=html.match(regx);
+		var allYesDes=html.match(regx2);
+		if(allYes)
+		{
+			var _allYes;
+			var allYes_length=allYes.length;
+			for(var i=0;i<allYes_length;i++)
+			{
+				_allYes=allYes[i].replace('http://allyes.nie.163.com/main/adftrack?db=afanie&point=','').replace('&cache=','');
+				if(allYesDes)if(allYesDes[i]) _allYes+=' --> ['+allYesDes[i].replace('<!-- AdForward I-Point:','').replace(' Begin -->','')+']';
+				append('营销统计'+(i+1),['1',_allYes]);
+			}
+		}
+		else
+			append('营销统计',['2',"没有检测到"]);
+	}
+	
+	//string||object:['typeId','txt'];
+	function append(title,content)
+	{
+		var _title;
+		var _content;
+		typeOfTitle=(typeof title).toLowerCase();
+		typeOfContent=(typeof content).toLowerCase();
+		if(typeOfTitle=='string') _title='<dt class="rsRow'+rowId+'">'+title+'</dt>';
+		else if(typeOfTitle=='object')  _title='<dt class="'+txtStyleList[title[0]]+' rsRow'+rowId+'">'+title[1]+'</dt>';
+		
+		if(typeOfContent=='string') _content='<dd class="rsRow'+rowId+'">'+content+'</dd>';
+		else if(typeOfContent=='object')  _content='<dd class="'+txtStyleList[content[0]]+' rsRow'+rowId+'">'+content[1]+'</dd>';
+		//checkResult.append('<dt id='+rowId+' style="margin-top:100px;width:100%"></dt>');
+		checkResult.append(_title+_content);
+		$(".rsRow"+rowId).animate({'margin-top':'0'},300);
+		rowId++;
+	}
+</script>
+
+</body>
+</html>

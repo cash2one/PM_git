@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="themes/css/push.css" />
+<style type="text/css">
+	#containter dl dd{margin-left:0}
+</style>
+<script src="themes/js/jquery.last.js?<{$smarty.const.RD}>"></script>
+<title>信息提醒</title>
+</head>
+<body id="taskList">
+	<div id="containter">
+		<{foreach from=$pnodes item=rs}>
+		<dl id="pnod_row_<{$rs.pnod_id}>">
+			<dt></dt>
+			<dd class="list_content">
+				<p class="line1">[流程] <{$rs.prod_name}> > <{$rs.proj_name}> > <{$rs.pnod_name}></p>
+				<p class="msg_context">时间：<{$rs.pnod_time_s|date_format:"%y/%m/%d"}> - <{$rs.pnod_time_e|date_format:"%y/%m/%d"}></p>
+				<p class="msg_context">状态：<{$pnodState[$rs.pnod_state]}></p>
+			</dd>
+			<dd class="controler">
+				<{if $rs.pnod_state==20}>
+				<!-- <a onclick="setState(<{$rs.proj_id}>,<{$rs.pnod_id}>,1000,'pnod_state')" class="btnFinish" href="javascript:void(0)">完成流程</a> -->
+				<{/if}>
+				<a href="<{$smarty.const.APP_URL}>?c=webservice&a=loginJump&type=project&projId=<{$rs.proj_id}>&userAccount={@userAccount}&userPwd={@userPwd}" class="pmLink">查看项目</a>
+			</dd>
+		</dl>
+		<{/foreach}>
+		<{foreach from=$projects item=rs}>
+		<dl id="proj_row_<{$rs.proj_id}>">
+			<dt></dt>
+			<dd class="list_content">
+				<p class="line1">[项目] <{$rs.prod_name}> > <{$rs.proj_name}></p>
+				<p class="msg_context">时间：<{$rs.proj_start|date_format:"%y/%m/%d"}> - <{$rs.proj_end|date_format:"%y/%m/%d"}></p>
+				<p class="msg_context">状态：<{$pnodState[$rs.proj_state]}></p>
+			</dd>
+			<dd class="controler">
+				<{if $rs.proj_state==20}>
+				<!-- <a onclick="setState(<{$rs.proj_id}>,'',15,'proj_state')" class="btnFinish" href="javascript:void(0)">完成项目</a> -->
+				<{/if}>
+				<a href="<{$smarty.const.APP_URL}>?c=webservice&a=loginJump&type=project&projId=<{$rs.proj_id}>&userAccount={@userAccount}&userPwd={@userPwd}" class="pmLink">查看项目</a>
+			</dd>
+		</dl>
+		<{/foreach}>
+		<{if !$pnodes&&!$projects }>
+		<p class="nomessage">没有工作。</p>
+		<{/if}>
+	</div>
+<script src="themes/js/notice.js?<{$smarty.const.RD}>"></script>
+<script type="text/javascript">window.parent.setTitle("PM提醒 - <{$title}>");</script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh"> 
+<head>
+<meta charset="utf-8">
+<{include file="inc/base.html"}>
+<link type="text/css"  rel="stylesheet" href="themes/css/jquery.ui.all.css" />
+<script type="text/javascript" src="themes/js/jquery-ui.last.js"></script>
+<script type="text/javascript" src="themes/js/jquery.ui.datepicker-zh-CN.js"></script>
+<style type="text/css">
+.table3 .date{font-family: Arial,Helvetica,sans-serif;font-size: 8pt;color:#323232}
+</style>
+</head>
+<body class="manage wraps">
+
+<{include file="inc/header.html"}>
+<article class="content">
+
+	<section class="search">
+		<h1>查看明细 - 项目集 - <{$wrap.wrap_name}></h1>
+		<div class="tab searchTab0">
+		<{include file="project/wrapsNav.html"}>
+		</div>
+	</section>
+
+	<table class="table3" id="myWorkTable">
+	 <thead>
+	  <tr class="btop">
+	    <td width="15%" class="bleft">所属产品</td>
+	    <td width="10%">类型</td>
+	    <td width="45%" class="tleft">项目/流程</td>
+	    <td width="10%">负责/执行人</td>
+	    <td width="10%" class="tleft">状态/进度</td>
+	    <td width="10%"class="bright">时间</td>
+	  </tr>
+	  </thead>
+	  <{foreach from=$myProjects item=rs}>
+	  <tr id="projrow_<{$rs.proj_id}>" class="wraped">
+	    <td class="bleft"><p><{$rs.prod_name}></p></td>
+	    <td><{$rs.proj_class}></td>
+	    <td class="tleft"><span class="icon2" onClick="loadPNodes(<{$rs.proj_id}>)"></span><a href="<{spUrl c=project_bll a=project_show id=$rs.proj_id}>"><{$rs.proj_name}></a></td>
+	    <td><{$rs.user_name}></td>
+	    <td class="tleft"><span class="stateicon stateicon_<{$rs.proj_state}>"><{$state_list[$rs.proj_state]}></span></td>
+	    <td class="bright date"><{$rs.proj_start|date_format:"%m/%d"|default:"待定"}> - <{$rs.proj_end|date_format:"%m/%d"|default:"待定"}></td>
+	  </tr>
+		  <{foreach from=$rs.nodes item=rsNode}>
+		  <tr class="node_row mywork_nodes_<{$rs.proj_id}>">
+		    <td class="bleft">&nbsp;</td>
+		    <td>&nbsp;</td>
+		    <td class="tleft lineOfParent"><span></span><a href="javascript:PMS.showNode(<{$rsNode.pnod_id}>)"><{$rsNode.pnod_name}></a></td>
+		    <td><{$rsNode.user_name|default:"待定"}></td>
+		    <td class="tleft"><span class="stateicon stateicon_<{$rsNode.pnod_state}>"><{$state_list[$rsNode.pnod_state]}></span></td>
+		    <td class="bright date"><{$rsNode.pnod_time_s|date_format:"%m/%d"|default:"待定"}> - <{$rsNode.pnod_time_e|date_format:"%m/%d"|default:"待定"}></td>
+		  </tr>
+		  <{/foreach}>
+	  <{/foreach}>
+	  <{foreach from=$myNodes item=rs}>
+	  <tr>
+	    <td class="bleft"><{$rs.prod_name}></td>
+	    <td><{$rs.proj_class}></td>
+	    <td class="tleft"><a href="javascript:PMS.showNode(<{$rs.pnod_id}>)"><{$rs.pnod_name}></a></td>
+	    <td>&nbsp;</td>
+	    <td class="tleft"><span class="stateicon stateicon_<{$rs.pnod_state}>"><{$state_list[$rs.pnod_state]}></span></td>
+	    <td class="bright date"><{$rs.pnod_time_s|date_format:"%m/%d"|default:"待定"}> - <{$rs.pnod_time_e|date_format:"%m/%d"|default:"待定"}></td>
+	  </tr>
+	  <{/foreach}>
+	  
+	  <tfoot class="nopage"><tr><td colspan="6"></td></tr></tfoot>
+	</table>
+	
+</article>
+
+<{include file="inc/footer.html"}>
+<script type="text/javascript">
+function loadPNodes(proj_id)
+{
+	var row=$("#projrow_"+proj_id);
+
+		if(row.attr("class")=="wraped"){row.removeClass("wraped").addClass("unwrap");$("#myWorkTable .mywork_nodes_"+proj_id).show()}
+		else{row.removeClass("unwrap").addClass("wraped");$("#myWorkTable .mywork_nodes_"+proj_id).hide();}
+}
+</script>
+</body>
+</html>

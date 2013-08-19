@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="zh"> 
+<head>
+<{include file="inc/base.html"}>
+<link rel="stylesheet" href="themes/css/popwin.css?cache=<{$smarty.const.RD}>" />
+<link rel="stylesheet" href="themes/css/projectshow.css?cache=<{$smarty.const.RD}>" />
+<link type="text/css"  rel="stylesheet" href="themes/css/jquery.ui.all.css?cache=<{$smarty.const.RD}>" />
+<script type="text/javascript" src="themes/js/jquery-ui.last.js?cache=<{$smarty.const.RD}>"></script>
+<script type="text/javascript" src="themes/js/vilidate.js?cache=<{$smarty.const.RD}>"></script>
+</head>
+<body id="projectShow" class="manage project_show">
+<{include file="inc/header.html"}>
+<article class="content">
+		<section class="search">
+        	<h1 class="pageTitle">项目信息</h1>
+	        <div class="tab searchTab2">
+				<{if $smarty.const.PM_power==0}>
+				<a title="审核项目" href="index.php?c=project_bll&a=project_show_check&id=<{$rs.proj_id}>" id="searchTab1">审</a>
+	            <span class="dot">&nbsp;</span>
+				<{/if}>
+				<a title="浏览项目" href="index.php?c=project_bll&a=project_show&id=<{$rs.proj_id}>" id="searchTab2">看</a>
+				<{if $is_user==1||$smarty.const.PM_power==0}>
+				<span class="dot">&nbsp;</span>
+				<a title="修改项目" href="<{spUrl c=project_bll a=projEdit id=$rs.proj_id}>" id="searchTab3">修</a>
+				<{/if}>
+				<{if $rs.did}>
+				<span class="dot">&nbsp;</span>
+				<a title="该项目的需求单" href="<{spUrl c=tdSystem a=showDetails}>&dId=<{$rs.did}>" id="searchTab4">需</a>
+				<{/if}>
+				<{if $smarty.const.TEACHER== -1||$smarty.const.PM_power==0}>
+				<span class="dot">&nbsp;</span>
+				<a title="技能发放" href="<{spUrl c=pgadmin a=skillSend id=$rs.proj_id}>" id="searchTab5">技</a>
+				<{/if}>
+			</div>
+        </section>
+		
+		<section style="padding-bottom:10px;">
+			<p><a class="btns btns_meta" id="btn_getMeta">提取meta</a></p>
+			<div id="metaConetnt"></div>
+		</section>
+        
+		<section class="header"></section>
+		<section class="boxstyle1 top proj_info">
+			<h2 style="margin-bottom: 20px;"><span style="color:#000;font-family: georgia;font-size: 24px;">#<{$rs.proj_id}>:</span><{$rs.prod_name}> - <{$rs.proj_name}><span>[<{$proj_state_list[$rs.proj_state]}>]</span></h2>
+			<dl class="info clearfix2">
+				<dt>项目分级：</dt>
+				<dd><{$rs.proj_level1_name|default:'未定'}></dd>
+				<dt>项目类型：</dt>
+				<dd><{$proj_class[$rs.proj_class]}></dd>
+				<!--
+				<dt>所属项目集：</dt>
+				<dd><{if $rs.wrap_name}><a href="<{spUrl c=wrap a=showWrap wrapId=$rs.wrap_id}>"><{$rs.wrap_name}><a/><{else}>空集<{/if}></dd>			
+				-->
+				<dt>负责人：</dt>
+				<dd><{$rs.user_name}></dd>
+				<dt>访问地址：</dt>
+				<dd class="url"><a id="toolPageCheck">[查]</a> <a href="<{$rs.proj_url}>" target="_blank"><{$rs.proj_url}></a></dd>
+				<dt>64机地址：</dt>
+				<dd class="url"><input type="text" value="<{$rs.proj_psdUrl}>" id="psdUrl"></dd>
+				<dt>预览机地址:</dt>
+				<dd class="url">
+					<input id="preview_address" type="text" value="<{$rs.preview_address}>"/></dd>
+				</dd>
+                <dt>rd地址：</dt>
+                <dd class="url"><a id="proj_rdUrl">[查]</a> <a href="<{$rs.proj_rdUrl}>" target="_blank"><{$rs.proj_rdUrl}></a></dd>
+				<dt>项目目标：</dt>
+				<dd class="url"><input type="text" value="<{$rs.proj_target}>" id="target"></dd>
+				<!-- 
+				<dt>贡献值：</dt>
+				<dd class="url"><input type="text" value="<{$proj_contri}>" id="contri"></dd>
+				 -->
+				<dt class="ps">项目备注：</dt>
+				<dd class="ps_data">
+				<textarea  style="width:100%;height:100%;overflow:auto;border:none;background:#E9E9E9;line-height:24px"><{$rs.proj_ps}></textarea>
+				</dd>
+			</dl>
+            <{if $power==0&&$projectScore}>
+            <div class="project-score">项目得分：<strong><{$projectScore}></strong></div>
+            <{/if}>
+		</section>
+		
+		<section class="boxstyle2" style="border-top:none">
+			<h2>父项目</h2>
+			<{if $parent_proj != null }>
+				<ul class="skill_user">
+					<li>
+						<a href="<{spUrl c=project_bll a=project_show id=$parent_proj.proj_id}>">
+							<span class="child_state_<{$parent_proj.proj_state}>">
+								<{$parent_proj.proj_name}>
+								<span class="stateicon stateicon_<{$parent_proj.proj_state}>">&nbsp;&nbsp;</span>
+								<{$proj_state_list[$parent_proj.proj_state]}>
+							</span>
+						</a>
+					</li>
+				</ul>
+			<{else}>
+				<ul class="skill_user_show">
+					<li>没有父项目。</li>
+				</ul>
+			<{/if}>
+			<h2>子项目</h2>
+			<ul class="skill_user">
+			<{if $child_proj != null or $vritual_proj != null }>
+				<{foreach from=$child_proj item=cp1}>
+					<li>
+						<a href="<{spUrl c=project_bll a=project_show id=$cp1.proj_id}>">
+							<span class="child_state_<{$cp1.proj_state}>">
+								<{$cp1.proj_name}>
+								<span class="stateicon stateicon_<{$cp1.proj_state}>">&nbsp;&nbsp;</span>
+								<{$proj_state_list[$cp1.proj_state]}>
+							</span>
+						</a>
+					</li>
+				<{/foreach}> 
+				<{foreach from=$vritual_proj item=vp1}>
+					<li>
+						<span class="child_state_-1">
+							<{$vp1.mtpl_name}>
+							(模板-未创建)
+						</span>
+					</li>
+				<{/foreach}> 
+			<{else}>
+				<ul class="skill_user_show">
+					<li>没有子项目。</li>
+				</ul>
+			<{/if}>
+			</ul>
+		</section>
+		
+		<section class="boxstyle1" style="border-top:none">
+			<h2>组员可获得技能情况</h2>
+			<ul class="skill_user_show">
+			<{foreach from=$skill_user item=rs1}>
+				<li>
+					<span>
+						<{$rs1.user_name}>:
+					</span>
+					<span class="skills_show">
+						<{foreach from=$rs1.skills item=rs2}>
+							<span><{$rs2.skill_name}></span>
+						<{/foreach}> 
+					</span>
+				</li>
+			<{/foreach}> 
+			</ul>
+		</section>
+		
+		<section class="boxstyle2 proj_gra">
+			<header>
+			<h2>项目流程与组员</h2>
+			<div class="tab" id="calendarView_tab">
+				<a class="current" id="btn_showPnod">流</a>
+				<span class="dot">&nbsp;</span>
+				<a class="" id="btn_showProj">集</a>
+			</div>
+			</header>
+			<div id="project_gra"></div>
+		</section>
+		
+		<section class="boxstyle2" style="border-top:none">
+			<h2>项目进度操作</h2>
+			<ul class="pnode_gra">
+			<{foreach from=$proj_node item=rs}>
+				<{if $is_user=="1" or $rs.user_id==$user_id or $rs.respon_id==$user_id}>
+				  <{if $rs.pnod_state==20 && $rs.pnod_state2==0}>
+						<li onClick="setState(<{$rs.proj_id}>,<{$rs.pnod_id}>,15,'pnod_state')"><a class="state<{$rs.pnod_state}>"><{if $rs.pnod_day}>（<{$rs.pnod_day}>）<{/if}>【<{$rs.pnod_name}>】 by <{$rs.user_name}><span class="stateicon stateicon_<{$rs.pnod_state}>"><{$pnod_state_list[$rs.pnod_state]}></span></a></li>
+				  <{elseif $rs.pnod_state==20 && $rs.pnod_state2==1}>
+						<li onClick="setState(<{$rs.proj_id}>,<{$rs.pnod_id}>,17,'pnod_state')"><a class="state<{$rs.pnod_state}>"><{if $rs.pnod_day}>（<{$rs.pnod_day}>）<{/if}>【<{$rs.pnod_name}>】 by <{$rs.user_name}><span class="stateicon stateicon_<{$rs.pnod_state}>"><{$pnod_state_list[$rs.pnod_state]}></span></a></li>
+				  <{elseif $rs.pnod_state==18 && $rs.pnod_state2==1}>
+						<li onClick="setState(<{$rs.proj_id}>,<{$rs.pnod_id}>,18.1,'pnod_state')"><a class="state<{$rs.pnod_state}>"><{if $rs.pnod_day}>（<{$rs.pnod_day}>）<{/if}>【<{$rs.pnod_name}>】 by <{$rs.user_name}><span class="stateicon stateicon_17"><{$pnod_state_list[$rs.pnod_state]}></span></a></li>
+				  
+				  <{else}>
+                  		<!-- 管理员或该流程的审核员可以直接提交 -->
+                    	<{if $rs.pnod_state==17&&($role_id==$rs.pnod_type&&$smarty.const.PM_power<2||$smarty.const.PM_power==0)}>
+                        	<li onClick="PMS.showNode(<{$rs.pnod_id}>,{project:0,pass:1})"><a class="state<{$rs.pnod_state}> controlEnable"><{if $rs.pnod_day}>（<{$rs.pnod_day}>）<{/if}>【<{$rs.pnod_name}>】 by <{$rs.user_name}><span class="stateicon stateicon_<{$rs.pnod_state}>"><{$pnod_state_list[$rs.pnod_state]}></span></a></li>
+                        <{else}>
+                        	<li><a class="state<{$rs.pnod_state}>"><{if $rs.pnod_day}>（<{$rs.pnod_day}>）<{/if}>【<{$rs.pnod_name}>】 by <{$rs.user_name}><span class="stateicon stateicon_<{$rs.pnod_state}>"><{$pnod_state_list[$rs.pnod_state]}></span></a></li>
+                        <{/if}>
+				  <{/if}>
+				  
+				<{elseif $rs.pnod_state==18 && $rs.pnod_state2==1}>
+						<li onClick="setState(<{$rs.proj_id}>,<{$rs.pnod_id}>,18.1,'pnod_state')"><a class="state18"><{if $rs.pnod_day}>（<{$rs.pnod_day}>）<{/if}>【<{$rs.pnod_name}>】 by <{$rs.user_name}><span class="stateicon stateicon_17"><{$pnod_state_list[$rs.pnod_state]}></span></a></li>
+				  
+				<{else}>
+					<li><a class="state<{$rs.pnod_state}>" style="cursor:default"><{if $rs.pnod_day}>（<{$rs.pnod_day}>）<{/if}>【<{$rs.pnod_name}>】 by <{$rs.user_name}><span class="stateicon stateicon_<{$rs.pnod_state}>"><{$pnod_state_list[$rs.pnod_state]}></span></a></li>
+				<{/if}>
+			<{/foreach}>
+			</ul>
+		</section>
+		
+		<section class="boxstyle1 clearfix">
+			<h2>附件</h2>
+			<ul class="adjunct-list">
+			<{foreach from=$files item=rs2}>
+				<li id="file_row_<{$rs2.file_id}>">
+					<a href="<{$rs2.file_url}>" target="_blank" class="file <{$rs2.ext|default:'floder'}>"><!-- <img src="<{$rs2.file_url}>" width="128" height="128"/> --></a>
+					<div class="fileInfo">
+						<p><{$rs2.file_name}></p>
+						<p>上传：<{$rs2.user_name}></p>
+					</div>
+					<div class="fileControl">
+						<{if $is_user==1||$smarty.const.PM_power==0}>
+						<a onClick="deleteFile('<{$rs2.file_id}>')" class="del" title="删除">删除</a> 
+						<{/if}>
+						<a onClick="updateFile('<{$rs2.file_id}>','<{$rs2.file_name}>','<{$rs2.pnod_id}>')" class="del" title="更新">更新</a>
+						<{if $rs2.ext=="zip"}>
+						　<a onClick="extractFile('<{$rs2.file_id}>')" class="extractFile" title="解压">解压</a>
+						<{/if}>
+					</div>
+				</li>
+			<{/foreach}>
+			<{foreach from=$proj_node item=pn_rs}>
+				<{if $pn_rs.outcome != "0" and $pn_rs.outcome != "-1"}>
+					<li class="btn_show_upload_box" data_id="<{$pn_rs.pnod_id}>">
+						<a class="file a_waitfile"></a>
+						<div class="fileInfo waitfile">
+							<p><{$pn_rs.pnod_name}></p>
+							<p><{$pn_rs.user_name}></p>
+							<p><{$pn_rs.outcome}></p>
+						</div>
+					</li>
+				<{/if}>
+			<{/foreach}>
+				<li class="btn_show_upload_box"><a class="add">添加</a></li>
+			</ul>
+		</section>
+        
+        <!-- 打分记录 -->
+        <{if $power==0&&($scoreArray||$nodeScoreArray)}>
+        <section class="boxstyle2 event">
+        	<h2>打分记录</h2>
+            <dl class="event_list" id="project-score">
+            	<!-- 项目评分 -->
+              	<{if $scoreArray}>
+            	<dt>整体项目<span class="score"><{$projectScore|default:'-'}></span></dt>
+                <{foreach from=$scoreArray item=rs}>
+                <dd>
+					<ul class="clearfix eventType3">
+						<li class="date"><{$rs.time}></li>
+						<li class="userName"><{$rs.user_name}></li>
+						<li class="evenName">项目评分</li>
+						<li class="evenContent"><{if $rs.score}><p class="score"><{$rs.score}></p><{$rs.comment}><{else}>未打分<{/if}><span></span></li>
+					</ul>
+                </dd>
+                <{/foreach}>
+                <{/if}>
+                <!-- 流程评分 -->
+              	<{if $nodeScoreArray}>
+                <{foreach from=$proj_node item=rs}>
+                <{if count($nodeScoreArray[$rs.pnod_id])>0}>
+            	<dt><{$rs.pnod_name}><span class="score"><{$rs.pnod_score|default:'-'}></span><span class="btns_text set-score" onClick="PMS.showNode(<{$rs.pnod_id}>,{score:1,project:0})">打分</span></dt>
+                <{foreach from=$nodeScoreArray[$rs.pnod_id] item=nodeScore}>
+                <dd>
+					<ul class="clearfix eventType3">
+						<li class="date"><{$nodeScore.time}></li>
+						<li class="userName"><{$nodeScore.user_name}></li>
+						<li class="evenName">专业评分</li>
+						<li class="evenContent"><{if $nodeScore.score}><p class="score"><{$nodeScore.score}></p><{$nodeScore.comment}><{else}>未打分<{/if}><span></span></li>
+					</ul>
+                </dd>
+                <{/foreach}>
+                <{/if}>
+                <{/foreach}>
+                <{/if}>
+            </dl>
+        </section>
+        <{/if}>
+        
+        
+		<!-- 事件记录 -->
+		<section class="boxstyle2 event">
+			<h2>项目事件记录</h2>
+			<dl class="event_list" id="project-event">
+				<dt style="display:block">整体项目</dt>
+				<{foreach from=$event item=rs2}>
+				<{if !$rs2.pnod_id}>
+				<dd style="display:block">
+					<ul class="clearfix eventType<{$rs2.even_type}>">
+						<li class="date"><{$rs2.even_time}></li>
+						<li class="userName"><{$rs2.user_name}></li>
+						<li class="evenName"><{$rs2.even_name}></li>
+						<li class="evenContent"><{$rs2.even_content}><span></span></li>
+					</ul>
+				</dd>
+				<{/if}>
+				<{/foreach}> 
+			<{foreach from=$proj_node item=rs}>
+				<dt onClick="showEventWithNodeId(<{$rs.pnod_id}>)">（+）<{$rs.pnod_name}></dt>
+				<{foreach from=$event item=rs2}>
+				<{if $rs2.pnod_id==$rs.pnod_id}>
+				<dd class="project-event-<{$rs2.pnod_id}>">
+					<ul class="clearfix eventType<{$rs2.even_type}>">
+						<li class="date"><{$rs2.even_time}></li>
+						<li class="userName"><{$rs2.user_name}></li>
+						<li class="evenName"><{$rs2.even_name}></li>
+						<li class="evenContent"><{$rs2.even_content}><span></span></li>
+					</ul>
+				</dd>
+				<{/if}>
+				<{/foreach}> 
+			<{/foreach}> 
+			</dl>
+
+			<div id="event_add" class="event_add">
+			    <form name="event_form" id="event_form" method="post" action="<{spUrl c=event a=add}>" onSubmit="return Validator.Validate(event_form,2)" >
+					<dl class="clearfix">
+						<dt>反馈/建议</dt>
+						<dd>
+							 <select name="pnod_id" id="pnod_id" datatype="Require" msg="请选择流程名">
+			                	<option value="" selected="selected" style="color:#999">选择项目或流程</option>
+								<option value="all">项目</option>
+			                    <{foreach from=$proj_node item=rs_node}>  
+			               		<option value="<{$rs_node.pnod_id}>"><{$rs_node.pnod_name}> by <{$rs_node.user_name}></option>
+			                    <{/foreach}>
+			                </select>
+						</dd>
+						<dt>内容</dt>
+						<dd>
+							<textarea name="even_content" id="even_content" cols="38" rows="5" datatype="Require" msg="内容不能为空"></textarea>
+						</dd>
+					</dl>
+					<input type="submit" value="提 交" class="sumbit"/>
+					<input type="hidden" name="proj_id" value="<{$rs.proj_id}>"/>
+			     </form>
+			</div>
+			
+		</section>
+		
+        <{if $isCanScore}>
+        <section class="boxstyle2 clearfix" id="set-project-score-box">
+        	<h2>项目评分</h2>
+			<form action="<{spUrl c=project a=setScore id=$rs.proj_id}>" method="post" style="padding-top:20px;" onSubmit="return Validator.Validate(this,2)">
+                	<dl class="clearfix comment-box">
+                    	<dt>项目评分</dt>
+                        <dd>
+                        	<select name="score" datatype="Require" msg="请选择分数。">
+                            	<option value="" selected>请选择分数</option>
+								<{foreach from=$scoreNameArray item=v key=k}>
+                                <option value="<{$k}>" <{if $k=='C'}> selected="selected"<{/if}>><{$v}></option>
+								<{/foreach}>
+                            </select>
+                        </dd>
+                        <dt>评价内容</dt>
+                        <dd>
+                        	<textarea name="comment"></textarea>
+                        </dd>
+                    </dl>
+                    <div class="btns-box">
+                    	<input type="submit" class="btn btn_main1" value="确认打分">
+                    </div>
+             </form>
+        </section>
+        <{/if}>
+		
+        <{if $isShowInviteScore}>
+        <section class="boxstyle2 clearfix">
+        	<h2>邀请打分</h2>
+        	<div id="user-checkbox-container" style="padding-left:40px"></div>
+            <div class="btns-box">
+				<input type="submit" class="btn btn_main1" value="邀请打分" onClick="inviteUserToScore()" id="inviteUserToScoreBtn">
+            </div>
+            <script type="text/javascript">
+				PMS.loadUserCheckBoxTo($("#user-checkbox-container"));
+				var inviteUserToScore=function()
+				{
+					$("#inviteUserToScoreBtn").attr("disabled","true").val('提交中...');
+					var noticeUserArray=$("#user-checkbox input").serializeArray();
+					var postData={"id":"<{$rs.proj_id}>","userArray":noticeUserArray};
+					$.post("<{spUrl c=project a=inviteScore}>",postData,function(data)
+					{
+						if(data.rs==200)
+						{
+							alert("邀请成功！");
+						}
+						else
+						  alert(data.des);
+						$("#inviteUserToScoreBtn").removeAttr("disabled").val('邀请打分');
+					},"json");
+				}
+            </script>
+        </section>
+        <{/if}>
+		
+		<section class="boxstyle1 bottom clearfix">
+			<!-- 暂停项目 -->
+			<div style="padding:10px;background:#FFF0E1;border:1px solid #F90;display:none" id="cancel_project_box">
+				<form name="form_cancel" action="<{spUrl c=project a=setState proj_id=$rs.proj_id state=100}>" method="post" onSubmit="return Validator.Validate(this,2)">
+				<p>暂停原因：</p>
+				<textarea class="itext" name="cancel_reason" style="width:100%;height:30px;margin:10px 0" datatype="Require" msg="请填写取消项目的原因。"></textarea>
+				<p align="center"><input type="submit" value=" 确定 "/>　　　<input type="button" value=" 返回 " onClick="switchController('#btn_project_cancle','#cancel_project_box')"/></p>
+				</form>
+			</div>
+			<!-- 恢复项目 -->
+			<div style="padding:10px;background:#FFF0E1;border:1px solid #F90;display:none" id="recover_project_box">
+				<form name="form_restore" action="<{spUrl c=project a=setState proj_id=$rs.proj_id state=1020}>" method="post" onSubmit="return Validator.Validate(this,2)">
+				<p>将未完成的流程整体调整为从这个日期开始：<input class="itext" name="recover_day" id="recover_day" datatype="Require" msg="请填写日期。" value="0"/>(不改动时间，请填0)</p>
+				<p align="center"><input type="submit" value=" 确定 "/>　　　<input type="button" value=" 返回 "  onClick="switchController('#btn_project_cancle','#recover_project_box')"/></p>
+				</form>
+			</div>
+			
+				<{if $is_user==1}>
+				<div class="proj_control btns-box">
+					<{if $rs.proj_state==50}>
+						<a href="<{spUrl c=project a=setState proj_id=$rs.proj_id state=40}>" class="btn btn_main1" style="float:left;margin-left:350px;">提交审核</a>
+						<a href="<{spUrl c=project a=proj_del proj_id=$rs.proj_id}>" class="btn btn_main1" style="float:left;margin-left:20px;">删除该项目</a>
+					<{elseif $isFinished==1 && $rs.proj_state==20}>
+						<a href="<{spUrl c=project a=setState proj_id=$rs.proj_id state=15}>" class="btn btn_main1" style="float:left;margin-left:350px;">项目完成</a>
+						<a class="btn btn_main2 btn_cancel" style="float:left;margin-left:20px;" id="btn_project_cancle">暂停/取消项目</a>
+					<{elseif $rs.proj_state>15 && $rs.proj_state<50}>
+						<a class="btn btn_main1 btn_cancel" id="btn_project_cancle">暂停/取消项目</a>
+					<{elseif $rs.proj_state==100}>
+						<a class="btn btn_main1" id="btn_recover_project">恢复项目</a>
+					<{/if}>
+				</div>
+				<{/if}>
+				<{if $rs.proj_state==15 && $power==0 && $role_id==5}>
+				<div class="proj_control btns-box">
+					<a href="<{spUrl c=project a=setState proj_id=$rs.proj_id state=10}>" class="btn btn_main1">确定归档</a>
+				</div>
+				<{/if}>	
+		</section>
+		
+		<section class="footer"></section>
+
+</article>
+
+
+<!--content end -->
+
+<{include file="inc/footer.html"}>
+<div id="file_update" class="popwin file_update">
+	<div class="popwin_inner clearfix">
+	<p class="title">更新附件(格式不限制，但服务器资源有限，建议文件不要超过10M。)</p>
+	<br>
+	<form name="update_file_form" id="update_file_form" action="<{spUrl c=file a=file_update}>"  method="post" enctype="multipart/form-data" onSubmit="return beforeUpdate();">
+		附件:<input name="p_new" type="file" id="p_new" datatype="Require" msg="没有选择上传的文件。"/>
+		<input name="file_name_old" type="hidden" id="file_name_old"  value=""/>
+		<input name="file_url_old" type="hidden" id="file_url_old"  value=""/>
+		<input name="file_id_old" type="hidden" id="file_id_old"  value=""/>
+		<input name="pron_id_old" type="hidden" id="pron_id_old"  value=""/>
+		<input type="submit" value="提 交" class="btn btns_text" />
+		<input type="hidden" name="proj_id" value="<{$rs.proj_id}>"/>
+	</form>
+	</div>
+</div>
+<div id="file_add" class="popwin file_add">
+	<div class="popwin_inner clearfix">
+			<p class="title">上传附件(格式不限制，但服务器资源有限，建议文件不要超过10M。)</p>
+            <form name="file_form" id="file_form" action="<{spUrl c=file}>" onSubmit="return setNum('table_file','file_row_count');"  method="post" enctype="multipart/form-data">
+				<div style="padding:10px 0">
+						相对流程名：
+						<select name="pnod_id" id="pnod_id" style="font-size:12px;">
+							<{foreach from=$proj_node item=rs_node}>
+							<{if $rs_node.user_id==$user_id}>
+							<option value="<{$rs_node.pnod_id}>" selected="selected"><{$rs_node.pnod_name}>【<{$rs_node.user_name}>】</option>
+							<{else}>
+							<option value="<{$rs_node.pnod_id}>"><{$rs_node.pnod_name}>【<{$rs_node.user_name}>】</option>
+							<{/if}>
+							<{/foreach}>
+						</select>
+				</div>
+				<table id="table_file" class="table_node">
+				  <tr id="table_file_row_{@numTem}">
+					<td>附件</td>
+					<td>
+						<input name="p_{@num}" type="file" id="p_{@numTem}" datatype="Require" msg="没有选择上传的文件。" onChange="checkExt(this)"/>
+					 </td>
+					 <td>
+						 <input name="file_name_{@num}" type="text" id="file_name_{@numTem}" datatype="Require" msg="没有填写附件标题。" class="itext" value="附件标题" style="width:180px;"/>
+					 </td>
+					 <td>
+					 	<input type="button" value="" class="btnc btnc_del" title="移除" id="table_file_rowDelBtn_{@numTem}"/>
+					 </td>
+				  </tr>
+				</table>
+				
+				<div class="row_add" id="table_file_rowAddBtn"><a class="btnadd">点击我，支持多文件一次上传。</a></div> 
+				<{if $rs.proj_state==20}>
+				<div style="padding:10px;color:#F00"><input type="checkbox" name="isSubmit" value="1"/>同时提交审核</div>
+				<{/if}>
+				<div style="text-align:center">
+				<input type="submit" value="提 交" class="btn btns_text" />
+				<input type="hidden" name="proj_id" value="<{$rs.proj_id}>"/>
+                <input type="hidden" name="proj_id" value="<{$rs.proj_id}>"/>
+				<input type="hidden" name="file_row_count" id="table_file_rowCounter" value="0"/>
+				</div>
+        </form>
+		<a title="关闭" onclick="_$.closewin('#file_add')" class="btn_close"></a>
+	<div class="popwin_inner clearfix">
+</div>
+
+<script type="text/javascript">
+
+var table_file_html=$('#table_file tbody:eq(0)').html();
+
+var showEventWithNodeId=function(id)
+{
+	$("#project-event .project-event-"+id).toggle();
+}
+
+
+function deleteFile(fileId)
+{
+		if(confirm('删除后不可恢复，确定？'))
+		{
+			$("#file_row_"+fileId).append('<div class="loading"></div>');
+			url='<{spUrl c=file a=delete}>&url='+$("#file_row_"+fileId+" a:eq(0)").attr('href')+'&file_id='+fileId;
+			$.get(url,function(msg){
+							   if(msg.rs==1)
+							   		$('#file_row_'+fileId).remove();
+								else
+								{
+									alert(msg.des);
+								}
+							   },"json");
+
+		}
+}
+function updateFile(fileId,fileName,pronId)
+{
+	$('#file_name_old').val(fileName);
+	$('#file_id_old').val(fileId);pron_id_old
+	$('#pron_id_old').val(pronId);
+	$('#file_url_old').val($("#file_row_"+fileId+" a:eq(0)").attr('href'));
+	_$.popWin("file_update");
+}
+
+function beforeUpdate()
+{
+	if($('#p_new').val()=="")
+	{
+		alert("没有选择文件！");
+		return false;
+	}
+	return true;
+}
+
+function extractFile(fileId)
+{
+		if(confirm('将解压该文件，确定？'))
+		{
+			$("#file_row_"+fileId).append('<div class="loading"></div>');
+			url='<{spUrl c=zip}>&fileId='+fileId;
+			$.get(url,function(msg){
+							   if(msg.rs==1)
+							   {
+							   		$("#file_row_"+fileId+" a:eq(0)").attr('href',msg.fileUrl).addClass('floder');
+									$("#file_row_"+fileId+" .loading").remove();
+									$("#file_row_"+fileId+" .extractFile").remove();
+							   }
+							   else
+							   {
+							    	alert(msg.des);
+							   }
+					},"json");
+		}
+}
+
+function setState(proj_id,pnod_id,state,action)
+{
+	//alert(arg);
+	if(state==15)
+		msger='确定流程已经完成？';
+    else if(state==17)
+		msger='确定将流程提交给上级审核？';
+    else if(state==18)
+		msger='确定提交检查并进入流程检查二？';
+    else if(state==18.1)
+		{msger='确定检查通过？';state=18;}
+	if(confirm(msger+'（此操作无法撤销）'))
+	{
+		var url='<{spUrl c=pnode a=setState proj_id={@proj_id} pnod_id={@pnod_id} state={@state}}>';
+		url=url.replace(/{@proj_id}/,proj_id);
+		url=url.replace(/{@pnod_id}/,pnod_id);
+		url=url.replace(/{@state}/,state);
+		url=url.replace(/{@action}/,action);
+		$.get(url,function(msg){
+						   if(msg.rs==200)
+								location.reload();
+							else
+								alert(msg.des);
+						   },"json")
+	}
+}
+
+function pass_pnod(pnod_id,state)
+{
+	//alert($("#isPnodeFinishOnCommitTime").attr("checked"));
+	var isPnodeFinishOnCommitTime=0;
+	if($("#isPnodeFinishOnCommitTime").attr("checked"))
+		isPnodeFinishOnCommitTime=1;
+	var postData={"score":$("#node-score").val(),"comment":$("#node-comment").val(),"pnod_id":pnod_id,"state":state,"isPnodeFinishOnCommitTime":isPnodeFinishOnCommitTime,"delayinfo":$("#node-delayinfo").val()};
+	//alert(url);return;
+	$.post("<{spUrl c=pnode a=setState}>",postData,function(msg)
+	{
+		if(msg.rs==200)
+		{
+			location.reload();
+		}
+		else
+		{
+			alert(msg.des);
+		}
+	},"json")
+}
+
+
+
+function checkExt(e)
+{
+	var url=e.value;
+	var tem=url.split('.');
+	var ext=tem[tem.length-1].toLowerCase();
+	if(ext=="exe"||ext=="php"||ext=="psd")
+	{
+		e.value="";
+		alert("暂时不允许上传exe、php、psd文件。");
+		return;
+	}
+	var fileName=tem[0].substring(tem[0].lastIndexOf("\\")+1);
+	e.parentNode.parentNode.getElementsByTagName("input")[1].value=fileName;
+}
+
+var switchController=function(obj1,obj2){$(obj1).toggle();$(obj2).toggle();}
+
+
+$(function()
+{
+	var _tem0='<a title="{@user}-{@title}【{@stateName}】{@beforeNodes}" onclick="PMS.showNode({@nodeId},{project:0})" style="width:{@widthFinal}px;margin-left:{@left}px;" class="pnod node"><span style="width:{@widthEnd}px;" class="title-short rowcolor{@state}"><span class="inner">{@user}-{@title}【{@stateName}】{@beforeNodes}</span></span></a>';
+	
+	PMS.loadCalendar("project_gra",{projId:'<{$rs.proj_id}>',type:'nodeInProject',ps:1,select:1000,"group":[['','',_tem0]]});
+	
+	$("#toolPageCheck").click(function(){window.open("?c=tool#<{$rs.proj_id}>","",'height=400,width=700,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no, status=no')});
+	
+	$('#btn_showPnod').click(function(){
+
+									  $('#calendarView_tab a').removeClass('current');
+									  $(this).addClass('current');
+										 PMS.loadCalendar("project_gra",{projId:'<{$rs.proj_id}>',type:'nodeInProject',ps:1,select:1000,"group":[['','',_tem0]]});
+									  });
+	$('#btn_showProj').click(function(){
+									  $('#calendarView_tab a').removeClass('current');
+									  $(this).addClass('current');
+									  PMS.loadCalendar("project_gra",{wrapId:'<{$rs.wrap_id}>',type:'project',projId:'<{$rs.proj_id}>',ws:'1'});
+									  });
+	
+	$('#event_list li:last').css('color','#2b7300');
+											
+	var upload_isclick = 'false';
+	$('.btn_show_upload_box').click(function(){
+		_$.popWin("file_add",{fix:false});
+		//if($(this).attr('isclick')!='true'){PMS.rowEditorCreate("table_file","#table_file tr",{"form":"file_form","check":true});$(this).attr('isclick','true')}
+		if(upload_isclick!='true'){PMS.rowEditorCreate("table_file","#table_file tr",{"form":"file_form","check":true});upload_isclick='true';}
+		$('#file_form #pnod_id').val($(this).attr('data_id'));
+	});
+		
+	$('.btn_cancel').click(function(){$('#cancel_project_box').show();$(this).hide();})
+	
+	$('#btn_recover_project').click(function(){$('#recover_project_box').fadeIn();})
+	$("#recover_day").datepicker();
+	
+	//meta信息提取
+	$('#btn_getMeta').click(function(){
+		var metaConetnt=$('#metaConetnt');
+		metaConetnt.show().html('loadding...^-^');
+		var metaTemplate=new Array();
+		var userNickName=new Array();
+		var result="";
+		metaTemplate[0]=_$.htmlEnCode('<meta name="author" content="网易，NetEase Inc." />')+"<br/>"+_$.htmlEnCode('<meta name="copyright" content="网易，NetEase Inc." />')+'<br/>';
+		metaTemplate[1]=_$.htmlEnCode('<meta name="editor" content="{@userNickName}" />');
+		metaTemplate[2]=_$.htmlEnCode('<meta name="designer" content="{@userNickName}" />');
+		metaTemplate[3]=_$.htmlEnCode('<meta name="front-end technicist" content="{@userNickName}" />');
+		metaTemplate[6]=_$.htmlEnCode('<meta name="animator" content="{@userNickName}" />');
+		metaTemplate[10]=_$.htmlEnCode('<meta name="pmid" content="27<{$rs.proj_id}>" />');
+		result=metaTemplate[10]+"</br>";
+		$.getScript('index.php?c=project_bll&a=getMeta&proj_id=<{$rs.proj_id}>',function(data){
+			for(var i=0;i<metadata.length;i++)
+			{
+				if(metadata[i].user_nickname==undefined||metadata[i].user_nickname=="") metadata[i].user_nickname="没有昵称";
+				userNickName[metadata[i].role_id]==undefined? userNickName[metadata[i].role_id]=metadata[i].user_nickname : userNickName[metadata[i].role_id]+=","+metadata[i].user_nickname;
+			}
+			for(var i=1;i<7;i++)
+			{
+				//alert(userNickName[i]);
+				if(userNickName[i]!=undefined) result+=metaTemplate[i].replace(/{@userNickName}/,userNickName[i])+"</br>";
+			}
+			result=metaTemplate[0]+result+'<input type="button" class="btn_close" title="关闭">'; 
+			metaConetnt.html(result);
+			$("#metaConetnt .btn_close").click(function(){metaConetnt.hide()})
+			})});
+})
+</script>
+</body>
+</html>

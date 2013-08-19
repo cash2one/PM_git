@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <{include file="inc/base.html"}>
+    <link>
+    <style>
+        .select2-container{position: static;}/*hack select2 hidden */
+        .table3 .myInfo-btn{float: none;margin-bottom: 8px;}
+        .table3 .probar{margin-top: 10px;}
+    </style>
+</head>
+<body class="pgAdmin  userDeafult">
+<{include file="inc/header.html"}>
+<{include file="pg/user/myInformation.html"}>
+<nav class="myNav clearfix">
+    <div class="myNav-inner">
+        <a class="brand">个人空间导航&nbsp;&#187;</a>
+        <ul>
+            <li><a href="#">正在进行的工作</a></li>
+            <li><a href="<{spUrl c=pguser a=myGrowRecord}>">成长记录</a></li>
+            <li><a href="<{spUrl c=pguser a=mySkillGift}>">人物技能</a></li>
+            <li><a href="<{spUrl c=pguser a=myMedal}>">成长勋章</a></li>
+            <li>
+                <a href="<{spUrl c=pguser a=myMessage}>">系统通知
+                    <span class="unread-msg">0</span>
+                </a>
+            </li>
+            <li class="active"><a href="<{spUrl c=pguser a=myLvUp}>">升级要求</a></li>
+            <{if $p_user_id == -1}>
+            	<li><a href="<{spUrl c=pguser a=myStudent}>">学生情况</a></li>
+            	<li><a href="<{spUrl c=pguser a=mySkillNum}>">技能数量</a></li>
+            <{/if}>
+        </ul>
+    </div>
+</nav>
+<div class="wrap">
+<!-- 暂时隐藏
+<p class="mySkill-common">
+      我的共性任务
+    </p>
+    <table class="table3">
+        <thead>
+        <tr class="btop">
+            <td class="bleft">序号</td>
+            <td class="tleft">任务名</td>
+            <td class="tleft">进度</td>
+            <td class="bright">状态/操作</td>
+        </tr>
+        </thead>
+  <tr>
+    <td class="bleft">1</td>
+    <td class="tleft">
+    		A级专题数量
+    </td>
+    <td class="tleft">
+		<span class="probar_com probar">
+			<span class="probar_com probar_had probar_1">
+
+			</span>
+            <font class="blv_1" value="<{$blv_array.blv_1}>"><{$flv_array.flv_1}>/<{$lv_array.lv_1}></font>
+		</span>
+	</td>
+	<td class="bright">
+		<{if $task_state.lv_1 == 1}>
+			<font color="red">审核中</font>
+		<{elseif $task_state.lv_1 == 2}>
+			<font color="red">审核不通过</font>|-><input class="finish" lv="1" type="button" value="重新点击完成">
+		<{elseif $task_state.lv_1 == 3}>
+			完成
+		<{else}>
+			<input class="finish myInfo-btn" lv="1" type="button" value="点击完成"/>
+
+		<{/if}>
+	</td>
+  </tr>
+  <tr>
+    <td class="bleft">2</td>
+    <td class="tleft">
+    		B级专题数量
+    </td>
+    <td class="tleft">
+		<span class="probar_com probar">
+			<span class="probar_com probar_had probar_2">
+
+			</span>
+            <font class="blv_2" value="<{$blv_array.blv_2}>"><{$flv_array.flv_2}>/<{$lv_array.lv_2}></font>
+		</span>
+	</td>
+	<td class="bright">
+		<{if $task_state.lv_2 == 1}>
+			<font color="red">审核中</font>
+		<{elseif $task_state.lv_2 == 2}>
+			<font color="red">审核不通过</font>|-><input class="finish" lv="2" type="button" value="重新点击完成">
+		<{elseif $task_state.lv_2 == 3}>
+			完成
+		<{else}>
+			<input class="finish myInfo-btn" lv="2" type="button" value="点击完成">
+		<{/if}>
+	</td>
+  </tr>
+  <tr>
+    <td class="bleft">3</td>
+    <td class="tleft">
+    		C级专题数量
+    </td>
+    <td class="tleft">
+		<span class="probar_com probar">
+			<span class="probar_com probar_had probar_3">
+
+			</span>
+            <font class="blv_3 " value="<{$blv_array.blv_3}>"><{$flv_array.flv_3}>/<{$lv_array.lv_3}></font>
+		</span>
+	</td>
+	<td class="bright">
+		<{if $task_state.lv_3 == 1}>
+			<font color="red">审核中</font>
+		<{elseif $task_state.lv_3 == 2}>
+			<font color="red">审核不通过</font>|-><input type="button" class="finish" lv="3" value="重新点击完成">
+		<{elseif $task_state.lv_3 == 3}>
+			完成
+		<{else}>
+			<input class="finish myInfo-btn" lv="3" type="button" value="点击完成">
+		<{/if}>
+	</td>
+  </tr>
+  <tr>
+    <td class="bleft">4</td>
+    <td class="tleft">
+    		D级专题数量
+    </td>
+    <td class="tleft">
+		<span class="probar_com probar">
+			<span class="probar_com probar_had probar_4">
+
+			</span>
+            <font class="blv_4" value="<{$blv_array.blv_4}>"><{$flv_array.flv_4}>/<{$lv_array.lv_4}></font>
+		</span>
+	</td>
+	<td class="bright">
+		<{if $task_state.lv_4 == 1}>
+			<font color="red">审核中</font>
+		<{elseif $task_state.lv_4 == 2}>
+			<font color="red">审核不通过</font>|-><input class="finish" lv="4" type="button" value="重新点击完成">
+		<{elseif $task_state.lv_4 == 3}>
+			完成
+		<{else}>
+			<input class="finish myInfo-btn" lv="4" type="button" value="点击完成">
+		<{/if}>
+	</td>
+  </tr>
+  <tr>
+    <td class="bleft">5</td>
+    <td class="tleft">
+    		E级专题数量
+    </td>
+    <td class="tleft">
+		<span class="probar_com probar">
+			<span class="probar_com probar_had probar_5">
+
+			</span>
+            <font class="blv_5" value="<{$blv_array.blv_5}>"><{$flv_array.flv_5}>/<{$lv_array.lv_5}></font>
+		</span>
+	</td>
+	<td class="bright">
+		<{if $task_state.lv_5 == 1}>
+			<font color="red">审核中</font>
+		<{elseif $task_state.lv_5 == 2}>
+			<font color="red">审核不通过</font>|-><input class="finish" lv="5" type="button" value="重新点击完成">
+		<{elseif $task_state.lv_5 == 3}>
+			完成
+		<{else}>
+			<input class="finish myInfo-btn" lv="5" type="button" value="点击完成">
+		<{/if}>
+	</td>
+  </tr>
+  <tr>
+    <td class="bleft">6</td>
+    <td class="tleft">
+    		无级别专题数量
+    </td>
+    <td class="tleft">
+		<span class="probar_com probar">
+			<span class="probar_com probar_had probar_10">
+
+			</span>
+            <font class="blv_10" value="<{$blv_array.blv_10}>"><{$flv_array.flv_10}>/<{$lv_array.lv_10}></font>
+		</span>
+	</td>
+	<td class="bright">
+		<{if $task_state.lv_10 == 1}>
+			<font color="red">审核中</font>
+		<{elseif $task_state.lv_10 == 2}>
+			<font color="red">审核不通过</font>|-><input class="finish" lv="10" type="button" value="重新点击完成">
+		<{elseif $task_state.lv_10 == 3}>
+			完成
+		<{else}>
+			<input class="finish myInfo-btn" lv="10" type="button" value="点击完成">
+		<{/if}>
+	</td>
+  </tr>
+        <tfoot>
+        <tr>
+        <td colspan="6"></td>
+        </tr>
+        </tfoot>
+ </table>
+  -->
+ 
+ <p class="mySkill-common">
+     共性任务
+    </p>
+    <table class="table3">
+        <thead>
+        <tr class="btop">
+            <td class="bleft">序号</td>
+            <td class="tleft">任务类型</td>
+            <td class="bright">数量</td>
+        </tr>
+        </thead>
+  <{foreach name=table0 from=$sameTask item=strs}>
+  <tr>
+    <td class="bleft"><{ $smarty.foreach.table0.iteration }></td>
+    <td class="tleft">
+    	<{$strs.mtpl.mtpl_name}>
+    </td>
+    <td class="bright">
+		<{$strs.num}>
+	</td>
+  </tr>
+  <{/foreach}>
+        <tfoot>
+        <tr>
+            <td colspan="6">
+            </td>
+        </tr>
+        </tfoot>
+ </table>
+    <p class="mySkill-common">
+     我的特殊任务
+    </p>
+    <table class="table3">
+        <thead>
+        <tr class="btop">
+            <td class="bleft">序号</td>
+            <td class="tleft">任务名</td>
+            <td class="bright">是否完成</td>
+        </tr>
+        </thead>
+  <{foreach name=table from=$result item=rs}>
+  <tr>
+    <td class="bleft"><{ $smarty.foreach.table.iteration }></td>
+    <td class="tleft">
+    	<a href="<{spUrl c=project_bll a=project_show id=$rs.proj_id}>">
+    		<{$rs.proj_name}>
+      	</a>
+    </td>
+    <td class="bright">
+		<{if $rs.proj_endDate}>
+                【<font color="red">完成时间：<{$rs.proj_endDate}></font>】
+                <{else}>
+                【<font color="blue">尚未完成</font>】
+                <{/if}>
+	</td>
+  </tr>
+  <{/foreach}>
+        <tfoot>
+        <tr>
+            <td colspan="6">
+                <{if $pager}>
+                <div class="pager">
+                    页码：<{$pager.current_page}>/<{$pager.total_page}>
+                    <{foreach from=$pager.all_pages item=thepage}>
+                    <{if $thepage!=$pager.current_page}>
+                    <a href="<{spUrl c=pguser a=myLvUp topage=$thepage}>"><{$thepage}></a>
+                    <{else}>
+                    <span><{$thepage}></span>
+                    <{/if}>
+                    <{/foreach}>
+                </div>
+                <{/if}>
+            </td>
+        </tr>
+        </tfoot>
+
+    </table>
+</div>
+<{include file="inc/footer.html"}>
+</body>
+<script>
+for(var i = 1;i<6;i++)
+{
+    $(".probar_"+i).width($(".blv_"+i).attr("value")*$(".probar").width());
+}
+$(".probar_10").width($(".blv_10").attr("value")*$(".probar").width());
+$('.finish').click(function(){
+	if(!confirm('确认完成吗？\n将会发送审核信息给你的导师'))
+	{
+		return;
+	}
+	var lv= $(this).attr("lv");
+	$.ajax({
+        url:'index.php?c=pguser&a=sendFinishMessage&lv='+lv,
+        type:'GET',
+        success:function(data){
+            var result = JSON.parse(data);
+            var msg =  result['msg'];
+            alert(msg);
+            location.reload();
+        },
+        error:function(){
+            alert('出错了！')
+        }
+    })
+});
+</script>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/*reset*/
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td{margin:0;padding:0;}
+table{border-collapse:collapse;border-spacing:0;}
+fieldset,img{border:0;}
+li{list-style:none;}
+caption,th{text-align:left;}
+h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}
+q:before,q:after{content:'';}
+abbr,acronym{border:0;font-variant:normal;}
+a{outline:none;cursor:pointer;color:#000}
+a:link,a:visited{}
+a:hover,a:active{}
+sup{vertical-align:text-top;}
+sub{vertical-align:text-bottom;}
+input,textarea,select{font-family:inherit;font-size:inherit;font-weight:inherit;}
+input,textarea,select{}
+select{font-size:14px;}
+legend{color:#000;}
+h1{font-size:12px;font-weight:bold;text-align:left;font-family:"Microsoft YaHei", "SimHei";height:28px;line-height:28px;color:#244669;padding-left:10px}
+/*reset end*/
+#pushwrap{background:url(../../themes/images/notice/msgbox.bg.png)}
+#mainContain{padding:5px}
+#pushwrap{width:710px;height:410px;position:relative}
+#header{height:28px;overflow:hidden;position:relative}
+#header .btn{width:25px;height:24px;background:url(../../themes/images/notice/sprites.png) no-repeat;display:block;position:absolute;top:2px;text-indent:-9999px;}
+#header #btn_close{right:10px;background-position:-128px 0}
+#header #btn_close:hover{;background-position:-128px -24px}
+#header #btn_minisize{right:40px;background-position:-105px 0}
+#header #btn_minisize:hover{background-position:-105px -24px}
+</style>
+<script src="../../themes/js/jquery.last.js"></script>
+<title>信息提醒</title>
+</head>
+<body id="msgbox">
+<div id="pushwrap">
+	<div id="header">
+		<h1>PM消息</h1>
+		<a id="btn_close" class="btn" href="javascript:void(0)">关闭</a>
+		<a id="btn_minisize" class="btn" href="javascript:void(0)">最小化</a>
+	</div>
+	<div id="mainContain">
+		<iframe frameborder="0" width="700" height="370" id="mainFrame" allowtransparency="allowtransparency" scrolling="auto"></iframe>
+	</div>
+</div>
+<script type="text/javascript">
+function closeWin(){window.external.closewin();return false;}
+$("#btn_close").click(function(){closeWin();})
+$("#btn_minisize").click(function(){window.external.minsizewin();return false;})
+var url=(location.href).split('#');
+/*
+var type=(location.href).split('&');
+switch(type[1])
+{
+	case"a=quickAccess": $("h1").html("PM工具 - 快速入口");break;
+	case"a=loginJump":
+	switch(type[3])
+	{
+		case"act=todayWork": $("h1").html("PM消息 - 未完成的工作");break;
+		case"act=delayWork": $("h1").html("PM消息 - 已经延期的工作");break;
+		case"act=unSubmitWork": $("h1").html("PM消息 - 今天应该完成并提交的工作");break;
+	}
+	break;
+}
+*/
+$("#mainFrame").attr("src",'../../'+url[1]);
+function setTitle(title){$("h1").html(title);}
+</script>
+</body>
+</html>

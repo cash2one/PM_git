@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh"> 
+<head>
+<meta charset="utf-8">
+<{include file="inc/base.html"}>
+<link type="text/css"  rel="stylesheet" href="themes/css/jquery.ui.all.css" />
+<script type="text/javascript" src="themes/js/jquery-ui.last.js"></script>
+<script type="text/javascript" src="themes/js/jquery.ui.datepicker-zh-CN.js"></script>
+</head>
+<body class="manage wraps">
+
+<{include file="inc/header.html"}>
+<article class="content">
+
+	<section class="search">
+		<h1>列表 - 项目集</h1>
+		<div class="tab searchTab1">
+		<{include file="project/wrapsNav.html"}>
+		</div>
+	</section>
+
+	<table class="table3 tablewrap">
+	<thead>
+	  <tr class="btop">
+	  	<td class="bleft">所属产品名</td>
+	    <td class="tleft">项目集名</td>
+	    <td>状态</td>
+	    <td class="bright">&nbsp;</td>
+	  </tr>
+	  </thead>
+	  <{foreach from=$rows item=rs}>  
+	  <tr id="wrap_id_<{$rs.wrap_id}>" class="rowcolor<{$rs.wrap_state}>">
+	 	<td class="bleft"><{$rs.prod_name}></td>
+	    <td class="tleft"><a href="<{spUrl c=wrap a=showWrap wrapId=$rs.wrap_id}>"><{$rs.wrap_name}></a></td>
+	    <td><{$state_list[$rs.wrap_state]}></td>
+	    <td class="bright"><{if $isManager}><a href="<{spUrl c=wrap a=edit wrap_id=$rs.wrap_id}>">修改</a> | <a onclick="wrap_del(<{$rs.wrap_id}>)">删除</a><{/if}></td>
+	  </tr>
+	  <{/foreach}>
+	  
+	  <tfoot>
+	  	<tr>
+			<td colspan="4">
+			<{if $pager}>
+			<div class="pager">
+			页码：<{$pager.current_page}>/<{$pager.total_page}>
+			<{foreach from=$pager.all_pages item=thepage}>
+			    <{if $thepage!=$pager.current_page}>
+					<a href="<{spUrl c=product a=showlist topage=$thepage}>"><{$thepage}></a> 
+			    <{else}>
+			    	<span><{$thepage}></span>
+			    <{/if}>
+			<{/foreach}>
+			</div>
+			<{/if}>
+			</td>
+		</tr>
+	  </tfoot>	  
+	  
+
+	</table>
+</article>
+
+<{include file="inc/footer.html"}>
+<script type="text/javascript">
+function wrap_del(wrap_id)
+{
+	if(confirm('此操作将不可撤销，确定要删除？'))
+	{
+		var url='<{spUrl c=wrap a=wrap_del wrap_id={@wrap_id}}>';
+		url=url.replace(/{@wrap_id}/,wrap_id);
+		$.get(url,function(msg){
+						   if(msg.rs==1)
+								$('#wrap_id_'+wrap_id).remove();
+							else alert(msg.des);
+						   },"json")
+	}
+}
+</script>
+</body>
+</html>

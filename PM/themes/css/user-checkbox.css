@@ -1,0 +1,7 @@
+.user-checkbox{overflow:hidden;font-size:12px;padding-top:20px}
+.user-checkbox label{line-height:12px;display:block;width:100%;}
+.user-checkbox-group{position:relative;padding-left:90px;clear:both;line-height:25px;margin-bottom:5px;overflow:hidden;_height:1%}
+.user-checkbox-group li{float:left;width:70px;text-align:left;display:inline;margin-right:2px;margin-bottom:2px;padding:3px}
+.user-checkbox-group li.user-selected{background:#66CCFF}
+.user-checkbox-group li.user-checkbox-group-title{position:absolute;top:0;left:0;text-indent:36px;width:90px}
+.ucg-top li.user-checkbox-group-title{text-indent:0;font-size:14px;font-weight:bold}

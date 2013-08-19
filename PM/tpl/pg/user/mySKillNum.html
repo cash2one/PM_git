@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <{include file="inc/base.html"}>  
+    <link rel="stylesheet" href="themes/css/popwin.css?cache=<{$smarty.const.RD}>" />  
+    <link type="text/css"  rel="stylesheet" href="themes/css/jquery.ui.all.css?cache=<{$smarty.const.RD}>" />
+    <script type="text/javascript" src="themes/js/jquery-ui.last.js?cache=<{$smarty.const.RD}>"></script>
+    <link>
+    <style>
+        .select2-container{position: static;}/*hack select2 hidden */
+    </style>
+</head>
+<body class="pgAdmin  myskillNum">
+<{include file="inc/header.html"}>
+<{include file="pg/user/myInformation.html"}>
+<nav class="myNav clearfix">
+    <div class="myNav-inner">
+        <a class="brand">个人空间导航&nbsp;&#187;</a>
+        <ul>
+            <li><a href="#">正在进行的工作</a></li>
+            <li><a href="<{spUrl c=pguser a=myGrowRecord}>">成长记录</a></li>
+            <li><a href="<{spUrl c=pguser a=mySkillGift}>">人物技能</a></li>
+            <li><a href="<{spUrl c=pguser a=myMedal}>">成长勋章</a></li>
+            <li>
+                <a href="<{spUrl c=pguser a=myMessage}>">系统通知
+                    <span class="unread-msg">0</span>
+                </a>
+            </li>
+            <li><a href="<{spUrl c=pguser a=myLvUp}>">升级要求</a></li>
+            <li><a href="<{spUrl c=pguser a=myStudent}>">学生情况</a></li>
+            <li class="active"><a href="<{spUrl c=pguser a=mySkillNum}>">技能数量</a></li>
+        </ul>
+    </div>
+</nav>
+<div class="wrap">
+    <section class="boxstyle1 top clearfix myGrowBox_content" style="padding-top: 20px;">
+    	<h2>技能数量使用情况如下：
+        </h2>
+        <br>
+        <table id="table_num" class="table3">
+<thead>
+<tr class="btop">
+    <td class="bleft">序号</td>
+    <td class="tleft" colspan="4">技能名称</td>
+    <td class="tleft" colspan="3">已用数量/剩余数量</td>
+    <td class="bright"></td>
+</tr>
+  </thead>
+  <{foreach name=table1 from=$my_skills item=asrs}>
+  	<tr class="skill-name">
+        <td class="bleft"><{ $smarty.foreach.table1.iteration }></td>
+        <td class="tleft" colspan="7"><{$asrs.skill_name}></td>
+	    <td class="bright"></td>
+    </tr>
+    <tr>
+        <td class="bleft"></td>
+        <td class="tleft">lv1:&nbsp;<{$asrs.lv1_u}>/<{$asrs.lv1_g-$asrs.lv1_u}></td>
+        <td class="tleft"></td>
+	    <td class="tleft">lv2:&nbsp;<{$asrs.lv2_u}>/<{$asrs.lv2_g-$asrs.lv2_u}></td>
+	    <td class="tleft"></td>
+	    <td class="tleft">lv3:&nbsp;<{$asrs.lv3_u}>/<{$asrs.lv3_g-$asrs.lv3_u}></td>
+	    <td class="tleft"></td>
+	    <td class="tleft">lv4:&nbsp;<{$asrs.lv4_u}>/<{$asrs.lv4_g-$asrs.lv4_u}></td>
+	    <td class="bright"></td>
+    </tr>
+  <{/foreach}>	  
+  <tfoot>
+	  	<tr>
+			<td colspan="9">
+			<{if $pager}>
+			<div class="pager">
+			页码：<{$pager.current_page}>/<{$pager.total_page}>
+			<{foreach from=$pager.all_pages item=thepage}>
+			    <{if $thepage!=$pager.current_page}>
+					<a href="<{spUrl c=pgadmin a=skillList topage=$thepage}>"><{$thepage}></a>
+			    <{else}>
+			    	<span><{$thepage}></span>
+			    <{/if}>
+			<{/foreach}>
+			</div>
+			<{/if}>
+			</td>
+		</tr>
+	  </tfoot>	
+</table>
+    </section>
+    
+
+<{include file="inc/footer.html"}>
+</body>
+</html>

@@ -1,0 +1,16 @@
+	<ul class="pop_item_list">
+	<{foreach from=$rs item=obj key=k}>
+	<{if $obj}>
+		<li><a onClick="PMS.selected('<{$type}>','<{$k}>','<{$obj}>')"><{$obj}></a></li>
+	<{/if}>
+	<{/foreach}>
+	<{foreach from=$extent item=obj2 key=k2}>
+		<li><a onClick="PMS.selected('<{$type}>','<{$k2.value}>','<{$obj2.name}>')"><{$obj2.name}></a></li>
+	<{/foreach}>
+    <{if !$obj&&!$extent}>
+    	<li>请先选择上一层</li>
+    <{/if}>
+	</ul>
+	<!-- <a class="btn_close" onclick="_$.closewin('#<{$type}>_popwin')" title="关闭"></a> -->
+	<input type="hidden" id="inputid_<{$type}>_id"/>
+	<input type="hidden" id="inputid_<{$type}>_name"/>

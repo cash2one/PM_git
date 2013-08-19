@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <{include file="inc/base.html"}>
+    <link rel="stylesheet" href="themes/css/popwin.css?cache=<{$smarty.const.RD}>" />
+    <link>
+    <style>
+        .select2-container{position: static;}/*hack select2 hidden */
+    </style>
+</head>
+<script type="text/javascript">
+    function selectedNode(id,title)
+    {
+        var url= "<{spUrl c=pgadmin a=medalNode}>" + "&id="+id + "&title="+title;
+        $('#myMedal_popwin div').load(url,function(){_$.popWin("myMedal_popwin");});
+    }
+</script>
+<body class="pgAdmin  userDeafult">
+<{include file="inc/header.html"}>
+<{include file="pg/user/myInformation.html"}>
+<nav class="myNav clearfix">
+    <div class="myNav-inner">
+        <a class="brand">个人空间导航&nbsp;&#187;</a>
+        <ul>
+            <li><a href="#">正在进行的工作</a></li>
+            <li><a href="<{spUrl c=pguser a=myGrowRecord}>">成长记录</a></li>
+            <li><a href="<{spUrl c=pguser a=mySkillGift}>">人物技能</a></li>
+            <li class="active"><a href="<{spUrl c=pguser a=myMedal}>">成长勋章</a></li>
+            <li>
+                <a href="<{spUrl c=pguser a=myMessage}>">系统通知
+                    <span class="unread-msg">0</span>
+                </a>
+            </li>
+            <li><a href="<{spUrl c=pguser a=myLvUp}>">升级要求</a></li>
+            <{if $p_user_id == -1}>
+            	<li><a href="<{spUrl c=pguser a=myStudent}>">学生情况</a></li>
+            	<li><a href="<{spUrl c=pguser a=mySkillNum}>">技能数量</a></li>
+            <{/if}>
+        </ul>
+    </div>
+</nav>
+<div class="wrap">
+
+    <p class="mySkill-common">
+        共<{$allMedalNum}>个勋章，你已获得<{$myMedalNum}>个勋章
+    </p>
+    <table class="table3">
+        <thead>
+        <tr class="btop">
+            <td class="bleft">序号</td>
+            <td class="tleft">勋章图</td>
+            <td class="tleft">成就</td>
+            <td class="tleft">勋章说明</td>
+            <td class="bright">掉落说明</td>
+        </tr>
+        </thead>
+        <{foreach name=table from=$resultArray item=rs}>
+        <tr>
+            <td class="bleft"><{ $smarty.foreach.table.iteration }></td>
+            <td class="tleft"><img src="<{$rs.medal_img}>" width="30" height="30" style="float: left;"></td>
+            <td class="tleft">
+            <a onclick="javascript:selectedNode(<{$rs.medal_id}>,'<{$rs.medal_name}>');"><{$rs.medal_name}></a>
+            </td>
+            <td class="tleft">
+                <{$rs.medal_desc}><br>
+                <{if $rs.get_time}>
+                【<font color="red">获得时间：<{$rs.get_time}></font>】
+                <{else}>
+                【<font color="blue">尚未获得</font>】
+                <{/if}>
+            </td>
+            <td class="bright"><{$rs.medal_mission}></td>
+        </tr>
+        <{/foreach}>
+        <tfoot>
+        <tr>
+            <td colspan="6">
+                <{if $pager}>
+                <div class="pager">
+                    页码：<{$pager.current_page}>/<{$pager.total_page}>
+                    <{foreach from=$pager.all_pages item=thepage}>
+                    <{if $thepage!=$pager.current_page}>
+                    <a href="<{spUrl c=pguser a=myMedal topage=$thepage}>"><{$thepage}></a>
+                    <{else}>
+                    <span><{$thepage}></span>
+                    <{/if}>
+                    <{/foreach}>
+                </div>
+                <{/if}>
+            </td>
+        </tr>
+        </tfoot>
+
+    </table>
+</div>
+<{include file="inc/footer.html"}>
+<div id="myMedal_popwin" class="popwin">
+    <div class="popwin_inner clearfix">
+
+    </div>
+</div>
+</body>
+</html>

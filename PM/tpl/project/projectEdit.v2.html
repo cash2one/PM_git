@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh"> 
+<head>
+<{include file="inc/base.html"}>
+<link type="text/css"  rel="stylesheet" href="themes/css/jquery.ui.all.css" />
+<script type="text/javascript" src="themes/js/jquery-ui.last.js"></script>
+<script type="text/javascript" src="themes/js/jquery.ui.datepicker-zh-CN.js"></script>
+<script type="text/javascript" src="themes/js/vilidate.js"></script>
+<style type="text/css">
+.proj_gra{padding:20px 0}
+.proj_gra h2{padding-left:20px;}
+#project_gra{margin-bottom:20px;}
+</style>
+</head>
+<body class="project proj_edit">
+
+<{include file="inc/header.html"}>
+
+<article class="content">
+
+	<h1>修改 - 项目 - <{$rs.proj_name}></h1>
+	<section class="header clearfix"></section>
+	<section class="boxstyle1 top clearfix">
+    	<h2>基本信息修改</h2>
+		<form action="<{spUrl c=project a=proj_save}>" method="post"  onSubmit="return Validator.Validate(this,2)" >
+        	<div class="clearfix">
+				<dl class="info">
+					<dt>项目名称</dt>
+					<dd><input name="proj_name" type="text" id="proj_name" maxlength="100" datatype="Require" msg="项目名不能为空" class="itext stitle" value="<{$rs.proj_name}>"/></dd>					
+					<dt>项目类型</dt>
+					<dd>
+						<input type="text" class="itext select" id="proj_class_text" autocomplete="off" readonly value="<{$proj_class[$rs.proj_class]}>">
+						<input type="hidden" name="proj_class" id="proj_class" value="<{$rs.proj_class}>">
+					</dd>						
+					<dt>所属产品</dt>
+					<dd>
+						<input type="text" class="itext select" id="prod_id_text" autocomplete="off" readonly value="<{$rs.prod_name}>">
+						<input type="hidden" name="prod_id" id="prod_id" datatype="Require" msg="请选择产品" value="<{$rs.prod_id}>" datatype="Require" msg="请选择产品">
+					</dd>
+					<dt>所属项目集</dt>
+					<dd>
+						<input type="text" class="itext select stitle" id="wrap_id_text" autocomplete="off" readonly value="<{$rs.wrap_name|default:"空集"}>">
+						<input type="hidden" name="wrap_id" id="wrap_id" value="<{$rs.wrap_id}>">
+					</dd>
+	                <dt>项目启动</dt>
+	                <dd>
+	                	<input type="text" name="proj_start" id="proj_start" readonly class="itext date select"  value="<{$rs.proj_start|date_format:"%Y-%m-%d"}>"  datatype="Require" msg="请填写项目启动时间" />
+	                    <select name="proj_startTime" id="proj_startTime" class="itext">
+							<{if $rs.proj_start}><option value="<{$rs.proj_start|date_format:"%H:%M:%S"}>" selected="selected"><{$rs.proj_start|date_format:"%H"}>时</option><{/if}>
+							<{include file="inc/timeSelect.html"}>
+						</select>
+	                </dd>
+	                <dt>项目上线</dt>
+	                <dd>
+	                	<input type="text" name="proj_end" id="proj_end" readonly class="itext date select" value="<{$rs.proj_end|date_format:"%Y-%m-%d"}>" datatype="Require" msg="请填写项目上线时间" />
+                    	<select name="proj_endTime" id="proj_endTime" class="itext">
+							<{if $rs.proj_end}><option value="<{$rs.proj_end|date_format:"%H:%M:%S"}>" selected="selected"><{$rs.proj_end|date_format:"%H"}>时</option><{/if}>
+							<{include file="inc/timeSelect.html"}>
+						</select>
+                    </dd>
+                    <dt class="modiStartEndTimeReason"></dt>
+                    <dd><input type="text" class="itext stitle" id="wrap_id_text" datatype="Require" msg="请填写"></dd>
+				</dl>
+				<dl class="info">
+					<dt>上线网址</dt>
+					<dd><input type="text" class="itext stitle" id="proj_url" name="proj_url" value="<{$rs.proj_url}>"> <a href="http://bbs.nb.netease.com/viewthread.php?tid=810&highlight=" target="_blank" style="color:#0267B1;font-size:12px">专题规范查询</a></dd>
+					<dt>64机地址</dt>
+					<dd><input name="proj_psdUrl" type="text" id="proj_psdUrl" value="<{$rs.proj_psdUrl}>" maxlength="200" class="itext stitle" datatype="Require" msg="请先在64机上建立好备份文件夹，并填在创建项目时填写。"/></dd>
+					<dt class="ps">项目描述</dt>
+					<dd class="ps_data"><textarea name="proj_ps" id="proj_ps" class="itext" style="width:350px;height:100px"><{$rs.proj_ps}></textarea></dd>
+				</dl>
+            </div>
+			<input type="hidden" id="proj_id" name="proj_id" value="<{$rs.proj_id}>" />
+			<p align="center"><input type="submit" value="保存项目修改"  class="btn btn_main1"/></p>
+		</form>
+	</section>
+	
+	<section class="boxstyle2 proj_gra">
+		<h2>项目流程修改</h2>
+		<div id="project_gra"></div>
+        <div id="pnodesWrap">
+        	<form id="nodesEditForm">
+		    <table id="pnodes" class="table_node">
+		      <tr id="pnodes_row_{@numTem}">
+		        <th width="7%" height="25" class="tleft">流程名</th>
+		        <td width="30%">
+                  <input name="pnod_name" type="text" id="pnod_name{@numTem}" maxlength="45" class="itext stitle" value="{@pnod_name}" datatype="Require" msg="流程名不能为空" />
+                </td>
+		        <th width="7%">负责人</th>
+		        <td width="10%">
+					<input name="user_name" type="text"id="pnod_user_name{@numTem}" autocomplete="off" readonly  class="itext date select" value="{@user_name}"/>
+		       		<input name="user_id_n" type="hidden" id="user_id_n{@numTem}" value="{@user_id}" class=""/>
+		        </td>
+		        <th width="10%">时间安排</th>
+		        <td width="21%">
+		            <input type="text" name="pnod_time_s" id="pnod_time_s{@numTem}" readonly class="itext date select" value="{@pnod_time_s}"/> - 
+		            <input type="text" name="pnod_time_e" id="pnod_time_e{@numTem}" readonly class="itext date select" value="{@pnod_time_e}"/>
+		        </td>
+		        <td width="10%">
+					<input name="pnod_id" type="hidden" value="{@pnod_id}">
+					<input type="button" value="" title="删除" class="btnc btnc_del" id="pnodes_rowDelBtn_{@numTem}"/>
+				</td>
+		      </tr>
+		      </table>
+              </form>
+			  <div class="row_add" id="pnodes_rowAddBtn"><a>添加流程</a></div>
+              <div style="text-align:center;margin-top:10px"><a class="btn btn_main1" id="pnodes_SaveAll">保存流程修改</a></div>
+          </div>
+	</section>
+		
+	<section class="boxstyle2 bottom">
+		<a href="<{spUrl c=project_bll a=project_show id=$rs.proj_id}>" class="">&lt;&lt; 返回项目</a>
+	</section>
+	
+	<section class="footer"></section>
+
+</article>
+<{include file="inc/footer.html"}>
+
+<script type="text/javascript">
+	var _tem0='<a onclick="PMS.showNode({@nodeId})" style="width:{@widthFinal}px;margin-left:{@left}px;" class="pnod node"><span style="width:{@widthEnd}px;" class="title-short rowcolor{@state}"><span class="inner">{@user}{@title}【{@stateName}】</span></span></a>';
+
+	function reloadCanlendar(){PMS.loadCalendar("project_gra",{projId:'<{$rs.proj_id}>',type:'node',ps:1,select:1000,"group":[['','',_tem0]]});}
+	
+	function rowadded(n)
+	{
+		$("#pnod_time_s"+n).datepicker();
+		$("#pnod_time_e"+n).datepicker();
+		PMS.showSelectList("users","user_id_n"+n,"pnod_user_name"+n);
+	}
+
+	//执行
+	$(function(){
+				
+		$("#proj_start").datepicker();
+		$("#proj_end").datepicker();
+		reloadCanlendar();
+		PMS.showSelectList("products","prod_id","prod_id_text");
+		PMS.showSelectList("pClass","proj_class","proj_class_text");
+		$("#wrap_id_text").click(function(e) {
+			PMS.showSelectList("wraps","wrap_id","wrap_id_text",{"prod_id":$("#prod_id").val(),"e":e,"autoBind":false,"reload":true});
+		});
+
+		PMS.rowEditorEdit("pnodes","pnod_id","#pnodes tr",<{$proj_node_json}>,{
+		"editSaveUrl":"index.php?c=pnode&a=pnodSave",
+		"editSaveFn":function(n){reloadCanlendar();},
+		"addRowFn":function(n){rowadded(n);},
+		"addSaveAllUrl":"index.php?c=pnode&a=pnodSaveAll",
+		"addSaveFn":function(n,wrapid){reloadCanlendar();},
+		"rowDelUrl":"index.php?c=pnode&a=pnodDel",
+		"rowDelFn":function(n){reloadCanlendar()},
+		"vForm":"nodesEditForm"
+		});	
+	})
+	
+</script>
+</body>
+</html>

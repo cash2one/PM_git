@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="themes/css/push.css?<{$smarty.const.RD}>" />
+<script src="themes/js/jquery.last.js?<{$smarty.const.RD}>"></script>
+<title>信息提醒</title>
+</head>
+<body>
+	<div id="containter">
+		<!-- <iframe src="http://192.168.22.101/oa/?c=notice&a=message&userId=4" frameborder="0" width="100" height="200"></iframe> -->
+		<{if $msglist}>
+		<{foreach from=$msglist item=rs}>
+		<dl id="row_<{$rs.mu_id}>">
+			<dt><img src="themes/images/userface/userface_<{$rs.user_id}>.jpg" alt="" /></dt>
+            <{if $rs.msg_type==0}>
+				<dd class="list_content">
+					<p></p>
+					<p class="msg_context"><{$rs.msg_context}></p>
+				</dd>
+				<dd class="controler">
+				<a href="<{$smarty.const.APP_URL}>?c=webservice&a=loginJump&type=index&userAccount={@userAccount}&userPwd={@userPwd}" target="blank" class="pmLink">进入系统</a>
+                </dd>
+            <{elseif ($rs.msg_type==2||$rs.msg_type==1)}>
+				<dd class="list_content">
+					<p><{$rs.prod_name}> > <{$rs.proj_name}> > <{$rs.pnod_name}></p>
+					<p class="msg_context"><{$rs.msg_context}></p>
+				</dd>
+				<dd class="controler">
+				<{if $rs.msg_type==2&&$rs.pnod_state==17&&$rs.msg_response==1}>
+					<!-- <a class="btnFinish" onclick="setState(<{$rs.proj_id}>,<{$rs.pnod_id}>,15,'pnod_state',<{$rs.mu_id}>)" href="javascript:void(0)">完成</a>-->
+                    <a href="<{$smarty.const.APP_URL}>?c=webservice&a=loginJump&type=index&userAccount={@userAccount}&userPwd={@userPwd}" target="blank" class="pmLink">进入审核</a>
+                    
+				<{/if}>
+				<{if $rs.msg_type==2&&$rs.pnod_state==15&&$rs.msg_response==1}>
+					<span class="controled">已经通过</span>
+				<{/if}>
+				<{if $rs.msg_type==1&&$rs.proj_state==20&&$rs.msg_response==1}>
+					<span class="controled">已经通过</span>
+				<{/if}>
+				<{if $rs.msg_type==1&&$rs.proj_state==20&&$rs.msg_response==2}>
+					<a class="btnFinish" onclick="setState(<{$rs.proj_id}>,'',15,'proj_state',<{$rs.mu_id}>)" href="javascript:void(0)">完成</a>
+				<{/if}>
+				<{if $rs.msg_type==1&&$rs.proj_state==15&&$rs.msg_response==2}>
+					<span class="controled">已完成</span>
+				<{/if}>
+				<{if $rs.msg_type==1&&$rs.proj_state==15&&$rs.msg_response==3}>
+					<a class="btnDone" onclick="setState(<{$rs.proj_id}>,'',10,'proj_state',<{$rs.mu_id}>)" href="javascript:void(0)">归档</a>
+				<{/if}>
+				<{if $rs.msg_type==1&&$rs.proj_state==10&&$rs.msg_response==3}>
+					<span class="controled">已归档</span>
+				<{/if}>
+				
+				<{if $rs.msg_type==1&&$rs.proj_state==40&&$rs.msg_response==1}>
+					<a href="<{$smarty.const.APP_URL}>?c=webservice&a=loginJump&type=projectC&projId=<{$rs.proj_id}>&userAccount={@userAccount}&userPwd={@userPwd}" target="blank" class="pmLink">查看项目</a>
+				<{else}>
+					<a href="<{$smarty.const.APP_URL}>?c=webservice&a=loginJump&type=project&projId=<{$rs.proj_id}>&userAccount={@userAccount}&userPwd={@userPwd}" target="blank" class="pmLink">查看项目</a>
+            	<{/if}>
+                </dd>
+            <{elseif $rs.msg_type==3}>
+				<dd class="list_content">
+					<p>周报知会</p>
+					<p class="msg_context"><{$rs.msg_context}></p>
+				</dd>
+				<dd class="controler">
+				<a href="<{$smarty.const.APP_URL}>?c=webservice&a=loginJump&type=weekreport&id=<{$rs.proj_id}>&userAccount={@userAccount}&userPwd={@userPwd}" target="blank" class="pmLink">查看周报</a>
+                </dd>
+			<{/if}>
+		</dl>
+		<{/foreach}>
+		<{else}>
+		<p class="nomessage">没有相应的信息</p>
+		<{/if}>
+	</div>
+<script src="themes/js/notice.js?<{$smarty.const.RD}>"></script>
+<script type="text/javascript">window.parent.setTitle("PM提醒 - 消息");</script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<{if $type==0 }>
+	<h2>技能-<{$result.skill_name}></h2>
+	<hr>
+	<dl class="nodeInfo clearfix">
+	    <dt><strong>技能定义：</strong></dt>
+		<dd class="showSkillNode">
+            <textarea><{$result.skill_define}></textarea>      
+	    </dd>
+	    <hr>
+	    <dt><strong>技能要素：</strong></dt>
+	    <dd class="showSkillNode">
+            <textarea><{$result.skill_element}></textarea>      
+	    </dd>
+	</dl>
+<{else}>
+    <h2>技能-<{$result.skill_name}>-lv<{$result.skill_lv}>-<{$result.skill_title}></h2>
+	<hr>
+	<dl class="nodeInfo clearfix">
+	    <dt><strong>技能等级要求说明：</strong></dt>
+	    <dd class="showSkillNode">
+            <textarea><{$result.skill_desc}></textarea>      
+	    </dd>
+	</dl>
+<{/if}>
+<div class="btn_list">
+	<a class="btn_close" onclick="_$.closewin('#myMessage_popwin')" title="关闭"></a>
+</div>

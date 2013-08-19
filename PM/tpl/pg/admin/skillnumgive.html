@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<{include file="inc/base.html"}>
+<link rel="stylesheet" href="themes/css/popwin.css?cache=<{$smarty.const.RD}>" />
+</head>
+<body class="pgAdmin skillNum">
+<{include file="inc/header.html"}>
+<div class="wrap">
+<{include file="pg/admin/pgadminNav.html"}>
+<article class="content">
+<section class="search">
+	<h1>列表 - 技能数量一览</h1>
+</section>
+		<p class="user-skill-select">
+         导师：<select class="teachlist" id="teachlist">
+         <{foreach from=$all_teacher item=atrs}>
+            <option value="<{$atrs.pg_user_id}>"><{$atrs.user_name}></option>
+          <{/foreach}>
+        </select>
+            <span class="loading">Loading……</span>
+        </p>
+        <br>
+        
+        <p class="user-skill-select" id="t_students">
+         学生：实习:<font>8</font>个，试用:<font>8</font>个，初级:<font>8</font>个，中级:<font>8</font>个，高级:<font>8</font>个。
+        <input id="suggest" type="button" value="使用建议">
+        <a href="javascript:;" class="edit-sure" id="all-init-sure" style="position: relative;left: 44px;">确认配置数量</a>
+        </p>
+        <br>
+        
+<table id="table_num" class="table3">
+<thead>
+<tr class="btop">
+    <td class="bleft">序号</td>
+    <td class="tleft" colspan="4">技能名称</td>
+    <td class="tleft" colspan="3">已用数量/剩余数量</td>
+    <td class="bright"></td>
+</tr>
+  </thead>
+  <{foreach name=table1 from=$all_kills item=asrs}>
+  	<tr class="skill-name">
+        <td class="bleft"><{ $smarty.foreach.table1.iteration }></td>
+        <td class="tleft" colspan="7"><{$skill_type[$asrs.skill_type]}>——<{$asrs.skill_name}></td>
+	    <td class="bright"></td>
+    </tr>
+    <tr data_id="skill_id_<{$asrs.skill_id}>">
+        <td class="bleft"><input class="skill_num_id" type="hidden" style="width:35px;" value="0"></td>
+        <td class="tleft">lv1:</td>
+        <td class="tleft"><font class="lv1_u">0</font>/<input class="lv1_g" type="text" style="width:35px;" value="0"></td>
+	    <td class="tleft">lv2:</td>
+	    <td class="tleft"><font class="lv2_u">0</font>/<input class="lv2_g" type="text" style="width:35px;" value="0"></td>
+	    <td class="tleft">lv3:</td>
+	    <td class="tleft"><font class="lv3_u">0</font>/<input class="lv3_g" type="text" style="width:35px;" value="0"></td>
+	    <td class="tleft">lv4:</td>
+	    <td class="bright"><font class="lv4_u">0</font>/<input class="lv4_g" type="text" style="width:35px;" value="0"></td>
+    </tr>
+  <{/foreach}>	  
+  <tfoot>
+	  	<tr>
+			<td colspan="9">
+			<{if $pager}>
+			<div class="pager">
+			页码：<{$pager.current_page}>/<{$pager.total_page}>
+			<{foreach from=$pager.all_pages item=thepage}>
+			    <{if $thepage!=$pager.current_page}>
+					<a href="<{spUrl c=pgadmin a=skillList topage=$thepage}>"><{$thepage}></a>
+			    <{else}>
+			    	<span><{$thepage}></span>
+			    <{/if}>
+			<{/foreach}>
+			</div>
+			<{/if}>
+			</td>
+		</tr>
+	  </tfoot>	
+</table>
+<br>
+<p class="user-skill-select" style="text-align: center;"><a href="javascript:;" class="edit-sure" id="all-init-sure">确认配置数量</a></p>
+</article>
+</div>
+<{include file="inc/footer.html"}>
+</body>
+<script>
+var student_change = 0;
+var use_suggest = 0;
+$('#suggest').hide();
+getData($('#teachlist').val());
+$('.teachlist').select2({
+    width:'150px'
+});
+
+$('.teachlist').change(function(){
+	getData($(this).val());
+});
+$("#table_num tr input").keyup(function(){
+	this.value=this.value.replace(/\D/g,'');
+});
+$("#table_num tr input").blur(function(){
+	if(isNaN(this.value)||this.value[0]==0||this.value =="") {
+		this.value="0";
+	}
+});
+$('#suggest').click(function(){
+	alert("提示：当前的建议只针对试用的学生。");
+//	文档能力  22
+//	信息设计能力 23
+//	手绘原型能力 24
+//	正式原型能力 25
+//	PPT能力 50
+//	会议能力 26
+//	提案能力 27
+//	设计把控能力 28
+//	数据分析能力 34
+//	专业研究能力 35
+//	业务理解 38
+//	沟通表达 43
+//	组织协调 44
+//	团队合作 45
+
+//对以上给建议，每个试用学生给对应技能给8个。      一下是skill_id,需要从数据库中查找
+	var group = [22,23,24,25,50,26,27,28,34,35,38,43,44,45];
+	
+	for(var i=0;i<group.length;i++){
+		var tr = $("#table_num tr:[data_id='skill_id_"+group[i]+"']");
+		var lv1_g = $(tr).find('.lv1_g');
+		var lv2_g = $(tr).find('.lv2_g');
+		$(lv1_g).val(parseInt(lv1_g.val())+8*student_change);
+		$(lv2_g).val(parseInt(lv2_g.val())+8*student_change);
+	}
+	use_suggest = 1;
+	$(this).hide();
+});
+$("#all-init-sure").live('click', function () {
+    $(".loading").css("visibility", "visible");
+    var new_data = new Array();
+    
+    $("#table_num tr").each(function (index){
+    	var skill_id = $(this).attr('data_id');
+    	if(skill_id != null){
+    		var skill_num_id = $(this).find('.skill_num_id').val();
+    		skill_id = skill_id.split("_")[2];
+    		
+    		var lv1_u = parseInt($(this).find('.lv1_u').html());
+    		var lv2_u = parseInt($(this).find('.lv2_u').html());
+    		var lv3_u = parseInt($(this).find('.lv3_u').html());
+    		var lv4_u = parseInt($(this).find('.lv4_u').html());
+    		
+    		var lv1_g = parseInt($(this).find('.lv1_g').val())+lv1_u;
+    		var lv2_g = parseInt($(this).find('.lv2_g').val())+lv2_u;
+    		var lv3_g = parseInt($(this).find('.lv3_g').val())+lv3_u;
+    		var lv4_g = parseInt($(this).find('.lv4_g').val())+lv4_u;
+    		if(lv1_g!=0||lv2_g!=0||lv3_g!=0||lv4_g!=0){
+    			new_data.push({'skill_num_id':skill_num_id,'skill_id':skill_id,'lv1_g':lv1_g,'lv2_g':lv2_g,'lv3_g':lv3_g,'lv4_g':lv4_g});
+    		}else if(skill_num_id!=0 ){
+    			
+        		if(lv1_u==0&&lv2_u==0&&lv3_u==0&&lv4_u==0){
+        			new_data.push({'skill_num_id':skill_num_id,'delete':1});
+        		}else{
+        			new_data.push({'skill_num_id':skill_num_id,'skill_id':skill_id,'lv1_g':lv1_g,'lv2_g':lv2_g,'lv3_g':lv3_g,'lv4_g':lv4_g});
+        		}
+    		}
+    	}
+    });
+    $.ajax({
+        url:'index.php?c=pgadmin&a=skillnumgive_ajax&use_suggest='+use_suggest,
+        type:'POST',
+        data:{'new_data':new_data,'teacher_id':$('#teachlist').val()},
+        success:function (data) {
+            $(".loading").css("visibility", "hidden");
+            alert('更新成功');
+            getData($('#teachlist').val());
+        },
+        error:function () {
+            alert('出错了！')
+        }
+    })
+});
+function getData(pg_user_id)
+{
+	$(".loading").css("visibility", "visible");
+	$('#suggest').hide();
+    $('.lv1_u').html(0);$('.lv1_g').val(0);
+    $('.lv2_u').html(0);$('.lv2_g').val(0);
+    $('.lv3_u').html(0);$('.lv3_g').val(0);
+    $('.lv4_u').html(0);$('.lv4_g').val(0);
+    use_suggest = 0;
+    $.ajax({
+        url:'index.php?c=pgadmin&a=get_skillnumgive_ajax&teacher_id='+pg_user_id,
+        type:'GET',
+        success:function (data) {
+            $(".loading").css("visibility", "hidden");
+            var result = JSON.parse(data);
+            var student_count = result['students'];
+            var fonts = $('#t_students font');
+            for(var i=1;i<6;i++) {
+            	$(fonts[i-1]).html(0);
+            }
+            for (var key in student_count) {
+            	var rs = student_count[key];
+            	$(fonts[rs.job_lv_num-1]).html(rs.count);
+            }
+            student_change = parseInt(result['add_num'][0].num);
+            if(student_change!=null&&(student_change > 0)) {
+            	$('#suggest').show();
+            }
+            
+            var rows = result['skills'];
+            for (var key in rows) {
+            	debugger;
+            	var rs = rows[key];
+            	var tr = $("#table_num tr:[data_id='skill_id_"+rs.skill_id+"']");
+            	$(tr).find('.skill_num_id').val(rs.skill_num_give_id);
+            	$(tr).find('.lv1_u').html(rs.lv1_u);$(tr).find('.lv1_g').val(rs.lv1_g-rs.lv1_u);
+            	$(tr).find('.lv2_u').html(rs.lv2_u);$(tr).find('.lv2_g').val(rs.lv2_g-rs.lv2_u);
+            	$(tr).find('.lv3_u').html(rs.lv3_u);$(tr).find('.lv3_g').val(rs.lv3_g-rs.lv3_u);
+            	$(tr).find('.lv4_u').html(rs.lv4_u);$(tr).find('.lv4_g').val(rs.lv4_g-rs.lv4_u);
+            }
+        },
+        error:function () {
+            alert('鼠标别点那么快！人家还在loading！')
+        }
+    })
+}
+
+</script>
+</html>

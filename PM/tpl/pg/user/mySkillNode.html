@@ -1,0 +1,28 @@
+<h2>技能-<{$skill.skill_name}></h2>
+<hr>
+<dl class="nodeInfo clearfix">
+    <dt><strong>技能定义：</strong></dt>
+    <dd class="showSkillNode">
+            <textarea><{$skill.skill_define}></textarea>      
+	</dd>
+    
+    <dt><strong>技能要素：</strong></dt>
+    <dd class="showSkillNode">
+            <textarea><{$skill.skill_element}></textarea>      
+	</dd>
+    <hr>
+    <{foreach name=table from=$skilllv item=rs}>
+    <dt><strong>lv<{$rs.skill_lv}>标题：</strong></dt>
+	<dd class="showSkillNode">
+    	<{$rs.skill_title}><br/>
+    </dd>
+    <dt><strong>lv<{$rs.skill_lv}>说明：</strong></dt>
+    <dd class="showSkillNode">
+            <textarea><{$rs.skill_desc}></textarea>      
+	</dd>
+	<hr>
+    <{/foreach}>
+</dl>
+<div class="btn_list">
+	<a class="btn_close" onclick="_$.closewin('#myMessage_popwin')" title="关闭"></a>
+</div>

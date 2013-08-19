@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh"> 
+<head>
+<meta charset="utf-8">
+<{include file="inc/base.html"}>
+</head>
+<body class="pgAdmin mission">
+<{include file="inc/header.html"}>
+<div class="wrap">
+<{include file="pg/admin/pgadminNav.html"}>
+<article class="content">
+<section class="search">
+	<h1>列表 - 任务模板一览</h1>
+    <div class="tab searchTab1">
+        <a id="searchTab1" href="<{spUrl c=pgadmin a=missionlist}>">表</a>
+        <{if $smarty.const.PM_power==0}>
+        <span class="dot">&nbsp;</span>
+        <a id="searchTab2" href="<{spUrl c=pgadmin a=mtplAdd}>" title="添加任务模板">加</a>
+        <{/if}>
+    </div>
+</section>
+<table class="table3">
+<thead>
+  <tr class="btop">
+    <td class="bleft">模板id</td>
+    <td class="tleft">模板名称</td>
+    <td class="bright">设置</td>
+  </tr>
+  </thead>
+  <{foreach from=$mtpllist item=rs}>
+  <tr>
+    <td class="bleft"><{$rs.mtpl_id}></td>
+    <td class="tleft"><{$rs.mtpl_name}></td>
+    <td class="bright"><{if $isManager}><a href="<{spUrl c=pgadmin a=mtplEdit mtplid=$rs.mtpl_id}>">修改</a>&nbsp;<a href="javascript:;" data-id="<{$rs.mtpl_id}>" class="del-btn">删除</a><{/if}></td>
+  </tr>
+  <{/foreach}>
+	<tfoot>
+	  	<tr>
+			<td colspan="6">
+			<{if $pager}>
+			<div class="pager">
+			页码：<{$pager.current_page}>/<{$pager.total_page}>
+			<{foreach from=$pager.all_pages item=thepage}>
+			    <{if $thepage!=$pager.current_page}>
+					<a href="<{spUrl c=pgadmin a=missionList topage=$thepage}>"><{$thepage}></a>
+			    <{else}>
+			    	<span><{$thepage}></span>
+			    <{/if}>
+			<{/foreach}>
+			</div>
+			<{/if}>
+			</td>
+		</tr>
+	  </tfoot>	  
+  
+</table>
+</article>
+</div>
+<{include file="inc/footer.html"}>
+</body>
+<script>
+    $(function(){
+        $(".del-btn").click(function(){
+            if(confirm('确定删除？')){
+                var id=$(this).attr('data-id');
+                var parentEle=$(this).parent().parent();
+                $.get('<{spUrl c=pgadmin a=mtpldel_do }>&mtpl_id='+id,function(data){
+                    if(JSON.parse(data).status=='200'){
+                        alert('删除成功！');
+                        parentEle.detach();
+                    }
+                })
+            }
+        })
+    })
+</script>
+</html>

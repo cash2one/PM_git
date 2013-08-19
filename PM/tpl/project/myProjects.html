@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh"> 
+<head>
+<{include file="inc/base.html"}>
+<link type="text/css"  rel="stylesheet" href="themes/css/jquery.ui.all.css" />
+<script type="text/javascript" src="themes/js/jquery-ui.last.js"></script>
+<script type="text/javascript" src="themes/js/jquery.ui.datepicker-zh-CN.js"></script>
+</head>
+
+<body class="mywork myProjects">
+<{include file="inc/header.html"}>
+
+<article class="content">
+	<section class="search">
+		<form method="post" action="<{spUrl c=project a=show oUserId=$oUserId}>" onsubmit="return PMS.checkSearch()">
+			<span>搜索</span>
+			<input type="text" class="itext select" name="spn" id="spn" readonly value="<{$prod_name|default:"选择产品"}>"/>
+			<input type="hidden" name="spid" id="spid" value="<{$prod_id|default:"0"}>"/>
+			<input type="text" class="itext select date" id="ssn" readonly value="<{$state_list[$proj_state]|default:"选择状态"}>"/>
+			<input type="hidden" name="ssid" id="ssid" value="<{$proj_state}>"/>
+			<input type="text" class="itext select date" id="sd1" name="sd1" readonly value="<{$search_dates|default:"开始日期"}>"/> <span>-</span>
+			<input type="text" class="itext select date" id="sd2" name="sd2" readonly value="<{$search_datee|default:"结束日期"}>"/>
+			<input type="text" class="itext" name="sk" id="search_sk" value="<{$search_key|default:"输入项目标题关键字"}>" onclick="if(this.value == '输入项目标题关键字')this.value = ''" />
+			<input type="submit" value="" title="查询" id="search_btn" class="btnc btnc_search"/>
+		</form>
+	</section>
+	
+	<{if $rows}>
+	    <table class="table3">
+	      <thead>
+	      <tr class="btop">
+	      	<td width="10%" class="bleft">产品</td>
+			<td width="10%">类型</td>
+	        <td width="45%">项目</td>
+	        <td width="15%">时间</td>
+	        <td width="20%"class="bright">进度</td>
+	      </tr>
+	      </thead>
+	      <{foreach from=$rows item=rs}>
+	      <tr class="rowcolor<{$rs.proj_state}> <{if $rs.delay>0}>delay<{/if}>">
+	        <td class="bleft"><{$rs.prod_name}></td>
+			<td><{$projClass[$rs.proj_class]|default:"其它"}></td>
+	        <td><a href="<{spUrl c=project_bll a=project_show id=$rs.proj_id}>" target="_blank"><{if $rs.wrap_name!=""}>【<{$rs.wrap_name}>】<{/if}><{$rs.proj_name}></a></td>
+	        <td class="tleft fNum"><{$rs.proj_start|date_format:"%m/%d"}> - <{$rs.proj_end|date_format:"%m/%d"}><span class="delayText" title="已延期<{$rs.delay}>天">(<{$rs.delay}>)</span></td>
+	        <td class="bright"><span class="stateicon stateicon_<{$rs.proj_state}>"><{$state_list[$rs.proj_state]}></span></td>
+	      </tr>
+	      <{/foreach}>
+		  <tfoot>
+		  	<tr>
+				<td colspan="5">
+				<{if $pager}>
+				<div class="pager">
+				<form action="<{spUrl c=project a=show oUserId=$oUserId}>" method="post" id="pagerForm">
+					页码：<{$pager.current_page}>/<{$pager.total_page}>
+					<input type="button" value="上一页" id="pagerPrev"/>
+					<input type="button" value="下一页" id="pagerNext"/>
+					<input type="text" class="itext ipage" id="pagerToPage"/> <input type="submit" value="GO" id="pagerGo"/>
+					<input type="hidden" name="p" value="<{$pager.current_page}>"/>
+					<input type="hidden" name="ssid" value="<{$proj_state}>"/>
+					<input type="hidden" name="spid" value="<{$prod_id}>"/>
+					<input type="hidden" name="sd1" value="<{$search_dates>"/>
+					<input type="hidden" name="sd2" value="<{$search_datee}>"/>
+					<input type="hidden" name="type" value="<{$type}>"/>
+					<input type="hidden" name="sk" value="<{$search_key}>"/>
+				</form>
+				<script type="text/javascript">PMS.listPage('<{$pager.current_page}>','<{$pager.total_page}>')</script>
+				</div>
+				<{/if}>
+				</td>
+			</tr>
+		  </tfoot>
+	    </table>
+	<{else}>
+		没的查找到数据。
+	<{/if}>
+	
+</article>
+<{include file="inc/footer.html"}>
+<script type="text/javascript">
+PMS.showSelectList("products","spid","spn");
+PMS.showSelectList("pState","ssid","ssn",{"type":"public"});
+$("#sd1").datepicker();
+$("#sd2").datepicker();
+</script>
+</body>
+</html>

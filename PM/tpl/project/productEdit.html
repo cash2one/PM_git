@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh"> 
+<head>
+<meta charset="utf-8">
+<{include file="inc/base.html"}>
+</head>
+<body class="manage products">
+<{include file="inc/header.html"}>
+<article class="content">
+
+<section class="search">
+	<h1>添加 - 产品</h1>
+	<div class="tab searchTab2">
+	<{include file="project/productNav.html"}>
+	</div>
+</section>
+
+<form action="<{if $product}><{spUrl c=product a=editDo prod_id=$product.prod_id}><{else}><{spUrl c=product a=addDo}><{/if}>" method="post"  onSubmit="return Validator.Validate(this,2)">
+	<section class="header clearfix"></section>
+	<section class="boxstyle1 top clearfix">
+	<table class="table_node">
+	  <tr>
+	    <td>产品名</td>
+	    <td><span class="li2">
+	      <input name="prod_name" type="text" id="prod_name" value="<{$product.prod_name}>" maxlength="45"  datatype="Require" msg="产品名不能为空" class="itext title"/>
+	    </span></td>
+	  </tr>
+	  <tr>
+	    <td>英文缩写</td>
+	    <td><span class="li2">
+	      <input name="prod_ename" type="text" id="prod_ename" value="<{$product.prod_ename}>" maxlength="20"  datatype="Require" msg="英文给缩写不能为空" class="itext stitle"/>
+	    </span></td>
+	  </tr>
+	  <tr>
+	    <td>分类</td>
+	    <td><span class="li2">
+			<select class="itext" name="prod_type" id="prod_type">
+				<option></option>
+				<{foreach from=$productType item=v key=k}>
+				<option value="<{$k}>" <{if $product.prod_type==$k}>selected="selected"<{/if}>><{$v}></option>
+				<{/foreach}>
+			</select>
+	    </span></td>
+	  </tr>
+	  <tr>
+	    <td>测试机地址</td>
+	    <td><span class="li2">
+	      <input name="prod_Url" type="text" id="prod_Url" value="<{$product.prod_Url}>" maxlength="30" class="itext stitle"/>
+	    </span></td>
+	  </tr>  
+	  <tr>
+	    <td>负责人<span style="color:#F00;cursor:pointer" id="btn_select">[清空]</span></td>
+	    <td>
+		<input id="user_name" value="<{$product.prod_unamelist|default:"待定"}>" readonly class="itext stitle select"/></input>
+		<input name="user_id" type="hidden" value="<{$product.prod_uidlist|default:"0"}>"  id="user_id"/>
+		</td>
+	  </tr>
+	</table>
+	
+	</section>
+	<section class="boxstyle2 bottom">
+		<input name="" type="submit" value="提交" class="btn btn_main1"/> <a href="<{spUrl c=product a=slist}>" class="btn btn_main2">返回列表</a>
+	</section>
+	<section class="footer"></section>
+	</form>
+</article>
+<{include file="inc/footer.html"}>
+<script type="text/javascript">
+
+PMS.showSelectList("users","user_id","user_name");
+
+$('#btn_select').click(function(){$('#user_name').val('');$('#user_id').val('0');});
+
+PMS.selected=function(type,user_id,user_name)
+{
+	var obj_uid=$('#'+$('#inputid_'+type+'_id').val());
+	var obj_una=$('#'+$('#inputid_'+type+'_name').val());
+	if(obj_uid.val()==0)
+	{
+		obj_uid.val(user_id);
+		obj_una.val(user_name);
+	}
+	else
+	{
+		obj_uid.val(obj_uid.val()+'|'+user_id);
+		obj_una.val(obj_una.val()+'|'+user_name);
+	}
+}
+
+</script>
+</body>
+</html>

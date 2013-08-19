@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="themes/css/push.css" />
+<style type="text/css">
+h1{text-align:center;padding-top:20px;}
+.formSeletor{font-size:14px;line-height:30px;margin-top:10px;}
+.formSeletor label{padding-left:100px}
+#describe {height: 40px;line-height: 22px;margin-left: 100px;width: 480px;}
+.submit{display:block;margin:10px auto;width:80px;height:30px}
+.msg{padding:30px;border:#FFF 1px solid;text-align:center;margin:50px;background:#A3DAEE}
+.today{text-align:right;padding-right:60px;}
+.notice{font-size:12px;color:#666}
+</style>
+<script src="themes/js/jquery.last.js?<{$smarty.const.RD}>"></script>
+<title>信息提醒</title>
+</head>
+<body>
+
+	<div id="containter">
+		<{if $attendId}>
+		<h1>您今天可能迟到哦，做个备忘吧：</h1>
+		<form method="post" action="index.php?c=notice&a=attenDo&attendId=<{$attendId}>" class="formSeletor">
+			<label><input type="radio" name="lateType" value="1" /> 准时</label><br />
+			<label><input type="radio" name="lateType" value="2" /> 因昨晚加班</label><br />
+			<label><input type="radio" name="lateType" value="3" /> 请了假</label><br />
+			<label><input type="radio" name="lateType" value="4" checked="checked" /> 迟到</label><br />
+			<label>备注<span class="notice">(加班内容等附加说明、可留空)</span><br><textarea name="describe" id="describe" class="itext"></textarea>
+			<input type="submit" value="提交" class="submit" />
+			<p class="today notice"><{$today}></p>
+			<p class="today notice">仅作备忘参考，不作考勤依据</p>
+		</form>
+		<{else}>
+			<div class="msg">操作成功！<br /><br /><br /><br /><input type="button" value="关闭" class="submit" onclick="closeWin()"/></div>
+		<{/if}>
+	</div>
+<script src="themes/js/notice.js?<{$smarty.const.RD}>"></script>
+<script type="text/javascript">
+window.parent.setTitle("PM提醒 - 考勤备忘");
+function closeWin(){window.parent.closeWin();}
+</script>
+</body>
+</html>

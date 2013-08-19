@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link type="text/css"  rel="stylesheet" href="themes/css/base.css" />
+<title>网站组项目管理系统 帐号开通</title>
+<script type="text/javascript" src="themes/js/jquery.last.js"></script>
+<script type="text/javascript" src="themes/js/vilidate.js"></script>
+</head>
+<body>
+<div class="main">
+<h1 style="text-align:center">网站组项目管理系统 帐号开通</h1>
+<form action="<{spUrl c=user a=apply_do}>" method="post" onSubmit="return Validator.Validate(this,2)">
+
+<table width="636" class="table1 f2" style="width:420px;margin:10px auto">
+
+  <tr>
+    <td>职能：</td>
+    <td>
+      <select name="role_id" id="role_id" class="itext" >
+        <option value="1">编辑</option>
+        <option value="2">设计师</option>
+        <option value="3">前端技术</option>
+      </select>
+    </td>
+  </tr>
+  
+  <tr>
+    <td width="80">姓名：</td>
+    <td width="328">
+      <input name="user_name" type="text" id="user_name" value="<{$user.user_name}>" class="itext stitle"  datatype="Require" msg="姓名不能为空"/>
+    </td>
+  </tr>
+  <tr>
+    <td>登陆帐号：</td>
+    <td>
+      <input onblur="sAccountExit(this)" name="user_account" type="text" id="user_account" value="<{$user.user_account}>" class="itext stitle" datatype="Require" msg="帐号不能为空" onburd/>
+	  <span id="account_error" style="padding:0 10px">由字母和数字组成</span>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top">密码：</td>
+    <td>
+		<span style="font-size:12px;color:#999">经MD5多重加密存放,任何人均无法查看原始密码。</span>
+        <input name="user_pwd" type="password" id="user_pwd" value="" class="itext stitle"  datatype="Require" msg="密码不能为空"/>
+      </td>
+  </tr>
+  <tr>
+  	<td valign="top">重复密码：</td>
+  	<td>
+		<input name="user_pwd2" type="password" id="user_pwd2" value="" class="itext stitle"  datatype="Require" msg="重复密码不能为空" onblur="checkPassWord()"/>
+		<p id="pwd_error" style="padding:0 10px;display:none"></p>
+	</td>
+  	</tr>
+  <tr>
+    <td>邮件：</td>
+    <td>
+      <input name="user_mail" type="text" id="user_mail" value="<{$user.user_mail}>" class="itext stitle" datatype="Require" msg="邮件不能为空"/>
+    </td>
+  </tr>
+  <tr id="row_cellphone">
+    <td>手机号码：</td>
+    <td>
+      <input name="user_cellphone" type="text" id="user_cellphone" value="<{$user.user_cellphone}>" class="itext stitle"/>
+    </td>
+  </tr>
+  <tr id="row_telephone">
+    <td>座机号码：</td>
+    <td>
+      <input name="user_telephone" type="text" id="user_telephone" value="<{$user.user_telephone}>" class="itext stitle"/>
+    </td>
+  </tr>    
+  <tr id="row_birthday1">
+    <td>生日：</td>
+    <td>
+		<label><input type="radio" name="user_bdaytype" <{if $user.user_bdaytype=="3"||$user.user_bdaytype==""}> checked="checked" <{/if}> value="3" class="calendarClass"/> 新历</label>　　
+		<label><input type="radio" name="user_bdaytype" <{if $user.user_bdaytype=="4"}> checked="checked" <{/if}>  value="4" class="calendarClass"/> 农历</label>
+   </td>
+  </tr>  
+  <tr id="row_birthday2">
+    <td>&nbsp;</td>
+    <td>
+		<select name="user_month" id="user_month" style="width:80px;text-align:center" class="itext"></select>月　
+		<select name="user_day" id="user_day" style="width:80px;text-align:center" class="itext"></select>日
+   </td>
+  </tr>
+  <tr>
+  	<td>描述：</td>
+  	<td><input name="user_info" id="user_info" type="text" class="itext stitle" value="<{$user.user_info|escape:'html'}>" maxlength="200"/>(200字内)</td>
+  </tr>
+  <tr>
+    <td colspan="2">
+		  <input name="input" type="submit" value="提交" class="btn" style="margin:20px 0 0 130px;" />
+	</td>
+    </tr>
+</table>
+</form>
+
+<{include file="inc/footer.html"}>
+
+<script>
+	function sAccountExit(e)
+	{
+		var user_id="<{$user.user_id}>";
+		if(user_id=="")
+			user_id=0;
+		var user_account=$.trim(e.value);
+		
+		$.get(
+			  '<{spUrl c=user a=isAccountExit}>&user_account='+user_account+'&user_id='+user_id,
+			  function(rs)
+			  {
+				  if(rs==0)
+				  	$('#account_error').html('可用').css('color','green');
+				  else
+				  	$('#account_error').html('不可用').css('color','red');
+			  })
+	}
+	
+	function checkPassWord(e)
+	{
+		var pwd1=$.trim($('#user_pwd').val());
+		var pwd2=$.trim($('#user_pwd2').val());
+		if(pwd1!=pwd2)
+		{
+			$('#pwd_error').html('两次输入的密码不一样').css('color','red').fadeIn();
+		}
+		else
+		{
+			$('#pwd_error').html('').css('color','red').fadeOut();
+		}
+	}
+	
+	$(function()
+	{
+		PMS.date.create("user_month","month",1);PMS.date.create("user_day","day",1);
+		$(".calendarClass").click(function(){
+										   if($(this).val()==3){PMS.date.create("user_month","month",1);PMS.date.create("user_day","day",1);}
+										   else if($(this).val()==4){PMS.date.create("user_month","month_o",1);PMS.date.create("user_day","day_o",1);}
+										   })
+	})	
+</script>
+</body>
+</html>

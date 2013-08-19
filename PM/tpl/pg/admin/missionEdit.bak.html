@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+    <{include file="inc/base.html"}>
+</head>
+<body class="pgAdmin mission">
+<{include file="inc/header.html"}>
+<div class="wrap">
+    <{include file="pg/admin/pgadminNav.html"}>
+    <article class="content">
+
+        <section class="search">
+            <h1>修改 - 任务模板</h1>
+
+            <div class="tab searchTab1">
+                <a id="searchTab2" href="<{spUrl c=pgadmin a=missionlist}>">表</a>
+                <{if $smarty.const.PM_power==0}>
+                <span class="dot">&nbsp;</span>
+                <a id="searchTab1" href="<{spUrl c=pgadmin a=mtplAdd}>" title="添加任务模板">加</a>
+                <{/if}>
+            </div>
+        </section>
+
+        <form method="post" id="mtpl-form">
+            <section class="header clearfix"></section>
+            <section class="boxstyle1 top clearfix" style="padding-left: 10px;">
+                <table class="table_node" style="width: 680px;padding: 0;">
+                    <tr>
+                        <td class="label">任务模板名</td>
+                        <td><span class="li2">
+	      <input name="mtpl-name" type="text" id="mtpl-name" value="<{$mtplDetails.mtpl_name}>" maxlength="45"
+                 datatype="Require" msg="任务模板名不能为空" class="itext stitle"/>
+	    </span></td>
+                    </tr>
+                    <tr>
+                        <td class="label">任务级别</td>
+                        <td><span class="li2">
+	     <select id="mtpl-lv">
+             <option>入门级别</option>
+             <option>新手级别</option>
+             <option>菜鸟级别</option>
+         </select>
+	    </span></td>
+                    </tr>
+                    <tr>
+                        <td class="label">项目分级</td>
+                        <td><span class="li2">
+	            <select id="proj1-lv"><{foreach from=$projlv key=k item=rs }>
+                    <option value="<{$k}>"><{$rs.name}></option>
+                    <{/foreach}></select> -
+                <select id="proj2-lv"><{foreach from=$defaultA key=k item=rs }>
+                    <option value="<{$k}>"><{$rs}></option>
+                    <{/foreach}></select>
+	    </span></td>
+                    </tr>
+                    <tr>
+                        <td class="label" style="vertical-align: top;">任务流程</td>
+                        <td class="flow-box">
+                            <{ foreach from=$mtplDetails.flow_list item=rs}>
+                            <div class="li2 flow-item">
+                                流程类型：
+                                <input type="hidden" class="flow-id" value="<{$rs.flow_id}>">
+                                <select class="flow-type1"><{foreach from=$nodecls key=k item=rs}>
+                                    <option value="<{$k}>"><{$rs.name}></option>
+                                    <{/foreach}></select>&nbsp;
+                                <select class="flow-type2">
+                                    <{foreach from=$nodecls[1].data key=ik item=irs}>
+                                    <option value="<{$ik}>"><{$irs}></option>
+                                    <{/foreach}>
+                                </select>
+                                时间安排：
+                                <select class="flow-start-time"></select> 至
+                                <select class="flow-end-time"></select>
+                                <a class="del-flow-btn" href="javascript:;"></a>
+
+                 <span class="flow-item-one"><label>选择技能1：</label>
+                     <select class="skill-exp-sel skill1-id">
+				 		<option value="0">无</option>
+                         <{foreach from=$skill item=irs}>
+                         <option value="<{$irs.skill_id}>"><{$irs.skill_name}></option>
+                         <{/foreach}>
+                     </select>
+                     <label class="ml10">所需等级:</label>
+                     <select class="sk-lv skill1-lv">
+                         <option value="1">1</option>
+                         <option value="2">2</option>
+                         <option value="3">3</option>
+                         <option value="4">4</option>
+                     </select>
+                     <label class="ml10">经验值:</label><input class="smalltext skill1-exp">
+                 </span>
+                 <span class="flow-item-one"><label>选择技能2：</label>
+                     <select class="skill-exp-sel skill2-id">
+						 <option value="0">无</option>
+                         <{foreach from=$skill item=irs}>
+                         <option value="<{$irs.skill_id}>"><{$irs.skill_name}></option>
+                         <{/foreach}>
+                     </select>
+                     <label class="ml10">所需等级:</label>
+                     <select class="sk-lv skill2-lv">
+                         <option value="1">1</option>
+                         <option value="2">2</option>
+                         <option value="3">3</option>
+                         <option value="4">4</option>
+                     </select>
+                     <label class="ml10">经验值:</label><input class="smalltext skill2-exp">
+                 </span>
+                 <span class="flow-item-one"><label>选择技能3：</label>
+                     <select class=" skill-exp-sel skill3-id">
+						 <option value="0">无</option>
+                         <{foreach from=$skill item=irs}>
+                         <option value="<{$irs.skill_id}>"><{$irs.skill_name}></option>
+                         <{/foreach}>
+                     </select>
+                     <label class="ml10">所需等级:</label>
+                     <select class="sk-lv skill3-lv">
+                         <option value="1">1</option>
+                         <option value="2">2</option>
+                         <option value="3">3</option>
+                         <option value="4">4</option>
+                     </select>
+                     <label class="ml10">经验值:</label><input class="smalltext skill3-exp">
+                 </span>
+                 <span class="flow-item-one flow-item-outcome">
+                      <!-- <a href="javascript:;" class="add-outcome-btn">添加产出物</a> -->
+                     <strong style="font-weight:bold">产出物</strong>：<input class="outcome-list">
+                  </span>
+                                <span class="flow-item-count">1</span>
+                            </div>
+                            <{/foreach}>
+                            <a href="javascript:;" id="add-flow-btn">添加流程</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">任务奖励</td>
+                        <td>贡献值：<input class="itext" id="mtpl-gx" value="<{$mtplDetails.mtpl_gx}>"></span> </td>
+                    </tr>
+                    <tr>
+                        <td class="label" style="vertical-align: top;">模板描述</td>
+                        <td><span class="li2">
+              <textarea class="itext" style="resize: none;width: 436px;line-height: 24px;padding: .5em;" rows="5"
+                        id="mtpl-desc"><{$mtplDetails.mtpl_desc}></textarea>
+          </span></td>
+                    </tr>
+                </table>
+
+            </section>
+            <section class="boxstyle2 bottom">
+                <input id="submit-btn" type="button" value="提交" class="btn btn_main1"/> <a
+                    href="<{spUrl c=pgadmin a=missionlist}>" class="btn btn_main2">返回列表</a>
+            </section>
+            <section class="footer"></section>
+        </form>
+    </article>
+</div>
+<{include file="inc/footer.html"}>
+<!--nodeclass data-->
+<script type="text/template" id="nodeclass">
+    {<{foreach from=$nodecls key=k item=rs name=mycounta}>
+    "<{$k}>":{"name":"<{$rs.name}>","data":[<{foreach from=$rs.data key=ik item=irs
+    name=mycountb}>{"value":"<{$ik}>","name":"<{$irs}>"}<{if $smarty.foreach.mycountb.last eq
+    1}><{else}>,<{/if}><{/foreach}>]}<{if $smarty.foreach.mycounta.last eq 1}><{else}>,<{/if}>
+    <{/foreach}>
+    }
+</script>
+
+<script type="text/template" id="flow-item-tpl">
+    <div class="li2 flow-item">
+        流程类型：
+        <select class="flow-type1"><{foreach from=$nodecls key=k item=rs}>
+            <option value="<{$k}>"><{$rs.name}></option>
+            <{/foreach}></select>&nbsp;
+        <select class="flow-type2">
+            <{foreach from=$nodecls[1].data key=ik item=irs}>
+            <option value="<{$ik}>"><{$irs}></option>
+            <{/foreach}>
+        </select>
+        时间安排：
+        <select class="flow-start-time"></select> 至
+        <select class="flow-end-time"></select>
+        <a class="del-flow-btn" href="javascript:;"></a>
+
+         <span class="flow-item-one"><label>选择技能1：</label>
+             <select class="skill-exp-sel skill1-id">
+                 <{foreach from=$skill item=irs}>
+                 <option value="<{$irs.skill_id}>"><{$irs.skill_name}></option>
+                 <{/foreach}>
+             </select>
+             <label class="ml10">所需等级:</label>
+             <select class="sk-lv skill1-lv">
+                 <option value="1">1</option>
+                 <option value="2">2</option>
+                 <option value="3">3</option>
+                 <option value="4">4</option>
+             </select>
+             <label class="ml10">经验值:</label><input class="smalltext skill1-exp">
+         </span>
+         <span class="flow-item-one"><label>选择技能2：</label>
+             <select class="skill-exp-sel skill2-id">
+                 <{foreach from=$skill item=irs}>
+                 <option value="<{$irs.skill_id}>"><{$irs.skill_name}></option>
+                 <{/foreach}>
+             </select>
+             <label class="ml10">所需等级:</label>
+             <select class="sk-lv skill2-lv">
+                 <option value="1">1</option>
+                 <option value="2">2</option>
+                 <option value="3">3</option>
+                 <option value="4">4</option>
+             </select>
+             <label class="ml10">经验值:</label><input class="smalltext skill2-exp">
+         </span>
+         <span class="flow-item-one"><label>选择技能3：</label>
+             <select class=" skill-exp-sel skill3-id">
+                 <{foreach from=$skill item=irs}>
+                 <option value="<{$irs.skill_id}>"><{$irs.skill_name}></option>
+                 <{/foreach}>
+             </select>
+             <label class="ml10">所需等级:</label>
+             <select class="sk-lv skill3-lv">
+                 <option value="1">1</option>
+                 <option value="2">2</option>
+                 <option value="3">3</option>
+                 <option value="4">4</option>
+             </select>
+             <label class="ml10">经验值:</label><input class="smalltext skill3-exp">
+         </span>
+         <span class="flow-item-one flow-item-outcome">
+              <!-- <a href="javascript:;" class="add-outcome-btn">添加产出物</a> -->
+             <strong style="font-weight:bold">产出物</strong>：<input class="outcome-list">
+          </span>
+        <span class="flow-item-count">1</span>
+    </div>
+</script>
+<script type="text/javascript">
+    $(function () {
+        //流程模板
+        var flowItemTpl = $('#flow-item-tpl').html();
+        //服务器获取到的json
+        var flowTypeData = JSON.parse($('#nodeclass').html());
+        //第几天
+        function renderDays(ele, days) {
+            var $ele = $(ele);
+            var html = '';
+            for (var i = 1; i <= days; i++) {
+                html += '<option value="' + i + '">第' + i + '天</option>';
+            }
+            $ele.html(html);
+        }
+
+        var jsonDeatails = '<{$json_mtpldtls}>';
+        //数据初始化渲染
+        var renderInit = (function () {
+            var proj1Lv = '<{$mtplDetails.mtpl_proj1lv}>';
+            var proj2Lv = '<{$mtplDetails.mtpl_proj2lv}>';
+            renderDays($('select.flow-start-time'), 30);
+            renderDays($('select.flow-end-time'), 30);
+            //获取该模板的流程
+            var flowList = JSON.parse('<{$json_mtpldtls}>')['flow_list'];
+            console.log(flowList);
+            var flowItems = $('.flow-item');
+            for (var i = 0; i < flowList.length; i++) {
+                var currentEle= flowItems.eq(i);
+                currentEle.find('select.flow-type1').val(flowList[i]['flow_type1']);
+                var selHtml2 = '';
+                var topValue = flowList[i]['flow_type1'];
+                var data = flowTypeData[topValue].data;
+                $.each(data, function (i) {
+                    selHtml2 += '<option value="' + data[i].value + '">' + data[i].name + '</option>';
+                })
+                currentEle.find('.flow-type2').html(selHtml2);
+                currentEle.find('select.flow-type2').val(flowList[i]['flow_type2']);
+                currentEle.find('select.flow-start-time').val(flowList[i]['flow_time_s']);
+                currentEle.find('select.flow-end-time').val(flowList[i]['flow_time_e']);
+                currentEle.find('select.skill1-id').val(flowList[i]['flow_skill1']);
+                currentEle.find('select.skill2-id').val(flowList[i]['flow_skill2']);
+                currentEle.find('select.skill3-id').val(flowList[i]['flow_skill3']);
+                currentEle.find('select.skill1-lv').val(flowList[i]['flow_skill1_lv']);
+                currentEle.find('select.skill2-lv').val(flowList[i]['flow_skill2_lv']);
+                currentEle.find('select.skill3-lv').val(flowList[i]['flow_skill3_lv']);
+                currentEle.find('.skill1-exp').val(flowList[i]['flow_skill1_exp']);
+                currentEle.find('.skill2-exp').val(flowList[i]['flow_skill2_exp']);
+                currentEle.find('.skill3-exp').val(flowList[i]['flow_skill3_exp']);
+                currentEle.find('.outcome-list').val(flowList[i]['flow_outcome']);
+                var outcomeArr='<{foreach from=$outcome key=ik item=irs name=mycountb}><{$irs.outcome_name}><{if $smarty.foreach.mycountb.last eq 1}><{else}>,<{/if}><{/foreach}>'.split(',');
+                currentEle.find('.outcome-list').select2({
+                    width:'396px',
+                    tags:outcomeArr
+                });
+
+            }
+            $('#proj1-lv').val(proj1Lv);
+
+            //触发二级绑定
+            $.ajax({
+                url:'index.php?c=pgadmin&a=mtpl_projlv_change',
+                type:'GET',
+                data:'projlv1=' + $('#proj1-lv').val(),
+                success:function (data) {
+                    var re = JSON.parse(data).data;
+                    var html = '';
+                    $.each(re, function (i) {
+                        html += '<option value="' + i + '">' + re[i] + '</option>';
+                    });
+                    $("#proj2-lv").html(html).val(proj2Lv).select2({width:'200px'});
+                },
+                error:function () {
+                    alert('鼠标别点那么快！人家还在loading！')
+                }
+            })
+            //更正序号
+            $('.flow-item .flow-item-count').each(function (index) {
+                $(this).html(index + 1);
+            })
+        }());
+
+        //渲染select2
+        $('select').select2({});
+        $("#proj2-lv").select2({width:'220px'});
+
+        //增加流程
+        $("#add-flow-btn").click(function () {
+            $(flowItemTpl).insertBefore($(this));
+            var $newNode = $(this).prev();
+            var len = $('.flow-item').length;
+            var outcomeArr = '<{foreach from=$outcome key=ik item=irs name=mycountb}><{$irs.outcome_name}><{if $smarty.foreach.mycountb.last eq 1}><{else}>,<{/if}><{/foreach}>'.split(',');
+            $newNode.find('.flow-item-count').html(len);
+            renderDays($newNode.find('select.flow-start-time'), 30);
+            renderDays($newNode.find('select.flow-end-time'), 30);
+            $(this).parent().find('select').select2({});
+            /*下拉框的样式*/
+            $('select.flow-type2').select2({width:'110px'});
+            $('select.skill-exp-sel').select2({width:'130px'});
+            $('select.sk-lv').select2({width:'30px'});
+            /*end*/
+            $newNode.find('.outcome-list').select2({
+                width:'396px',
+                tags:outcomeArr
+            });
+        });
+
+        // 删除流程
+        $(".del-flow-btn").live('click', function () {
+            $(this).parent().detach();
+            $('.flow-item .flow-item-count').each(function (index) {
+                $(this).html(index + 1);
+            })
+        });
+
+        //绑定触发
+        $("#proj1-lv").change(function () {
+            var Id = $(this).val();
+            $.ajax({
+                url:'index.php?c=pgadmin&a=mtpl_projlv_change',
+                type:'GET',
+                data:'projlv1=' + Id,
+                success:function (data) {
+                    var re = JSON.parse(data).data;
+                    var html = '';
+                    $.each(re, function (i) {
+                        html += '<option value="' + i + '">' + re[i] + '</option>';
+                    });
+                    console.log(html);
+                    $("#proj2-lv").html(html).select2({width:'200px'});
+                },
+                error:function () {
+                    alert('鼠标别点那么快！人家还在loading！')
+                }
+            })
+        })
+
+        //绑定流程数据
+        $(".flow-type1").live('change', function () {
+            var selHtml2 = '';
+            var topValue = $(this).val();
+            var data = flowTypeData[topValue].data;
+            $.each(data, function (i) {
+                selHtml2 += '<option value="' + data[i].value + '">' + data[i].name + '</option>';
+            })
+            $(this).parent().find('.flow-type2').html(selHtml2);
+            $(this).parent().find('select.flow-type2').select2({width:'110px'});
+        })
+
+        //确认修改提交
+        $("#submit-btn").click(function () {
+            var url = '<{spUrl c=pgadmin a=mtplupdate_do}>';
+            var mtplName=$("#mtpl-name").val();
+            var mtplLv=$("#mtpl-lv").val();
+            var mtplProj1lv=$("#proj1-lv").val();
+            var mtplProj2lv=$("#proj2-lv").val();
+            var mtplGx=$("#mtpl-gx").val();
+            var mtplDesc=$('#mtpl-desc').val();
+            var mtplFlow=[];
+            $(".flow-item").each(function (i) {
+                mtplFlow.push({
+                    'flow_type1':$(this).find('select.flow-type1').val(),
+                    'flow_type2':$(this).find('select.flow-type2').val(),
+                    'flow_time_s':$(this).find('select.flow-start-time').val(),
+                    'flow_time_e':$(this).find('select.flow-end-time').val(),
+                    'flow_outcome':$(this).find('input.outcome-list').val(),
+                    'flow_skill1':$(this).find('select.skill1-id').val(),
+                    'flow_skill1_exp':$(this).find('input.skill1-exp').val(),
+                    'flow_skill2':$(this).find('select.skill2-id').val(),
+                    'flow_skill2_exp':$(this).find('input.skill2-exp').val(),
+                    'flow_skill3':$(this).find('select.skill3-id').val(),
+                    'flow_skill3_exp':$(this).find('input.skill3-exp').val(),
+                    'flow_skill3_lv':$(this).find('select.skill3-lv').val(),
+                    'flow_skill2_lv':$(this).find('select.skill2-lv').val(),
+                    'flow_skill1_lv':$(this).find('select.skill1-lv').val(),
+                    'flow_id':$(this).find('.flow-id').val()
+                })
+            })
+            $.ajax({
+                url:url,
+                type:'POST',
+                data:'mtplid=<{$mtplId}>&mtplName='+mtplName+'&mtplLv='+mtplLv+'&mtplProj1lv='+mtplProj1lv+'&mtplProj2lv='+mtplProj2lv+'&mtplGx='+mtplGx+'&mtplDesc='+mtplDesc+"&mtplFlowArr="+JSON.stringify(mtplFlow),
+                success:function (data) {
+                    if (JSON.parse(data).status == '200') {
+                        alert('更新成功！')
+                        window.location.href = '<{spUrl c=pgadmin a=missionlist}>';
+                    } else {
+                        alert(JSON.parse(data).data);
+                    }
+                }
+            })
+        })
+
+
+    })
+</script>
+</body>
+</html>

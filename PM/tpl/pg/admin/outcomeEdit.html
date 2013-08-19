@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh"> 
+<head>
+<meta charset="utf-8">
+<{include file="inc/base.html"}>
+</head>
+<body class="pgAdmin outcome">
+<{include file="inc/header.html"}>
+<div class="wrap">
+    <{include file="pg/admin/pgadminNav.html"}>
+<article class="content">
+
+<section class="search">
+	<h1>
+	<{if $outcomelist}>
+	修改 - 产出物
+	<{else}>
+	添加 - 产出物
+	<{/if}>
+	</h1>
+    <div class="tab searchTab1">
+        <a id="searchTab1" href="<{spUrl c=pgadmin a=outcomelist}>">表</a>
+        <{if $smarty.const.PM_power==0}>
+        <span class="dot">&nbsp;</span>
+        <a id="searchTab2" href="<{spUrl c=pgadmin a=outcomeAdd}>" title="添加产出物">加</a>
+        <{/if}>
+    </div>
+</section>
+
+<form action="<{if $outcomelist}><{spUrl c=pgadmin a=outcomeEditDo outcome_id=$outcomelist.outcome_id}><{else}><{spUrl c=pgadmin a=outcomeAddDo}><{/if}>" method="post" >
+	<section class="header clearfix"></section>
+	<section class="boxstyle1 top clearfix">
+	<table class="table_node">
+	  <tr>
+	    <td class="label">产出物</td>
+	    <td><span class="li2">
+	      <input name="outcome_name" type="text" id="outcome_name" value="<{$outcomelist.outcome_name}>" maxlength="45"  datatype="Require" msg="产出物不能为空" class="itext stitle"/>
+	    </span></td>
+	  </tr>
+	  <tr>
+	    <td class="label">产出物描述</td>
+	    <td><span class="li2">
+	      <input name="outcome_desc" type="text" id="outcome_desc" value="<{$outcomelist.outcome_desc}>" maxlength="100"  datatype="Require" msg="产出物描述不能为空" class="itext title"/>
+	    </span></td>
+	  </tr>
+	</table>
+	
+	</section>
+	<section class="boxstyle2 bottom">
+		<input name="" type="submit" value="提交" class="btn btn_main1"/> <a href="<{spUrl c=pgadmin a=outcomelist}>" class="btn btn_main2">返回列表</a>
+	</section>
+	<section class="footer"></section>
+	</form>
+</article>
+</div>
+<{include file="inc/footer.html"}>
+<script type="text/javascript">
+
+</script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+</head>
+<body>
+<form method="post" action="<{spUrl c=pmpush a=send}>">
+	<table width="625">
+		<tr>
+			<td width="86">发送对象：</td>
+			<td width="527">
+			<input name="role1" type="checkbox" value="1" id="role1" />编辑 
+			<input name="role2" type="checkbox" value="1" id="role2" />设计师
+			<input name="role3" type="checkbox" value="1" id="role3" />前端技术
+			<input name="role5" type="checkbox" value="1" id="role5" />经理、组长
+			</td>
+		</tr>
+		<tr>
+			<td>地址：</td>
+			<td><{$smarty.const.APP_URL}><input type="text" name="msg_context" id="msg_context" style="width:300px;"/></td>
+		</tr>
+		<tr>
+			<td colspan="2" align="center"><label>
+				<input type="submit" name="button" id="button" value="发送" />
+			</label></td>
+		</tr>
+	</table>
+</form>
+</body>
+</html>

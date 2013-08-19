@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh"> 
+<head>
+<{include file="inc/base.html"}>
+<link rel="stylesheet" href="themes/css/popwin.css?cache=<{$smarty.const.RD}>" />
+<link rel="stylesheet" href="themes/css/projectshow.css?cache=<{$smarty.const.RD}>" />
+<link type="text/css"  rel="stylesheet" href="themes/css/jquery.ui.all.css?cache=<{$smarty.const.RD}>" />
+<script type="text/javascript" src="themes/js/jquery-ui.last.js?cache=<{$smarty.const.RD}>"></script>
+<script type="text/javascript" src="themes/js/vilidate.js?cache=<{$smarty.const.RD}>"></script>
+<style type="text/css">
+.kv-list{width:100%;color:#333333}
+.kv-list li{overflow:hidden;clear:both;padding:5px;line-height:30px;border-bottom:1px dotted #CCC}
+.kv-list .title,.kv-list .value{float:left;}
+.kv-list .title{width:90px;font-weight:bold;text-align:right}
+.kv-list .value{width:780px;}
+</style>
+</head>
+<body id="projectShow" class="manage project_show">
+<{include file="inc/header.html"}>
+<article class="content">
+
+		<section class="search">
+        	<h1 class="pageTitle">需求单信息 - <{$rs.dName}></h1>
+<{if $project}>
+	        <div class="tab searchTab4">
+				<{if $smarty.const.PM_power==0}>
+				<a title="审核项目" href="index.php?c=project_bll&a=project_show_check&id=<{$rs.proj_id}>" id="searchTab1">审</a>
+	            <span class="dot">&nbsp;</span>
+				<{/if}>
+				<a title="浏览项目" href="index.php?c=project_bll&a=project_show&id=<{$rs.proj_id}>" id="searchTab2">看</a>
+				<{if $isCanModify}>
+				<span class="dot">&nbsp;</span>
+				<a title="修改项目" href="<{spUrl c=project_bll a=projEdit id=$rs.proj_id}>" id="searchTab3">修</a>
+				<{/if}>
+				<span class="dot">&nbsp;</span>
+				<a title="该项目的需求单" href="<{spUrl c=tdSystem a=showDetails}>&dId=<{$rs.did}>" id="searchTab4">需</a>
+				<{if $smarty.const.TEACHER== -1||$smarty.const.PM_power==0}>
+				<span class="dot">&nbsp;</span>
+				<a title="技能发放" href="<{spUrl c=pgadmin a=skillSend id=$rs.proj_id}>" id="searchTab5">技</a>
+				<{/if}>
+			</div>
+<{/if}>
+        </section>
+
+		<section class="header"></section>
+		<section class="boxstyle1 top proj_info">
+			<h2><{$rs.dName}></h2>
+			<ul class="kv-list clearfix2">
+				<li><div class="title">所属产品：</div><div class="value"><{$rs.pName}></div></li>
+				<li><div class="title">项目目的：</div><div class="value"><{$rs.dTarget}></div></li>
+				<li><div class="title">项目量级：</div><div class="value">浏览量：<{$rs.dPageView}> / 分享量：<{$rs.dShare}> / 参与量：<{$rs.dPartake}></div></li>
+				<li><div class="title">提单时间：</div><div class="value"><{$rs.dHandinTime}></div></li>
+				<li><div class="title">上线时间：</div><div class="value"><{$rs.dOnlineTime}></div></li>
+				<li>
+					<div class="title">目标用户：</div>
+					<div class="value">
+						<p><{$rs.dTargetUser}></p>
+						<p><{$rs.dTargetSource}></p>
+					</div>
+				</li>
+				<li>
+					<div class="title">内容概述：</div>
+					<div class="value">
+						<p><{$rs.dOverView|strip_tags}></p>
+					</div>
+				</li>
+				<li><div class="title">功能需求：</div><div class="value"><{$rs.dDemand}></div></li>
+				<li><div class="title">是否勾通：</div><div class="value"><{$rs.dIsCom}></div></li>
+				<li>
+					<div class="title">其　　它：</div>
+					<div class="value">
+						<p><{$rs.dRemark|strip_tags}></p>
+					</div>
+				</li>
+				<li><div class="title">提 单 人：</div><div class="value"><{$rs.dUName}></div></li>
+			</ul>
+		</section>
+		<{if !$isCreated}>
+		<section class="boxstyle2 proj_info">
+			<form id="passForm" method="post">
+			<ul class="kv-list clearfix2">
+				<li>
+					<div class="title">按排负责人：</div>
+					<div class="value">
+						<input name="user_name" id="user_name" type="text"  autocomplete="off" readonly  class="itext date select" value=""/>
+		       			<input name="user_id" id="user_id" type="hidden" value=""/>
+					</div>
+				</li>
+				<li>
+					<div class="title">意　　　见：</div>
+					<div class="value">
+						<textarea name="comment" style="width:100%;height:30px;padding:10px" placeholder="退回填写原因，通过可留空"></textarea>
+					</div>
+				</li>
+			</ul>
+			<input type="hidden" name="dId" value="<{$rs.dId}>">
+			<input type="hidden" name="prod_id" value="<{$rs.dProduct}>">
+			<input type="hidden" name="prod_name" value="<{$rs.pName}>">
+			</form>
+		</section>
+				
+		<section class="boxstyle1 bottom clearfix">
+			<div class="proj_control btns-box">
+				<a href="javascript:;" class="btn btn_main2" id="btn-revoke">退回</a>
+				<a href="javascript:;" class="btn btn_main1" id="btn-pass">通过</a>
+			</div>
+		</section>
+		<{/if}>
+		<section class="footer"></section>
+
+</article>
+<!--content end -->
+<{include file="inc/footer.html"}>
+<script type="text/javascript">
+PMS.showSelectList("users","user_id","user_name");
+$('#btn-pass').click(function(){
+		$('#passForm').attr('action','<{spUrl c=tdSystem a=passDemand}>').submit();
+});
+
+$('#btn-revoke').click(function(){
+		$('#passForm').attr('action','<{spUrl c=tdSystem a=revoke}>').submit();
+})
+</script>
+</body>
+</html>
