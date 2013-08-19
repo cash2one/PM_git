@@ -39,6 +39,7 @@ class toolAtten extends spController
         $this->gamelist = $gamelist->findAll();
         $this->display("tool/participle.html");
     }
+    //test github push
 
     function yoyoGeturllist()
     {
