@@ -146,7 +146,7 @@ class webservice extends spController
 		$checkcode2=strtoupper(md5($user["user_dcode"].$checkcode_ext));
 		if($checkcode2==$checkcode)
 		{
-			if($m_user->loginSuccess($user['user_name'],$user['user_power'],$user['role_id'],$user['user_id'],$user['user_dcode'],$user['power2']))
+			if($m_user->loginSuccess($user['user_name'],$user['user_power'],$user['role_id'],$user['user_id'],$user['user_dcode'],$user['power2'],$user['group_id']))
 			{
 				$isInitPguser=$m_user->loginSuccess_pg($user['user_id']);
 				if($isInitPguser){
@@ -206,7 +206,7 @@ class webservice extends spController
 		$user=$mUser->loginForWebservice($user_account,$user_pwd);
 		if($user)
 		{
-			$mUser->loginSuccess($user['user_name'],$user['user_power'],$user['role_id'],$user['user_id'],$user['user_dcode'],$user['power2']);
+			$mUser->loginSuccess($user['user_name'],$user['user_power'],$user['role_id'],$user['user_id'],$user['user_dcode'],$user['power2'],$user['group_id']);
 			switch($type)
 			{
 				case"msg":

@@ -40,6 +40,13 @@ class redminesys extends spController
             $PDuedate = $PDuedate . ' 18:00:00';
         }
         $pStartdate = $pStartdate . ' 09:00:00';
+        //根据项目名称活动项目id
+
+        preg_match("|【(.*)】|U", $pProject, $ok);
+        $pProd=$ok[1];
+        $pGet=getRedmineProdType();
+        $pProdId=$pGet[$pProd];
+
 
         /*
         $pMethod = 'create'; //项目的类型，create，update，delete
@@ -77,7 +84,8 @@ class redminesys extends spController
                     // 'specialtask'=>$this->spArgs('specialtask'),//项目是否特殊任务 1-特殊项目，2-子项目
                     'proj_target' => '', //项目目标
                     'proj_rdUrl' => $pRedurl, //地址  ,
-                    'proj_redmineId' => $pRedmindId //redmineId
+                    'proj_redmineId' => $pRedmindId, //redmineId
+                    'proj_redprd'=>$pProdId
                 );
 
                 //构造流程

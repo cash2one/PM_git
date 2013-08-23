@@ -52,7 +52,7 @@
 
     <nav id="PMS_mainNav" class="clearfix">
         <a class="mywork" href="<{spUrl c=project_bll a=myWork}>">我的工作</a>
-        <a class="manage" href="<{spUrl c=project a=show}>">查询管理</a>
+        <a class="manage" href="<{spUrl c=project a=show type=1000}>">查询管理</a>
         <a class="create" href="<{spUrl c=project a=project_add}>">创建项目</a>
         <!-- <a class="tools" href="<{spUrl c=project_bll a=projects}>">百宝箱</a> -->
         <a class="pgsys" href="<{spUrl c=pguser a=myGrowRecord}>">P&G系统入口</a>
@@ -81,6 +81,7 @@
             <{if $smarty.cookies.pm_user_power==0}>
             <a class="power2" href="<{spUrl c=user a=power2}>">权限管理</a>
             <{/if}>
+            <a class="group" href="<{spUrl c=group a=glist}>" title="开发中">项目分组</a>
         </figure>
 
         <figure class="tools">

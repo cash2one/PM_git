@@ -663,5 +663,9 @@ html,body{font-size:14px;background:#d3e5f3}
 	left: 324px;
 }
 
+.classTab1 #searchTab1{background: url(../images/tab.png) 0 -42px;}
 .classTab10 #orginTab1{background: url(../images/tab.png) 0 -42px;}
 .classTab100 #orginTab2{background: url(../images/tab.png) 0 -42px;}
+.classTab1000 #orginTab3{background: url(../images/tab.png) 0 -42px;}
+.searchTab2 #searchTab2{background: url(../images/tab.png) 0 -42px;}
+.searchTab3 #searchTab3{background: url(../images/tab.png) 0 -42px;}

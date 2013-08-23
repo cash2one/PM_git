@@ -5,7 +5,7 @@ class m_user extends spModel
 	var $table="user";
 	
 	//登陆成功时写入
-	function loginSuccess($user_name,$user_power,$role_id,$user_id,$user_dcode,$power2)
+	function loginSuccess($user_name,$user_power,$role_id,$user_id,$user_dcode,$power2,$groupid)
 	{
 		setcookie("pm_user_name",$user_name);
 		setcookie("pm_user_power",$user_power);
@@ -13,6 +13,7 @@ class m_user extends spModel
 		setcookie("pm_user_id",$user_id);
 		setcookie("pm_user_dcode",md5($user_dcode));
 		setcookie("pm_power2",$power2);
+        setcookie("pm_group_id",$groupid);
 		setcookie("pm_proving_code",md5($user_name.$user_power.$role_id.$user_id.$power2."nie"));
 		return true;
 	}
@@ -43,6 +44,7 @@ class m_user extends spModel
 		setcookie("pm_user_id",NULL,time()-3600);
 		setcookie("pm_proving_code",NULL,time()-3600);
 		setcookie("pm_power2",NULL,time()-3600);
+        setcookie("pm_group_id",NULL,time()-3600);
 		setcookie("pm_user_dcode",NULL,time()-3600);
 		
 		setcookie("pg_user_id",NULL,time()-3600);

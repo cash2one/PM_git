@@ -22,17 +22,22 @@ class project_bll extends spController
 			//$disPassDemandArray=spClass('m_tdsystem')->getUnpassList();
 			//$this->disPassDemandArray=$disPassDemandArray;
 			
-			//我的待审核流程
-			$condition=array('pnod_state'=>'17');
-			$rows_rs=$mNode->spPager($this->spArgs('topage',1),50)->findAll($condition);
+			//我的待审核流程-13.8.22 改 分组内
+			//$condition=array('pnod_state'=>'17');
+            $sql="select * from proj_node_v where pnod_state=17";
+            $sql.=$this->groupIn();
+			$rows_rs=$mNode->spPager($this->spArgs('topage',1),50)->findSql($sql);
 			$this->rows_node_check=$rows_rs;
 			$this->rows_node_last=json_decode(file_get_contents("tmp/cache/pNodesLastState15.txt"),true);
 			$this->rows_node_last_reject=json_decode(file_get_contents("tmp/cache/pNodesLastState20.txt"),true);
 	
-			//我的待审核项目
+			//我的待审核项目-13.8.22 改 分组内
 			$rows=spClass('m_project_v');
-			$condition=array('proj_state'=>'40');
-			$this->rows_project=$mProject->spPager($this->spArgs('topage',1),50)->findAll($condition);
+			//$condition=array('proj_state'=>'40');
+            $sql2="select * from project_v where proj_state=40";
+            $sql2.=$this->groupIn();
+			//$this->rows_project=$mProject->spPager($this->spArgs('topage',1),50)->findAll($condition);
+            $this->rows_project=$mProject->spPager($this->spArgs('topage',1),50)->findSql($sql2);
 			$this->rows_project_last=json_decode(file_get_contents("tmp/cache/projectLastState20.txt"),true);
 			$this->rows_project_last_50=json_decode(file_get_contents("tmp/cache/projectLastState50.txt"),true);
 			
@@ -121,10 +126,34 @@ class project_bll extends spController
 		$condition=array(
 						 'proj_state'=>'30',
 						 );
-		$this->rows=$rows->spPager($this->spArgs('topage',1),50)->findAll($condition);
+        $con='';
+        if(pmUser("group")){
+            $con=$this->groupIn();
+        }
+		//$this->rows=$rows->spPager($this->spArgs('topage',1),50)->findAll($condition);
+        //die('select * from project_v where proj_state=30'.$con);
+        $this->rows=$rows->spPager($this->spArgs('topage',1),50)->findSql('select * from project_v where proj_state=30'.$con);
 		$this->state_list=getProjState();
 		$this->display('project/project_check.html');		
 	}
+    //组内项目
+    function groupIn(){
+        $condition='';
+        if(pmUser('group')){
+            $groupId=pmUser("group");
+            $group=spClass('m_group');
+            $returnArr=array();
+            $prodArr=$group->getProdArray($groupId);
+            foreach($prodArr as $item){
+                array_push($returnArr,$item['prod_id']);
+            }
+            $returnStr=join($returnArr,',');
+
+            $condition= " and (prod_id in (".$returnStr.") or proj_redprd in (".$returnStr."))";
+            // dump($condition);
+        }
+        return $condition;
+    }
 	
 	
 	//项目显示

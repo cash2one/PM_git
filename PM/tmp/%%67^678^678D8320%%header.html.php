@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.26, created on 2013-07-30 10:04:28
+<?php /* Smarty version 2.6.26, created on 2013-08-22 17:16:54
          compiled from inc/header.html */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'spUrl', 'inc/header.html', 29, false),)), $this); ?>
@@ -74,7 +74,7 @@ unset($_smarty_tpl_vars);
     <nav id="PMS_mainNav" class="clearfix">
         <a class="mywork" href="<?php echo $this->_plugins['function']['spUrl'][0][0]->__template_spUrl(array('c' => 'project_bll','a' => 'myWork'), $this);?>
 ">我的工作</a>
-        <a class="manage" href="<?php echo $this->_plugins['function']['spUrl'][0][0]->__template_spUrl(array('c' => 'project','a' => 'show'), $this);?>
+        <a class="manage" href="<?php echo $this->_plugins['function']['spUrl'][0][0]->__template_spUrl(array('c' => 'project','a' => 'show','type' => 1000), $this);?>
 ">查询管理</a>
         <a class="create" href="<?php echo $this->_plugins['function']['spUrl'][0][0]->__template_spUrl(array('c' => 'project','a' => 'project_add'), $this);?>
 ">创建项目</a>
@@ -123,6 +123,8 @@ unset($_smarty_tpl_vars);
             <a class="power2" href="<?php echo $this->_plugins['function']['spUrl'][0][0]->__template_spUrl(array('c' => 'user','a' => 'power2'), $this);?>
 ">权限管理</a>
             <?php endif; ?>
+            <a class="group" href="<?php echo $this->_plugins['function']['spUrl'][0][0]->__template_spUrl(array('c' => 'group','a' => 'glist'), $this);?>
+" title="开发中">项目分组</a>
         </figure>
 
         <figure class="tools">

@@ -350,6 +350,29 @@ return $G_produtType;
 }
 
 
+//redmine单判断产品
+//手工维护
+function getRedmineProdType(){
+    $r_ProdType=array(
+        "xyq"=>1,
+        "dtws2"=>9,
+        "ff"=>15,
+        "F"=>38,
+        "jl"=>18,
+        'pk'=>8,
+        'qn'=>7,
+        'tx3'=>24,
+        'wh'=>30,
+        'xc'=>21,
+        'xyq'=>1,
+        'xy2'=>3,
+        'xy3'=>4,
+        'yxsg'=>34,
+        'zd'=>36,
+        'zh'=>14
+    );
+    return $r_ProdType;
+}
 //项目集状态分类
 function getWrapState()
 {

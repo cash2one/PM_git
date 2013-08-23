@@ -247,7 +247,7 @@ class user extends spController
         $m_user=spClass('m_user');
         if($user=$m_user->isValid($user_account,$user_pwd))
         {
-            if($m_user->loginSuccess($user['user_name'],$user['user_power'],$user['role_id'],$user['user_id'],$user['user_dcode'],$user['power2']))
+            if($m_user->loginSuccess($user['user_name'],$user['user_power'],$user['role_id'],$user['user_id'],$user['user_dcode'],$user['power2'],$user['group_id']))
             {
                 $isInitPguser=$m_user->loginSuccess_pg($user['user_id']); //juetion:这句是后期PG部分需要添加
                 //	$this->jump(spUrl('project_bll','myWork'));   //g7：2013.05.18修改入口为PG的个人页。

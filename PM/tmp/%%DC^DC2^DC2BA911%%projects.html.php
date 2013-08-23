@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.26, created on 2013-07-30 14:07:21
+<?php /* Smarty version 2.6.26, created on 2013-08-22 16:03:02
          compiled from project/projects.html */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('function', 'spUrl', 'project/projects.html', 18, false),array('modifier', 'default', 'project/projects.html', 25, false),array('modifier', 'date_format', 'project/projects.html', 64, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('function', 'spUrl', 'project/projects.html', 18, false),array('modifier', 'default', 'project/projects.html', 39, false),array('modifier', 'date_format', 'project/projects.html', 70, false),)), $this); ?>
 <!DOCTYPE html>
 <html lang="zh"> 
 <head>
@@ -30,12 +30,32 @@ unset($_smarty_tpl_vars);
 		<h1><?php echo $this->_tpl_vars['title']; ?>
 </h1>
         <div class="tab classTab<?php echo $this->_tpl_vars['type']; ?>
-" style="left: 220px;text-align: left;">
+" style="right:10px;text-align: left;">
+            <a id="searchTab1" href="<?php echo $this->_plugins['function']['spUrl'][0][0]->__template_spUrl(array('c' => 'project','a' => 'show'), $this);?>
+">全</a>
+            <span class="dot">&nbsp;</span>
             <a id="orginTab1" href="<?php echo $this->_plugins['function']['spUrl'][0][0]->__template_spUrl(array('c' => 'project','a' => 'show','type' => 10), $this);?>
-" title="组内的提单">内</a>
+" title="网站组内的提单">内</a>
             <span class="dot">&nbsp;</span>
             <a id="orginTab2" href="<?php echo $this->_plugins['function']['spUrl'][0][0]->__template_spUrl(array('c' => 'project','a' => 'show','type' => 100), $this);?>
 " title="redmine上的单">RD</a>
+
+            <?php if ($this->_tpl_vars['hasGroup']): ?>
+            <span class="dot">&nbsp;</span>
+            <a id="orginTab3" href="<?php echo $this->_plugins['function']['spUrl'][0][0]->__template_spUrl(array('c' => 'project','a' => 'show','type' => 1000), $this);?>
+" title="小组内的单">组</a>
+            <?php endif; ?>
+        </div>
+        <div class="tab searchTab<?php echo $this->_tpl_vars['ctype']; ?>
+" style="position: static;margin-top:10px;background: #eee;padding: 10px;border: 1px solid #999;border-radius: 5px;">
+            <a id="searchTab2" href="<?php echo $this->_plugins['function']['spUrl'][0][0]->__template_spUrl(array('c' => 'project','a' => 'show','ctype' => 2,'type' => $this->_tpl_vars['ptype']), $this);?>
+" title="今天需要完成的项目">今</a>
+            <span class="dot">&nbsp;</span>
+            <a id="searchTab3" href="<?php echo $this->_plugins['function']['spUrl'][0][0]->__template_spUrl(array('c' => 'project','a' => 'show','ctype' => 3,'type' => $this->_tpl_vars['ptype']), $this);?>
+" title="已经延期的项目">延</a>
+            <span class="dot">&nbsp;</span>
+            <a id="searchTab4" href="<?php echo $this->_plugins['function']['spUrl'][0][0]->__template_spUrl(array('c' => 'project','a' => 'news'), $this);?>
+" title="项目的新动态">新</a>
         </div>
 		<?php if ($this->_tpl_vars['type'] == 1 || $this->_tpl_vars['type'] == 10 || $this->_tpl_vars['type'] == 100): ?>
 		<form method="post" action="<?php echo $this->_plugins['function']['spUrl'][0][0]->__template_spUrl(array('c' => 'project','a' => 'show'), $this);?>
@@ -60,20 +80,7 @@ unset($_smarty_tpl_vars);
 条</span>
 		</form>
 		<?php endif; ?>
-		<div class="tab searchTab<?php echo $this->_tpl_vars['type']; ?>
-">
-			<a id="searchTab1" href="<?php echo $this->_plugins['function']['spUrl'][0][0]->__template_spUrl(array('c' => 'project','a' => 'show'), $this);?>
-">全</a>
-            <span class="dot">&nbsp;</span>
-			<a id="searchTab2" href="<?php echo $this->_plugins['function']['spUrl'][0][0]->__template_spUrl(array('c' => 'project','a' => 'show','type' => 2), $this);?>
-" title="今天需要完成的项目">今</a>
-            <span class="dot">&nbsp;</span>
-			<a id="searchTab3" href="<?php echo $this->_plugins['function']['spUrl'][0][0]->__template_spUrl(array('c' => 'project','a' => 'show','type' => 3), $this);?>
-" title="已经延期的项目">延</a>
-            <span class="dot">&nbsp;</span>
-			<a id="searchTab4" href="<?php echo $this->_plugins['function']['spUrl'][0][0]->__template_spUrl(array('c' => 'project','a' => 'news'), $this);?>
-" title="项目的新动态">新</a>
-		</div>
+
 
 	</section>
 <?php if ($this->_tpl_vars['rows']): ?>

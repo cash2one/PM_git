@@ -273,7 +273,7 @@ function pmEncrypt($tex,$type="encode"){
 */
 function pmUser($type="id",$exitType=NULL)
 {
-	//检查cookies完整性
+	//检查cookies完整性 这里不加入group的校验
 	if(!isset($_COOKIE['pm_proving_code'])||!isset($_COOKIE['pm_user_id'])||!isset($_COOKIE['pm_role_id'])||!isset($_COOKIE['pm_user_power'])||!isset($_COOKIE['pm_user_name'])||!isset($_COOKIE['pm_user_dcode'])||!isset($_COOKIE['pm_power2']))
 	{
 		if($exitType==NULL) return NULL;
@@ -300,6 +300,8 @@ function pmUser($type="id",$exitType=NULL)
 			return $_COOKIE['pm_user_dcode'];
 		case "power2":
 			return $_COOKIE['pm_power2'];
+        case "group":
+            return $_COOKIE['pm_group_id'];
 		case "all":
 			return array(
 			"id"=>$_COOKIE['pm_user_id'],
@@ -307,7 +309,8 @@ function pmUser($type="id",$exitType=NULL)
 			"role"=>$_COOKIE['pm_role_id'],
 			"power"=>$_COOKIE['pm_user_power'],
 			"dcode"=>$_COOKIE['pm_user_dcode'],
-			"power2"=>$_COOKIE['pm_power2']
+			"power2"=>$_COOKIE['pm_power2'],
+            "group_id"=>$_COOKIE['pm_group_id']
 			);
 	}
 	return false;

@@ -96,6 +96,43 @@ class project extends spController
 		}
 		else $this->display('project/projects.html');
 	}
+
+
+    //查询组内单
+    function groupInSearch(){
+        $groupId=pmUser("group");
+        $condition='';
+        if($groupId){
+            $group=spClass('m_group');
+            $returnArr=array();
+            $prodArr=$group->getProdArray($groupId);
+            foreach($prodArr as $item){
+                array_push($returnArr,$item['prod_id']);
+            }
+            $returnStr=join($returnArr,',');
+
+            $condition= "(prod_id in (".$returnStr.") or proj_redprd in (".$returnStr."))";
+        }
+       // dump($condition);
+        return $condition;
+    }
+    //二级菜单
+    function childQuery($type,$condition){
+        $re=$condition;
+        switch($type)
+        {
+			case "2":
+                $re.= ' and proj_state in(20,40) and (TO_DAYS(NOW())-TO_DAYS(proj_end))>=0';
+                break;
+			case "3":
+                $re.= ' and proj_state in(20,40) and (TO_DAYS(NOW())-TO_DAYS(proj_end))>0';
+                break;
+            default:
+                break;
+        }
+        return $re;
+    }
+
 	
 	//最新动态
 	function news()

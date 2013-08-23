@@ -14,10 +14,24 @@
 <article class="content">
 	<section class="search">
 		<h1><{$title}></h1>
-        <div class="tab classTab<{$type}>" style="left: 220px;text-align: left;">
-            <a id="orginTab1" href="<{spUrl c=project a=show type=10}>" title="组内的提单">内</a>
+        <div class="tab classTab<{$type}>" style="right:10px;text-align: left;">
+            <a id="searchTab1" href="<{spUrl c=project a=show}>">全</a>
+            <span class="dot">&nbsp;</span>
+            <a id="orginTab1" href="<{spUrl c=project a=show type=10}>" title="网站组内的提单">内</a>
             <span class="dot">&nbsp;</span>
             <a id="orginTab2" href="<{spUrl c=project a=show type=100}>" title="redmine上的单">RD</a>
+
+            <{if $hasGroup}>
+            <span class="dot">&nbsp;</span>
+            <a id="orginTab3" href="<{spUrl c=project a=show type=1000}>" title="小组内的单">组</a>
+            <{/if}>
+        </div>
+        <div class="tab searchTab<{$ctype}>" style="position: static;margin-top:10px;background: #eee;padding: 10px;border: 1px solid #999;border-radius: 5px;">
+            <a id="searchTab2" href="<{spUrl c=project a=show ctype=2 type=$ptype}>" title="今天需要完成的项目">今</a>
+            <span class="dot">&nbsp;</span>
+            <a id="searchTab3" href="<{spUrl c=project a=show ctype=3 type=$ptype}>" title="已经延期的项目">延</a>
+            <span class="dot">&nbsp;</span>
+            <a id="searchTab4" href="<{spUrl c=project a=news}>" title="项目的新动态">新</a>
         </div>
 		<{if $type==1||$type==10||$type==100}>
 		<form method="post" action="<{spUrl c=project a=show}>" onsubmit="return PMS.checkSearch()">
@@ -33,15 +47,7 @@
 			<span style="font-size:12px;color:#666666">结果:<{$pager.total_count}>条</span>
 		</form>
 		<{/if}>
-		<div class="tab searchTab<{$type}>">
-			<a id="searchTab1" href="<{spUrl c=project a=show}>">全</a>
-            <span class="dot">&nbsp;</span>
-			<a id="searchTab2" href="<{spUrl c=project a=show type=2}>" title="今天需要完成的项目">今</a>
-            <span class="dot">&nbsp;</span>
-			<a id="searchTab3" href="<{spUrl c=project a=show type=3}>" title="已经延期的项目">延</a>
-            <span class="dot">&nbsp;</span>
-			<a id="searchTab4" href="<{spUrl c=project a=news}>" title="项目的新动态">新</a>
-		</div>
+
 
 	</section>
 <{if $rows}>

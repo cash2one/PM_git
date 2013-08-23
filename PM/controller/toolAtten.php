@@ -39,7 +39,8 @@ class toolAtten extends spController
         $this->gamelist = $gamelist->findAll();
         $this->display("tool/participle.html");
     }
-
+    //test github push
+    //how can I get the point
     function yoyoGeturllist()
     {
         $id = $this->spArgs('gameid');
