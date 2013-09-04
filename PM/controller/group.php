@@ -20,6 +20,7 @@ class group extends spController
             $result[$i]['team_list']=$teamlist;
         }
         dump($result);
+        //
         //$this->display('group/list.html');
     }
     function test(){

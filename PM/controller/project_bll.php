@@ -28,8 +28,10 @@ class project_bll extends spController
             $sql.=$this->groupIn();
 			$rows_rs=$mNode->spPager($this->spArgs('topage',1),50)->findSql($sql);
 			$this->rows_node_check=$rows_rs;
-			$this->rows_node_last=json_decode(file_get_contents("tmp/cache/pNodesLastState15.txt"),true);
-			$this->rows_node_last_reject=json_decode(file_get_contents("tmp/cache/pNodesLastState20.txt"),true);
+            //13.09.04 不显示已搞掂的东西
+			//$this->rows_node_last=json_decode(file_get_contents("tmp/cache/pNodesLastState15.txt"),true);
+			//$this->rows_node_last_reject=json_decode(file_get_contents("tmp/cache/pNodesLastState20.txt"),true);
+
 	
 			//我的待审核项目-13.8.22 改 分组内
 			$rows=spClass('m_project_v');
@@ -38,8 +40,10 @@ class project_bll extends spController
             $sql2.=$this->groupIn();
 			//$this->rows_project=$mProject->spPager($this->spArgs('topage',1),50)->findAll($condition);
             $this->rows_project=$mProject->spPager($this->spArgs('topage',1),50)->findSql($sql2);
-			$this->rows_project_last=json_decode(file_get_contents("tmp/cache/projectLastState20.txt"),true);
-			$this->rows_project_last_50=json_decode(file_get_contents("tmp/cache/projectLastState50.txt"),true);
+
+            //13.09.04 不显示已搞掂的东西
+			//$this->rows_project_last=json_decode(file_get_contents("tmp/cache/projectLastState20.txt"),true);
+			//$this->rows_project_last_50=json_decode(file_get_contents("tmp/cache/projectLastState50.txt"),true);
 			
 			if($role_id==5)
 			{
@@ -47,7 +51,8 @@ class project_bll extends spController
 				//我的待归档项目
 				$condition=array('proj_state'=>'15');
 				$this->rows_proj_finish=$mProject->spPager($this->spArgs('topage',1),50)->findAll($condition);
-				$this->rows_proj_finish_last=json_decode(file_get_contents("tmp/cache/projectLastState10.txt"),true);
+                //13.09.04 不显示已搞掂的东西
+				//$this->rows_proj_finish_last=json_decode(file_get_contents("tmp/cache/projectLastState10.txt"),true);
 				$this->state_list=getPnodState();
 			}
 		}
@@ -57,7 +62,9 @@ class project_bll extends spController
 			$this->isShowCheckDesign=true;
 			$condition=array('pnod_state'=>'17','role_id'=>$role_id);
 			$rows_rs=$mNode->spPager($this->spArgs('topage',1),50)->findAll($condition);
-			$this->rows_node_last=json_decode(file_get_contents("tmp/cache/pNodesLastState15.txt"),true);
+
+            //13.09.04 不显示已搞掂的东西
+			//$this->rows_node_last=json_decode(file_get_contents("tmp/cache/pNodesLastState15.txt"),true);
 			$this->rows_node_check=$rows_rs;
 		}
 		
