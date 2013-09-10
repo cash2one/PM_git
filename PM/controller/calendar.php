@@ -127,10 +127,10 @@ function getPnod($proj_id,$user_id,$type,$stateSelect=100)
 		$conn2="";
 		switch($stateSelect)
 		{
-			case 99:$conn2.="pnod_state in(17,20,30)";break;
+			case 99:$conn2.="pnod_state in(17,18,20,30)";break;
 			case 1000:break;
 		//	default:$conn2.="pnod_state in(15,17,20,30)";break;   剔除完成了的项目
-            default: $conn2.="pnod_state in(15,17,20,30)";break;
+            default: $conn2.="pnod_state in(15,17,18,20,30)";break;
 		}
 		if($conn!=""&&$conn2!="") $conn2=" AND ".$conn2;
 		if($conn!=""||$conn2!="") $sql.=" WHERE ";

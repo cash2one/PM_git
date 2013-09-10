@@ -23,6 +23,7 @@ class pnode extends spController
 			}
 			else
 				$this->isShowPassBtn='0';
+
 			$events=spClass('m_event')->findSql("select event.*,user_name FROM event LEFT JOIN user on event.user_id=user.user_id where pnod_id=$pnod_id");
 			$f=spClass('m_files');
 			$this->setScore=$this->spArgs('setScore');
@@ -311,6 +312,8 @@ class pnode extends spController
 	function show()
 	{
 		$user_id=pmUser("id","html");
+        $powerSHIXI=pmUser("power");
+
 		$rows=spClass('m_proj_node_v');
 		$prod_id=$this->spArgs('spid',false);
 		$prod_name=$this->spArgs('spn');
@@ -322,9 +325,12 @@ class pnode extends spController
 		$search_key=$this->spArgs('sk');
 		$toPage=$this->spArgs('p','1');
 		if(!is_numeric($toPage)) $toPage=1;
-		$type=$this->spArgs('type','1');//2-今天要完成的 3-延期的
+		$type=$this->spArgs('type','1');//2-今天要完成的 3-延期的 10-组内
 		$oUserId=$this->spArgs('oUserId');
-		
+        if($powerSHIXI==255&&!$oUserId){
+            pmResult(403,'实习生权限不足，请按后退。程序猿太懒，懒得写界面了。','html');
+        }
+        $ctype=$this->spArgs('ctype');
 		if($search_dates=="开始日期") $search_dates="";
 		if($search_datee=="结束日期") $search_datee="";
 		if($search_dates!="")
@@ -334,9 +340,42 @@ class pnode extends spController
 
 		switch($type)
 		{
+            /*
 			case "2":$condition= 'pnod_state in(17,20) and (TO_DAYS(NOW())-TO_DAYS(pnod_time_e))>=0';$this->title="今天要完成 - 流程";break;
 			case "3":$condition= 'pnod_state in(17,20) and (TO_DAYS(NOW())-TO_DAYS(pnod_time_e))>0';$this->title="己经延期 - 流程";$sort=" ORDER BY delay1 DESC";break;
+            */
+
+            case "10":
+                $condition= ' proj_class <> 5';
+                $condition=$this->childQuery($ctype,$condition);
+                $this->title="网站组内提单 - 项目";
+                $sort=" ORDER BY proj_id DESC";
+                break;
+            case "100":
+                $condition= ' prod_id = 10 AND proj_class = 5';
+                $condition=$this->childQuery($ctype,$condition);
+                $this->title="redmine单 - 项目";
+                $sort=" ORDER BY proj_id DESC";
+                break;
+            case "1000":
+                $condition=$this->groupInSearch();
+                $condition=$this->childQuery($ctype,$condition);
+                $this->title="小组内 - 项目";
+                $sort=" ORDER BY proj_id DESC";
+                break;
 			default:
+                $condition='';
+                switch($ctype)
+                {
+                    case "2":
+                        $condition.= 'pnod_state in(20,40) and (TO_DAYS(NOW())-TO_DAYS(pnod_time_e))>=0';
+                        break;
+                    case "3":
+                        $condition.= 'pnod_state in(20,40) and (TO_DAYS(NOW())-TO_DAYS(pnod_time_e))>0';
+                        break;
+                    default:
+                        break;
+                }
 				if($proj_state=='a')
 				{
 					$condition= 'pnod_state<>50';
@@ -384,6 +423,7 @@ class pnode extends spController
 		//$condition="WHERE pnod_name like '%flash%'";
 		
 		$sql="SELECT *,(TO_DAYS(NOW())-TO_DAYS(pnod_time_e)) AS delay1,(TO_DAYS(pnod_time_r)-TO_DAYS(pnod_time_e)) AS delay2 FROM proj_node_v ".$condition.$sort;
+        //die($sql);
 		$rows_rs=$rows->spPager($toPage,50)->findSql($sql);
 		$now=date("Y-m-d H:i:s");
 		//dump($rows_rs);
@@ -406,7 +446,12 @@ class pnode extends spController
 		$this->search_datee=$search_datee;
 		$this->search_key=$search_key;	
 		$this->state_list=getPnodState();
-		$this->type=$type;
+        $this->type=$type;
+        $this->ptype=$type;
+        $this->ctype=$ctype;
+        if(pmUser("group")){
+            $this->hasGroup=pmUser("group");
+        }
 		if($oUserId)
 		{
 			$this->oUserId=$oUserId;
@@ -414,6 +459,42 @@ class pnode extends spController
 		}
 		else $this->display('project/nodes.html');
 	}
+
+    //查询组内单
+    function groupInSearch(){
+        $groupId=pmUser("group");
+        $condition='';
+        if($groupId){
+            $group=spClass('m_group');
+            $returnArr=array();
+            $prodArr=$group->getProdArray($groupId);
+            foreach($prodArr as $item){
+                array_push($returnArr,$item['prod_id']);
+            }
+            $returnStr=join($returnArr,',');
+
+            $condition= "(prod_id in (".$returnStr.") or proj_redprd in (".$returnStr."))";
+        }
+        // dump($condition);
+        return $condition;
+    }
+    //二级菜单
+    function childQuery($type,$condition){
+        $re=$condition;
+        switch($type)
+        {
+            case "2":
+                $re.= ' and pnod_state in(20,40) and (TO_DAYS(NOW())-TO_DAYS(pnod_time_e))>=0';
+                break;
+            case "3":
+                $re.= ' and pnod_state in(20,40) and (TO_DAYS(NOW())-TO_DAYS(pnod_time_e))>0';
+                break;
+            default:
+                break;
+        }
+        return $re;
+    }
+
 	
 //流程状态更改
 	function setState()

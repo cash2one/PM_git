@@ -183,7 +183,7 @@ class project_bll extends spController
 			
 		//项目资料
 		$condition=array('proj_id'=>$proj_id,);
-		
+
 		if(!$project=$proj_c->find($condition))
 		{
 			$this->msg='该项目己不存在！';
@@ -205,12 +205,27 @@ class project_bll extends spController
 				   $rs['pnod_time_r']=date('Y-m-d',strtotime($rs['pnod_time_r']));
 				//juetion 找出所有参与者
 				$user_tmp = array(user_id=>$rs["user_id"],user_name=>$rs["user_name"]);
+
 				if (!in_array($user_tmp, $skill_user)) {
 					array_push($skill_user, $user_tmp);
 				}
-				//juetion 找出所有参与者
-			}	
-			
+                //dump($skill_user);
+
+
+			}
+            //g7 09.04 实习生权限
+            if(pmUser("power")==255){
+                $person=array(
+                    'user_id' => pmUser('id'),
+                    'user_name' =>  pmUser('name')
+                );
+                if((pmUser('id')!=$project['user_id'])&&!in_array($person,$skill_user)){
+
+                    $this->msg='权限不足！没法查看该项目';
+                    $this->display('public/message.html');
+                    exit();
+                }
+            }
 			//juetion 获取每个人技能的配置情况 start
 			$_skill_user = array();//juetion添加，要给技能的人
 			foreach($skill_user as &$s_user)

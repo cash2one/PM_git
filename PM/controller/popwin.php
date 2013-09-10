@@ -116,7 +116,8 @@ class popwin extends spController
 		$mUser=spClass("m_user");
 		//$role_id=$this->spArgs("role_id");
 		//$user_power=$this->spArgs("user_power");
-		$rs=$mUser->findSql('select * from user where user_power<100 order by user_power ASC,user_id ASC');
+        //加入实习生选项
+		$rs=$mUser->findSql('select * from user where user_power<300 order by user_power ASC,user_id ASC');
 		$this->type="users";
 		$this->users=$rs;
 		$this->display('public/users_popwin.html');

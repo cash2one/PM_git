@@ -39,8 +39,7 @@ class toolAtten extends spController
         $this->gamelist = $gamelist->findAll();
         $this->display("tool/participle.html");
     }
-    //test github push
-    //how can I get the point
+
     function yoyoGeturllist()
     {
         $id = $this->spArgs('gameid');
@@ -53,7 +52,6 @@ class toolAtten extends spController
     function yoyoAddsite(){
         $urllist=spClass('m_pg_pagurl');
         $gameid=$this->spArgs('gameRadio');
-        $code=$this->spArgs('code');
         $sign=$this->spArgs('sign');
         $link=$this->spArgs('baseLink');
         $des=$this->spArgs('des');
@@ -62,7 +60,6 @@ class toolAtten extends spController
             "sign"=>$sign,
             "des"=>$des,
             "page_sign"=>$link,
-            "charset"=>$code
         );
 
         if($urllist->create($addRow)){
@@ -92,7 +89,6 @@ class toolAtten extends spController
     function participleA()
     {
         $addRecord=false;
-        $page_code = $this->spArgs("pageCode");
         $baseLink = $this->spArgs("baseLink");
         $showNum = $this->spArgs("showNum", 0);
         $pageNum=$this->spArgs('page-num',1);
@@ -134,7 +130,7 @@ class toolAtten extends spController
             }
             $post_data = substr($o, 0, -1);
             $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, 'http://www.xunsearch.com/scws/demo/v48.php');
+            curl_setopt($ch, CURLOPT_URL, $url);
             // curl_setopt($ch, CURLOPT_URL, 'http://www.ftphp.com/scws/api.php');
             curl_setopt($ch, CURLOPT_HEADER, 1);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
