@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.26, created on 2013-07-10 14:26:06
+<?php /* Smarty version 2.6.26, created on 2013-09-18 11:10:36
          compiled from project/myWork.html */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'spUrl', 'project/myWork.html', 40, false),array('modifier', 'default', 'project/myWork.html', 157, false),)), $this); ?>
@@ -382,7 +382,7 @@ unset($_smarty_tpl_vars);
 
 <section id="grapView"><div class="boxstyle2 myview"><div id="project_gra"></div></div><div class="footer"></div></section>
 <div id="tableView"></div>
-<!--<p style="padding: 8px 35px 8px 14px;margin-bottom: 20px;text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);border: 1px solid #FBEED5;-webkit-border-radius: 4px;border-radius: 4px;margin-top: 20px;color: #468847;background-color: #DFF0D8;border-color: #D6E9C6;font-weight: bold;">我胡汉三又回来啦！江湖又多一条好汉！</p>  -->
+
 </article>
 <?php $_smarty_tpl_vars = $this->_tpl_vars;
 $this->_smarty_include(array('smarty_include_tpl_file' => "inc/footer.html", 'smarty_include_vars' => array()));

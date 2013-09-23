@@ -25,6 +25,8 @@ class redminesys extends spController
         $pTitle = $_POST['subject']; // 简单描述
         $pDesc = $_POST['description']; //详细描述
         $PDuedate = $_POST['due_date']; // 预期时间
+        $pExpdate=$_POST['期望完成时间'];
+
         $pAssto = $_POST['assigned_to_id']; //指派给谁
         $pPrio = $_POST['priority_id']; //项目紧急情况
         $pStartdate = $_POST['start_date']; //项目开始时间
@@ -35,7 +37,11 @@ class redminesys extends spController
         $pHolderName = $this->getToUserName($pAssto);
         $pParent = (int)$pParent;
         if (!$PDuedate) {
-            $PDuedate = NULL;
+            //if(!$pExpdate){
+           //     $PDuedate=$pExpdate . ' 18:00:00';
+           // }else{
+                $PDuedate = NULL;
+           // }
         } else {
             $PDuedate = $PDuedate . ' 18:00:00';
         }
@@ -73,7 +79,7 @@ class redminesys extends spController
                     'proj_class' => 5, //redmine单
                     'proj_state' => 20, //正在进行
                     'proj_start' => $pStartdate,
-                    'proj_end' => $PDuedate,
+                    'proj_end' => $PDuedate==NULL?($pExpdate . ' 18:00:00'):$PDuedate,
                     'specialtask' => 0,
                     'p_proj_id' => $this->spArgs('parent_proj', 0),
                     // 'proj_level1'=>$this->spArgs('proj_level1'),
@@ -85,7 +91,8 @@ class redminesys extends spController
                     'proj_target' => '', //项目目标
                     'proj_rdUrl' => $pRedurl, //地址  ,
                     'proj_redmineId' => $pRedmindId, //redmineId
-                    'proj_redprd'=>$pProdId
+                    'proj_redprd'=>$pProdId,
+
                 );
 
                 //构造流程
@@ -107,8 +114,8 @@ class redminesys extends spController
         }
         $row = array(
             'red_details' => $content,
-            'red_ct' => $pParent,
-            'red_sb' => json_encode($testP)
+            'red_ct' => $PDuedate,
+            'red_sb' => $pExpdate . ' 18:00:00'
         );
         $redmineDemand->create($row);
 

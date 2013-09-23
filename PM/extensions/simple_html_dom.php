@@ -88,15 +88,15 @@ function file_get_html($url,$page_code, $use_include_path = false, $context=null
 
 //现在改用了curl库，写了一个函数替换：
 function curl_file_get_contents($durl){
-	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_URL, $durl);
-	curl_setopt($ch, CURLOPT_TIMEOUT, 5);
-	curl_setopt($ch, CURLOPT_USERAGENT, _USERAGENT_);
-	curl_setopt($ch, CURLOPT_REFERER,_REFERER_);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-	$r = curl_exec($ch);
-	curl_close($ch);
-	return $r;
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $durl);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+    curl_setopt($ch, CURLOPT_USERAGENT, _USERAGENT_);
+    curl_setopt($ch, CURLOPT_REFERER,_REFERER_);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    $r = curl_exec($ch);
+    curl_close($ch);
+    return $r;
 }
 
 // get html dom from string
@@ -823,11 +823,11 @@ class simple_html_dom_node
     }
 
     /**
-    * Returns true if $string is valid UTF-8 and false otherwise.
-    *
-    * @param mixed $str String to be tested
-    * @return boolean
-    */
+     * Returns true if $string is valid UTF-8 and false otherwise.
+     *
+     * @param mixed $str String to be tested
+     * @return boolean
+     */
     static function is_utf8($str)
     {
         $c=0; $b=0;
@@ -903,7 +903,7 @@ class simple_html_dom_node
             $attributes = array();
             preg_match_all("/([\w-]+)\s*:\s*([^;]+)\s*;?/", $this->attr['style'], $matches, PREG_SET_ORDER);
             foreach ($matches as $match) {
-              $attributes[$match[1]] = $match[2];
+                $attributes[$match[1]] = $match[2];
             }
 
             // If there is a width in the style attributes:
@@ -949,7 +949,7 @@ class simple_html_dom_node
         // If the class or id is specified in a SEPARATE css file thats not on the page, go get it and do what we were just doing for the ones on the page.
 
         $result = array('height' => $height,
-                        'width' => $width);
+            'width' => $width);
         return $result;
     }
 
@@ -1024,7 +1024,7 @@ class simple_html_dom
         'p'=>array('p'=>1),
         'nobr'=>array('nobr'=>1),
         'b'=>array('b'=>1),
-		'option'=>array('option'=>1),
+        'option'=>array('option'=>1),
     );
 
     function __construct($str=null, $lowercase=true, $forceTagsClosed=true, $target_charset=DEFAULT_TARGET_CHARSET, $stripRN=true, $defaultBRText=DEFAULT_BR_TEXT, $defaultSpanText=DEFAULT_SPAN_TEXT)

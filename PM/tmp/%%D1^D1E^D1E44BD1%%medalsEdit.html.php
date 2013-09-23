@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.26, created on 2013-06-17 13:52:40
+<?php /* Smarty version 2.6.26, created on 2013-09-23 16:50:28
          compiled from pg/admin/medalsEdit.html */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'spUrl', 'pg/admin/medalsEdit.html', 23, false),)), $this); ?>
@@ -86,7 +86,7 @@ unset($_smarty_tpl_vars);
                         <td class="label">掉落条件或说明</td>
                         <td>
                             <span class="li2">
-	                            <input name="medal_condition" type="text" id="medal_condition" value="<?php echo $this->_tpl_vars['medallist']['medal_desc']; ?>
+	                            <input name="medal_mission" type="text" id="medal_condition" value="<?php echo $this->_tpl_vars['medallist']['medal_mission']; ?>
 " maxlength="100" class="itext title"/>
 	                        </span>
                         </td>

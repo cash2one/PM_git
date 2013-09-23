@@ -64,3 +64,6 @@
 		.workStyle .btn_sc{right:85px;}
 		.workStyle .btn_remove{right:40px}
 /*------------carlendar-----end----------*/
+/*redmine未设定64机*/
+.taskbar_wrap .pnod .rowHad{}
+.taskbar_wrap .pnod .rowNot{background: #FFD8A6;}

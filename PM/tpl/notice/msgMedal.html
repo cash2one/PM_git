@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <{include file="inc/base.html"}>
+    <link rel="stylesheet" href="themes/css/popwin.css?cache=<{$smarty.const.RD}>" />
+    <link>
+    <style>
+        .table3 td{height: 45px;line-height: 45px;}
+    </style>
+</head>
+<script type="text/javascript">
+    function selectedNode(id,title)
+    {
+        var url= "<{spUrl c=pgadmin a=medalNode}>" + "&id="+id + "&title="+title;
+        $('#myMedal_popwin div').load(url,function(){_$.popWin("myMedal_popwin");});
+    }
+</script>
+<body class="pgAdmin  userDeafult">
+<{include file="inc/header.html"}>
+<nav class="myNav clearfix">
+</nav>
+<div class="wrap">
+
+    <p class="mySkill-common" style="height: auto;">
+        恭喜<span class="name" style="color: #357EBD;font-size: 16px;margin: 0 3px;"><{$user_name}></span><{$wenan}>(<{$medal.medal_mission}>),<br>终于获得勋章<img src="<{$medal.medal_img}>" width="30" height="30" style="float: left;
+margin: 10px 5px 10px 0;"><span class="medal" style="color: #B94A48;font-size: 16px;margin: 0 3px;"><{$medal.medal_name}></span>(<{$medal.medal_desc}>)。
+        <br>
+
+    </p>
+    <p class="mySkill-common">
+        目前系统共有 <{$allMedalNum}> 个勋章
+    </p>
+    <table class="table3">
+        <thead>
+        <tr class="btop">
+            <td class="bleft">序号</td>
+            <td class="tleft">勋章图</td>
+            <td class="tleft">成就</td>
+            <td class="tleft">勋章说明</td>
+            <td class="bright">掉落说明</td>
+        </tr>
+        </thead>
+        <{foreach name=table from=$resultArray item=rs}>
+        <tr>
+            <td class="bleft"><{ $smarty.foreach.table.iteration }></td>
+            <td class="tleft"><img src="<{$rs.medal_img}>" width="30" height="30" style="float: left;"></td>
+            <td class="tleft">
+                <a onclick="javascript:selectedNode(<{$rs.medal_id}>,'<{$rs.medal_name}>');"><{$rs.medal_name}></a>
+            </td>
+            <td class="tleft">
+                <{$rs.medal_desc}>
+            </td>
+            <td class="bright"><{$rs.medal_mission}></td>
+        </tr>
+        <{/foreach}>
+        <tfoot>
+        <tr>
+            <td colspan="6">
+                <{if $pager}>
+                <div class="pager">
+                    页码：<{$pager.current_page}>/<{$pager.total_page}>
+                    <{foreach from=$pager.all_pages item=thepage}>
+                    <{if $thepage!=$pager.current_page}>
+                    <a href="<{spUrl c=pguser a=myMedal topage=$thepage}>"><{$thepage}></a>
+                    <{else}>
+                    <span><{$thepage}></span>
+                    <{/if}>
+                    <{/foreach}>
+                </div>
+                <{/if}>
+            </td>
+        </tr>
+        </tfoot>
+
+    </table>
+
+</div>
+<{include file="inc/footer.html"}>
+
+</body>
+</html>

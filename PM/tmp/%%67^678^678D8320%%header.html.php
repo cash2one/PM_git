@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.26, created on 2013-08-22 17:16:54
+<?php /* Smarty version 2.6.26, created on 2013-09-04 17:05:56
          compiled from inc/header.html */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'spUrl', 'inc/header.html', 29, false),)), $this); ?>
@@ -74,8 +74,14 @@ unset($_smarty_tpl_vars);
     <nav id="PMS_mainNav" class="clearfix">
         <a class="mywork" href="<?php echo $this->_plugins['function']['spUrl'][0][0]->__template_spUrl(array('c' => 'project_bll','a' => 'myWork'), $this);?>
 ">我的工作</a>
+        <?php if ($_COOKIE['pm_user_power'] != 255): ?>
         <a class="manage" href="<?php echo $this->_plugins['function']['spUrl'][0][0]->__template_spUrl(array('c' => 'project','a' => 'show','type' => 1000), $this);?>
 ">查询管理</a>
+        <?php endif; ?>
+        <?php if ($_COOKIE['pm_user_power'] == 255): ?>
+        <a class="manage" href="<?php echo $this->_plugins['function']['spUrl'][0][0]->__template_spUrl(array('c' => 'user','a' => 'showlist'), $this);?>
+">查询管理</a>
+        <?php endif; ?>
         <a class="create" href="<?php echo $this->_plugins['function']['spUrl'][0][0]->__template_spUrl(array('c' => 'project','a' => 'project_add'), $this);?>
 ">创建项目</a>
         <!-- <a class="tools" href="<?php echo $this->_plugins['function']['spUrl'][0][0]->__template_spUrl(array('c' => 'project_bll','a' => 'projects'), $this);?>
@@ -105,16 +111,18 @@ unset($_smarty_tpl_vars);
         </figure>
 
         <figure class="manage">
-            <a class="projects" href="<?php echo $this->_plugins['function']['spUrl'][0][0]->__template_spUrl(array('c' => 'project','a' => 'show'), $this);?>
+            <?php if ($_COOKIE['pm_user_power'] != 255): ?>
+            <a class="projects" href="<?php echo $this->_plugins['function']['spUrl'][0][0]->__template_spUrl(array('c' => 'project','a' => 'show','type' => 1000), $this);?>
 ">全部项目</a>
-            <a class="nodes" href="<?php echo $this->_plugins['function']['spUrl'][0][0]->__template_spUrl(array('c' => 'pnode','a' => 'show'), $this);?>
+            <a class="nodes" href="<?php echo $this->_plugins['function']['spUrl'][0][0]->__template_spUrl(array('c' => 'pnode','a' => 'show','type' => 1000), $this);?>
 ">全部流程</a>
             <a class="tool-files" href="<?php echo $this->_plugins['function']['spUrl'][0][0]->__template_spUrl(array('c' => 'toolFiles'), $this);?>
 ">设计稿</a>
             <a class="work" href="<?php echo $this->_plugins['function']['spUrl'][0][0]->__template_spUrl(array('c' => 'user','a' => 'work'), $this);?>
 ">组员工作</a>
-            <a class="wraps" href="<?php echo $this->_plugins['function']['spUrl'][0][0]->__template_spUrl(array('c' => 'wrap'), $this);?>
-">项目集</a>
+            <?php endif; ?>
+            <!--<a class="wraps" href="<?php echo $this->_plugins['function']['spUrl'][0][0]->__template_spUrl(array('c' => 'wrap'), $this);?>
+">项目集</a>-->
             <a class="products" href="<?php echo $this->_plugins['function']['spUrl'][0][0]->__template_spUrl(array('c' => 'product','a' => 'slist'), $this);?>
 ">产品管理</a>
             <a class="users" href="<?php echo $this->_plugins['function']['spUrl'][0][0]->__template_spUrl(array('c' => 'user','a' => 'showlist'), $this);?>
@@ -123,8 +131,8 @@ unset($_smarty_tpl_vars);
             <a class="power2" href="<?php echo $this->_plugins['function']['spUrl'][0][0]->__template_spUrl(array('c' => 'user','a' => 'power2'), $this);?>
 ">权限管理</a>
             <?php endif; ?>
-            <a class="group" href="<?php echo $this->_plugins['function']['spUrl'][0][0]->__template_spUrl(array('c' => 'group','a' => 'glist'), $this);?>
-" title="开发中">项目分组</a>
+            <!--<a class="group" href="<?php echo $this->_plugins['function']['spUrl'][0][0]->__template_spUrl(array('c' => 'group','a' => 'glist'), $this);?>
+" title="开发中">项目分组</a>-->
         </figure>
 
         <figure class="tools">

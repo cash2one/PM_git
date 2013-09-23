@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.26, created on 2013-04-16 11:10:15
+<?php /* Smarty version 2.6.26, created on 2013-09-23 16:50:21
          compiled from pg/admin/medals.html */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('function', 'spUrl', 'pg/admin/medals.html', 15, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('function', 'spUrl', 'pg/admin/medals.html', 11, false),)), $this); ?>
 <!DOCTYPE html>
 <html lang="zh"> 
 <head>
@@ -11,7 +11,17 @@ $this->_smarty_include(array('smarty_include_tpl_file' => "inc/base.html", 'smar
 $this->_tpl_vars = $_smarty_tpl_vars;
 unset($_smarty_tpl_vars);
  ?>
+<link rel="stylesheet" href="themes/css/popwin.css?cache=<?php echo @RD; ?>
+" />
 </head>
+<script type="text/javascript">
+    function selectedNode(id,title)
+    {
+        var url= "<?php echo $this->_plugins['function']['spUrl'][0][0]->__template_spUrl(array('c' => 'pgadmin','a' => 'medalNode'), $this);?>
+" + "&id="+id + "&title="+title;
+        $('#myMedal_popwin div').load(url,function(){_$.popWin("myMedal_popwin");});
+    }
+</script>
 <body class="pgAdmin medals">
 <?php $_smarty_tpl_vars = $this->_tpl_vars;
 $this->_smarty_include(array('smarty_include_tpl_file' => "inc/header.html", 'smarty_include_vars' => array()));
@@ -26,7 +36,7 @@ unset($_smarty_tpl_vars);
  ?>
 <article class="content">
 <section class="search">
-	<h1>列表 - 称谓一览</h1>
+	<h1>列表 - 成就一览</h1>
     <div class="tab searchTab1">
         <a id="searchTab1" href="<?php echo $this->_plugins['function']['spUrl'][0][0]->__template_spUrl(array('c' => 'pgadmin','a' => 'medallist'), $this);?>
 ">表</a>
@@ -57,9 +67,13 @@ if ($this->_foreach['table']['total'] > 0):
 </td>
     <td class="tleft"><img src="<?php echo $this->_tpl_vars['rs']['medal_img']; ?>
 " width="30" height="30"></td>
-    <td class="tleft"><?php echo $this->_tpl_vars['rs']['medal_name']; ?>
-</td>
-    <td class="tleft"><?php echo $this->_tpl_vars['rs']['medal_desc']; ?>
+    <td class="tleft">
+		<a onclick="javascript:selectedNode(<?php echo $this->_tpl_vars['rs']['medal_id']; ?>
+,'<?php echo $this->_tpl_vars['rs']['medal_name']; ?>
+');"><?php echo $this->_tpl_vars['rs']['medal_name']; ?>
+</a>
+	</td>
+    <td class="tleft"><?php echo $this->_tpl_vars['rs']['medal_mission']; ?>
 </td>
     <td class="bright"><?php if ($this->_tpl_vars['isManager']): ?><a href="javascript:;" class="del-btn" data-id="<?php echo $this->_tpl_vars['rs']['medal_id']; ?>
 " data-name="<?php echo $this->_tpl_vars['rs']['medal_name']; ?>
@@ -101,6 +115,11 @@ $this->_smarty_include(array('smarty_include_tpl_file' => "inc/footer.html", 'sm
 $this->_tpl_vars = $_smarty_tpl_vars;
 unset($_smarty_tpl_vars);
  ?>
+<div id="myMedal_popwin" class="popwin">
+    <div class="popwin_inner clearfix">
+
+    </div>
+</div>
 </body>
 <script>
     $(function(){

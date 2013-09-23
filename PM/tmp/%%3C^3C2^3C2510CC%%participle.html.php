@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.26, created on 2013-08-13 16:49:09
+<?php /* Smarty version 2.6.26, created on 2013-09-04 16:57:09
          compiled from tool/participle.html */ ?>
 <!DOCTYPE html>
 <html>
@@ -156,228 +156,220 @@
 <div class="row">
     <div class="bs-callout bs-callout-danger">
         <h4>如何使用传说中的“热点关键词”工具？</h4>
-        <p>热点关键字工具Beta 1.0版。系统默认已经配有几个主流站点，也可以通过下面的按钮添加其他站点的规则。也可以通过查看记录来看到每天的统计结果！当然，现在的版本肯定还没能那么丰富，请等等，再等等。</p>
+        <p>热点关键字工具Beta 1.0版。系统默认已经配有几个主流站点，也可以通过下面的按钮添加其他站点的规则。也可以通过查看记录来看到每天的统计结果！<br>
+        由于客观条件制约，此“玩具”假设在本人的机子上，所以运行速度肯定木有PM服务器的快，请给予耐心。</p>
         <p><a class="btn btn-danger btn-lg" data-toggle="modal" href="#addSite">添加更多站点!</a></p>
         <hr>
         <p style="line-height: 26px;"><span class="label label-info">2013-08-11</span>  基本功能已齐备。后续功能如用户体验提升，过滤指定关键词等待加入。  <span class="label label-warning">TODO</span> 过滤指定关键词。<br>
             <span class="label label-info">2013-08-12</span>  加入了页数查询条件，加入了黑名单限制，优化了输出结果的排序。  <span class="label label-warning">TODO</span> 查看记录部分优化<br>
             <span class="label label-info">2013-08-13</span>  完善了站点添加，完善了查询结果，暂时默认返回前50条查询记录。  <span class="label label-warning">TODO</span> 优化记录结果查看，优化规则添加方式<br>
+            <span class="label label-info">2013-08-16</span> 自动识别页面编码！妈妈再也不用担心我的编码啦。  <span class="label label-warning">TODO</span>慢慢做，最近没时间完善 <br>
         </p>
     </div>
 </div>
 <div class="row">
-<div class="col-lg-6">
-    <ul class="nav nav-tabs" id="myTab">
-        <li><a href="#typcial">高端接地气</a></li>
-        <li><a href="#custom">文艺小清新</a></li>
-    </ul>
+    <div class="col-lg-6">
+        <ul class="nav nav-tabs" id="myTab">
+            <li><a href="#typcial">高端接地气</a></li>
+            <li><a href="#custom">文艺小清新</a></li>
+        </ul>
 
-    <div class="tab-content">
-        <div class="tab-pane active" id="typcial">
-            <div class="bs-old-docs">
-                <div class="container">
-                    <strong>
-                        Check your input!……
-                    </strong>
-                    请输入完整的信息。
+        <div class="tab-content">
+            <div class="tab-pane active" id="typcial">
+                <div class="bs-old-docs">
+                    <div class="container">
+                        <strong>
+                            Check your input!……
+                        </strong>
+                        请输入完整的信息。
+                    </div>
                 </div>
-            </div>
-            <form class="form-horizontal">
-                <div class="form-group">
-                    <label class="col-lg-2 control-label">选择游戏</label>
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">选择游戏</label>
 
-                    <div class="col-lg-10" id="game-list">
-                        <?php $_from = $this->_tpl_vars['gamelist']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
+                        <div class="col-lg-10" id="game-list">
+                            <?php $_from = $this->_tpl_vars['gamelist']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
     foreach ($_from as $this->_tpl_vars['rs']):
 ?>
-                        <label class="icheck-label">
-                            <input type="radio" id="gameRadio<?php echo $this->_tpl_vars['rs']['game_id']; ?>
+                            <label class="icheck-label">
+                                <input type="radio" id="gameRadio<?php echo $this->_tpl_vars['rs']['game_id']; ?>
 " value="<?php echo $this->_tpl_vars['rs']['game_id']; ?>
 " name="gameRadio"><?php echo $this->_tpl_vars['rs']['game_name']; ?>
 
-                        </label>
-                        <?php endforeach; endif; unset($_from); ?>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-lg-2 control-label">选择网站</label>
-
-                    <div class="col-lg-10">
-                        <div class="siteList">
-                            <p style="margin-top: 8px;margin-left: 12px;" id="chose-game">请先选择游戏</p>
-                            <div id="chose-result"></div>
-                            <!--
-                            <label class="icheck-label">
-                                <input type="checkbox" id="siteRadio3" value="17173" name="siteCk"> 官方论坛
                             </label>
-
-                            -->
+                            <?php endforeach; endif; unset($_from); ?>
                         </div>
                     </div>
-                </div>
-                <!--
-                <div class="form-group">
-                    <label for="" class="col-lg-2 control-label">选择类型</label>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">选择网站</label>
 
-                    <div class="col-lg-10">
-                        <label class="icheck-label">
-                            <input type="radio" id="typeRadio1" value="news" name="typeRadio" checked>新闻列表
-                        </label>
-                        <label class="icheck-label">
-                            <input type="radio" id="typeRadio2" value="bbs" name="typeRadio"> 论坛首页
-                        </label>
-                    </div>
-                </div>
-                -->
-                <div class="form-group">
-                    <label for="" class="col-lg-2 control-label">过滤名单</label>
+                        <div class="col-lg-10">
+                            <div class="siteList">
+                                <p style="margin-top: 8px;margin-left: 12px;" id="chose-game">请先选择游戏</p>
+                                <div id="chose-result"></div>
+                                <!--
+                                <label class="icheck-label">
+                                    <input type="checkbox" id="siteRadio3" value="17173" name="siteCk"> 官方论坛
+                                </label>
 
-                    <div class="col-lg-10">
-                        <input class="form-control"  id="filtr-list"  name="filtr-list" placeholder="用|隔开,同义词请以全称排序。如：梦幻西游|梦幻|官方论坛|论坛">
+                                -->
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label for="" class="col-lg-2 control-label">返回列数</label>
+                    <!--
+                    <div class="form-group">
+                        <label for="" class="col-lg-2 control-label">选择类型</label>
 
-                    <div class="col-lg-4">
-                        <input class="form-control"  id="shagua-num" value="20">
+                        <div class="col-lg-10">
+                            <label class="icheck-label">
+                                <input type="radio" id="typeRadio1" value="news" name="typeRadio" checked>新闻列表
+                            </label>
+                            <label class="icheck-label">
+                                <input type="radio" id="typeRadio2" value="bbs" name="typeRadio"> 论坛首页
+                            </label>
+                        </div>
                     </div>
-                    <label for="" class="col-lg-2 control-label">抓取页数</label>
+                    -->
+                    <div class="form-group">
+                        <label for="" class="col-lg-2 control-label">过滤名单</label>
 
-                    <div class="col-lg-4">
-                        <input class="form-control"  id="pages-num" value="5">
+                        <div class="col-lg-10">
+                            <input class="form-control"  id="filtr-list"  name="filtr-list" placeholder="用|隔开,同义词请以全称排序。如：梦幻西游|梦幻|官方论坛|论坛">
+                        </div>
                     </div>
-                </div>
-                <div class="form-group btn-list">
-                    <div class="col-offset-2 col-lg-10">
-                        <a class="btn btn-danger" id="shagua-go">马上分析</a>
-                        <a class="btn btn-info show-record">查看记录</a>
+                    <div class="form-group">
+                        <label for="" class="col-lg-2 control-label">返回列数</label>
+
+                        <div class="col-lg-4">
+                            <input class="form-control"  id="shagua-num" value="20">
+                        </div>
+                        <label for="" class="col-lg-2 control-label">抓取页数</label>
+
+                        <div class="col-lg-4">
+                            <input class="form-control"  id="pages-num" value="5">
+                        </div>
                     </div>
-                </div>
-            </form>
-        </div>
-        <div class="tab-pane" id="custom">
-            <div class="bs-old-docs">
-                <div class="container">
-                    <strong>
-                        A little pity……
-                    </strong>
-                    若输入多个网址，请保证它们的编码都是同一的。
-                </div>
+                    <div class="form-group btn-list">
+                        <div class="col-offset-2 col-lg-10">
+                            <a class="btn btn-danger" id="shagua-go">马上分析</a>
+                            <a class="btn btn-info show-record">查看记录</a>
+                        </div>
+                    </div>
+                </form>
             </div>
-            <form class="form-horizontal" id="custom-form">
-
-                <div class="form-group">
-                    <label for="inputEmail" class="col-lg-2 control-label">页面编码</label>
-
-                    <div class="col-lg-10">
-                        <input type="text" class="form-control req" value="<?php echo $this->_tpl_vars['pageCode']; ?>
-" name="pageCode"
-                               placeholder="例如:gb2312。程序较渣，未能自动识别编码。" autocomplete="false">
+            <div class="tab-pane" id="custom">
+                <div class="bs-old-docs">
+                    <div class="container">
+                        <strong>
+                            A little pity……
+                        </strong>
+                        若输入多个网址，请保证它们的编码都是同一的。
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="" class="col-lg-2 control-label">基本链接</label>
+                <form class="form-horizontal" id="custom-form">
+                    <div class="form-group">
+                        <label for="" class="col-lg-2 control-label">基本链接</label>
 
-                    <div class="col-lg-10">
-                        <textarea class="form-control req" rows="5" id="baseLink" placeholder="例如:http://xyq.yzz.cn。如有页数规律，请按如下规则填写:http://xyq.netease.com/forumdisplay.php?fid=12&page={@}或http://bbs.yzz.cn/forum-32-{@}.html。这里的{@}将会被到时输入的页码取代。" name="baseLink"><?php echo $this->_tpl_vars['baseLink']; ?>
+                        <div class="col-lg-10">
+                            <textarea class="form-control req" rows="5" id="baseLink" placeholder="例如:http://xyq.yzz.cn。如有页数规律，请按如下规则填写:http://xyq.netease.com/forumdisplay.php?fid=12&page={@}或http://bbs.yzz.cn/forum-32-{@}.html。这里的{@}将会被到时输入的页码取代。" name="baseLink"><?php echo $this->_tpl_vars['baseLink']; ?>
 </textarea>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-lg-2 control-label">抓取标识</label>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">抓取标识</label>
 
-                    <div class="col-lg-10">
-                        <input type="text" class="form-control" id="inputEmail"
-                               placeholder="留空则抓取全文。如果你懂jQuery的话,可以填选择符例如 .news/#id" name="sign">
+                        <div class="col-lg-10">
+                            <input type="text" class="form-control" id="inputEmail"
+                                   placeholder="留空则抓取全文。如果你懂jQuery的话,可以填选择符例如 .news/#id" name="sign">
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label for="" class="col-lg-2 control-label">过滤名单</label>
+                    <div class="form-group">
+                        <label for="" class="col-lg-2 control-label">过滤名单</label>
 
-                    <div class="col-lg-10">
-                        <input class="form-control"  id="filtr-list-advance"  name="filtr-list" placeholder="用|隔开,同义词请以全称排序。如：梦幻西游|梦幻|官方论坛|论坛">
+                        <div class="col-lg-10">
+                            <input class="form-control"  id="filtr-list-advance"  name="filtr-list" placeholder="用|隔开,同义词请以全称排序。如：梦幻西游|梦幻|官方论坛|论坛">
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label for="" class="col-lg-2 control-label">返回列数</label>
+                    <div class="form-group">
+                        <label for="" class="col-lg-2 control-label">返回列数</label>
 
-                    <div class="col-lg-4">
-                        <input id="rowsNum" class="form-control" value="20" type="text"
-                               placeholder="如：20。则返回前20个关键词" name="showNum">
-                    </div>
-                    <label for="" class="col-lg-2 control-label">抓取页数</label>
+                        <div class="col-lg-4">
+                            <input id="rowsNum" class="form-control" value="20" type="text"
+                                   placeholder="如：20。则返回前20个关键词" name="showNum">
+                        </div>
+                        <label for="" class="col-lg-2 control-label">抓取页数</label>
 
-                    <div class="col-lg-4">
-                        <input id="pages-num-adv" class="form-control" value="5" type="text"
-                               placeholder="如：5。抓取前5页" name="pages-num">
+                        <div class="col-lg-4">
+                            <input id="pages-num-adv" class="form-control" value="5" type="text"
+                                   placeholder="如：5。抓取前5页" name="pages-num">
+                        </div>
                     </div>
-                </div>
-                <div class="form-group btn-list">
-                    <div class="col-offset-2 col-lg-10">
-                        <button id="go" class="btn btn-danger" type="">马上分析</button>
-                        <a class="btn btn-info show-record">查看记录</a>
+                    <div class="form-group btn-list">
+                        <div class="col-offset-2 col-lg-10">
+                            <button id="go" class="btn btn-danger" type="">马上分析</button>
+                            <a class="btn btn-info show-record">查看记录</a>
+                        </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
+
     </div>
-
-</div>
-<div class="col-lg-6">
-    <div class="panel panel-danger" id="result-box">
-        <div class="panel-heading">
-            <h3 class="panel-title" style="font-family: microsoft yahei">返回结果</h3>
-        </div>
-        <div class="loading-box">
-            <h4 style="font-family: microsoft yahei;font-size: 14px;color: #555">请闭眼倒数10秒...如睁眼还是这鸟样则可能服务器端挂了，请按F5...╮(╯▽╰)╭ </h4>
-
-            <div class="progress progress-striped active">
-                <div class="progress-bar progress-bar-danger" style="width: 100%"></div>
+    <div class="col-lg-6">
+        <div class="panel panel-danger" id="result-box">
+            <div class="panel-heading">
+                <h3 class="panel-title" style="font-family: microsoft yahei">返回结果</h3>
             </div>
-        </div>
-
-        <div class="result-box">
-            <div class="input-group">
-                <span class="input-group-addon">你查询的网址</span>
-                <a href="#" class="form-control target-link" target="_blank"></a>
-            </div>
-            <div class="operate-box" style="margin: 10px 0;float: right;display: none;">
-                <a id="save-result" data-toggle="tooltip" data-placement="top" data-original-title="敬请期待" title="敬请期待">保存本次查询规则</a>
-            </div>
-            <div id="result"></div>
-        </div>
-    </div>
-    <div class="panel panel-info" id="record-box">
-        <div class="panel-heading">
-            <h3 class="panel-title" style="font-family: microsoft yahei">查看记录</h3>
-        </div>
-
-        <div class="query-box">
-            <div class="input-group">
-
-                <span class="input-group-addon">开始日期</span>
-
-                <input type="text" class="form-control record-time" id="start-time">
-                <span class="input-group-addon" style="border-left: 0;border-right:0">结束日期</span>
-                <input type="text" class="form-control record-time" id="end-time">
-
-            </div>
-            <button type="button" id="search-record" class="btn btn-info btn-lg btn-block"  data-toggle="tooltip" data-placement="top"  data-original-title="暂时默认返回前50条记录" style="margin: 10px auto;">选好时间了，马上给我查！\(^o^)/</button>
             <div class="loading-box">
-                <h4 style="font-family: microsoft yahei;font-size: 14px;color: #555">请闭眼倒数10秒...如睁眼还是这鸟样则可能服务器端挂了，请按F5...╮(╯▽╰)╭  </h4>
+                <h4 style="font-family: microsoft yahei;font-size: 14px;color: #555">请闭眼倒数10秒...如睁眼还是这鸟样则可能服务器端挂了，请按F5...╮(╯▽╰)╭ </h4>
 
                 <div class="progress progress-striped active">
-                    <div class="progress-bar progress-bar-info " style="width: 100%"></div>
+                    <div class="progress-bar progress-bar-danger" style="width: 100%"></div>
                 </div>
             </div>
-            <div id="record-result">
 
+            <div class="result-box">
+                <div class="input-group">
+                    <span class="input-group-addon">你查询的网址</span>
+                    <a href="#" class="form-control target-link" target="_blank"></a>
+                </div>
+                <div class="operate-box" style="margin: 10px 0;float: right;display: none;">
+                    <a id="save-result" data-toggle="tooltip" data-placement="top" data-original-title="敬请期待" title="敬请期待">保存本次查询规则</a>
+                </div>
+                <div id="result"></div>
             </div>
         </div>
+        <div class="panel panel-info" id="record-box">
+            <div class="panel-heading">
+                <h3 class="panel-title" style="font-family: microsoft yahei">查看记录</h3>
+            </div>
 
+            <div class="query-box">
+                <div class="input-group">
+
+                    <span class="input-group-addon">开始日期</span>
+
+                    <input type="text" class="form-control record-time" id="start-time">
+                    <span class="input-group-addon" style="border-left: 0;border-right:0">结束日期</span>
+                    <input type="text" class="form-control record-time" id="end-time">
+
+                </div>
+                <button type="button" id="search-record" class="btn btn-info btn-lg btn-block"  data-toggle="tooltip" data-placement="top"  data-original-title="暂时默认返回前50条记录" style="margin: 10px auto;">选好时间了，马上给我查！\(^o^)/</button>
+                <div class="loading-box">
+                    <h4 style="font-family: microsoft yahei;font-size: 14px;color: #555">请闭眼倒数10秒...如睁眼还是这鸟样则可能服务器端挂了，请按F5...╮(╯▽╰)╭  </h4>
+
+                    <div class="progress progress-striped active">
+                        <div class="progress-bar progress-bar-info " style="width: 100%"></div>
+                    </div>
+                </div>
+                <div id="record-result">
+
+                </div>
+            </div>
+
+        </div>
     </div>
-</div>
 </div>
 <!-- Modal
 ================================================== -->
@@ -425,14 +417,6 @@
                         <div class="col-lg-10">
                             <input type="text" class="form-control req" value="" id="add-des" name="des"
                                    placeholder="例如:官方论坛-梦幻杂谈；叶子猪-梦幻山庄" autocomplete="false">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="inputEmail" class="col-lg-2 control-label">页面编码</label>
-
-                        <div class="col-lg-10">
-                            <input type="text" class="form-control req"  name="code" id="add-code"
-                                   placeholder="例如:gb2312。程序较渣，未能自动识别编码。" autocomplete="false">
                         </div>
                     </div>
                     <div class="form-group">
@@ -592,7 +576,6 @@ $(document).ready(function () {
         $('#chose-game').show().html('<div class="progress progress-striped active" id="add-loading" style="width: 95%;margin-left: -12px;margin-bottom: 0;"><div class="progress-bar progress-bar-danger" style="width: 100%"></div></div>');
         $('#chose-result').hide();
         var value=$(this).val();
-        var item='<label class="icheck-label"><input type="checkbox" id="siteRadio3" value="17173" name="siteCk"> 官方论坛</label>';
         $('#game-list input').iCheck('disable');
         $.get('index.php?c=toolAtten&a=yoyoGeturllist&gameid=1',{gameid:value},function(result){
             var html='';
@@ -625,7 +608,6 @@ $(document).ready(function () {
             type:"POST",
             url:url,
             data:{
-                pageCode:test.data('charset'),
                 baseLink:test.data('url'),
                 sign:test.val(),
                 showNum:$('#shagua-num').val(),
@@ -637,7 +619,6 @@ $(document).ready(function () {
                 result = JSON.parse(result);
                 result = result.re;
                 if(result){
-                    console.log(result);
                     var resultHTML=convertResult(result);
                     $('#result').html(resultHTML);
                     $('#result-box .loading-box').hide();

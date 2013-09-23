@@ -81,8 +81,9 @@ class notice extends spController
 		$sqlstr.=" LEFT JOIN product ON project.prod_id=product.prod_id";
 		$sqlstr.=" WHERE msg_user.user_id=$user_id";
 		$msglist=$mMessage->findSql($sqlstr);
-		$mMessage->delete(array("user_id"=>$user_id));
 		$this->msglist=$msglist;
+        //勋章通知传入参数
+        $mMessage->delete(array("user_id"=>$user_id));
 		$this->display("notice/message.html");
 	}
 	

@@ -145,7 +145,13 @@ class pguseradmin extends spController
             "medalList" => $pgUserMedal
         ));
     }
-
+    function testMsg(){
+        //全服通知
+        $msg=spClass('m_message');
+        $msg_context="恭喜<strong>朱志鹏</strong>获得勋章<strong>有你才有G</strong>。大家快去围观吧！";
+        $msg->init($msg_context,0,0,0,1,NULL,114,4,28,114)->toUser(114)->send();
+        //end
+    }
     function  medalAdd_ajax()
     {
         $medal2user = spClass('m_pg_medal_to_user');
@@ -160,7 +166,13 @@ class pguseradmin extends spController
         $medalName = spClass("m_pg_medals")->find(array('medal_id' => $this->spArgs("medal_id")),null,"medal_name");
         spClass("m_pg_message")->sendNewMessage($pgUserId,"获得新勋章","恭喜你，获得勋章-【".$medalName['medal_name']."】",pmUser("id","html"));
         //发送系统消息 end juetion
-        
+
+        //全服通知
+        $msg=spClass('m_message');
+        $msg_context="！！！恭喜<strong>".$pgUserParams['user_name']."</strong>获得勋章<strong>".$medalName['medal_name']."</strong>。大家快去围观吧！";
+        $msg->init($msg_context,0,0,0,1,NULL,$this->spArgs('user_id')/*图像id*/,4,$this->spArgs("medal_id"),$this->spArgs('user_id'))->toAll()->send();
+        //end
+
         $pgUserMedal = $medal2user->spLinker()->findAll(array('pg_userid' => $pgUserId));
         if ($pgUserAddMedal) {
             echo json_encode(array(

@@ -51,9 +51,9 @@ var PMS=
 		{
 			var pnodTemplateC='<a title="{@user}-{@title}【{@stateName}】" id="pnod-row-id-{@nodeId}" onclick="PMS.showNode({@nodeId})" style="width:{@widthFinal}px;margin-left:{@left}px;" class="pnod node" title="{@user}-{@title}【{@stateName}】"><span style="width:{@widthEnd}px;" class="title-short rowcolor{@state}"><span class="inner">{@title} by {@user}【{@stateName}】</span></span></a>';
 			var pnodTemplateE='</div>';
-			var projectTemplateS='<div class="projectWrap"><div class="wrapline" style="left: {@left}px; width:{@widthFinal}px;"><div class="wrapline_i"></div></div><a href="index.php?c=project_bll&a=project_show&id={@nodeId}" style="width:{@widthFinal}px;margin-left:{@left}px;" class="pnod project" title="{@title} by {@user}【{@stateName}】"><span style="width:{@widthEnd}px;" class="title-short rowcolor{@state}"><span class="icon"></span><span class="inner">{@title} by {@user}【{@stateName}】</span></span></a>';
+			var projectTemplateS='<div class="projectWrap"><div class="wrapline" style="left: {@left}px; width:{@widthFinal}px;"><div class="wrapline_i"></div></div><a href="index.php?c=project_bll&a=project_show&id={@nodeId}" style="width:{@widthFinal}px;margin-left:{@left}px;" class="pnod project" title="{@title} by {@user}【{@stateName}】"><span style="width:{@widthEnd}px;" class="title-short rowcolor{@state} row{@nodetype}"><span class="icon"></span><span class="inner">{@title} by {@user}【{@stateName}】</span></span></a>';
 			var projectTemplateE='</div>';
-			var projectTemplateC='<a href="index.php?c=project_bll&a=project_show&id={@nodeId}" style="width:{@widthFinal}px;margin-left:{@left}px;" class="pnod" class="title-short rowcolor{@state}"><span style="width:{@widthEnd}px;" class="title-short rowcolor{@state}">{@title} by {@user}【{@stateName}】</span></a>';
+			var projectTemplateC='<a href="index.php?c=project_bll&a=project_show&id={@nodeId}" style="width:{@widthFinal}px;margin-left:{@left}px;" class="pnod" class="title-short rowcolor{@state}"><span style="width:{@widthEnd}px;" class="title-short rowcolor{@state} row{@nodetype}">{@title} by {@user}【{@stateName}】</span></a>';
 			if(_group!=false)
 			{
 				for(var i=0;i<_group.length;i++)
@@ -156,7 +156,12 @@ var PMS=
 		function replaceHTml(html,json)
 		{
 			if(!json.title) json.left="-9999px;display:none;";
-			return html.replace(/{@title}/g,json.title).replace(/{@nodeId}/g,json.nodeId).replace(/{@user}/g,json.user).replace(/{@state}/g,json.state).replace(/{@widthEnd}/g,json.widthEnd-2).replace(/{@widthFinal}/g,json.widthFinal-2).replace(/{@left}/g,json.left).replace(/{@groupId}/g,json.groupId).replace(/{@userId}/g,json.userId).replace(/{@stateName}/g,json.stateName).replace(/{@projectId}/g,json.projectId).replace(/{@beforeNodes}/g,json.beforeNodes);
+            if(!json.nodeType){
+                json.nodeType='Not';
+            }else{
+                json.nodeType='Had';
+            }
+			return html.replace(/{@title}/g,json.title).replace(/{@nodeId}/g,json.nodeId).replace(/{@user}/g,json.user).replace(/{@state}/g,json.state).replace(/{@widthEnd}/g,json.widthEnd-2).replace(/{@widthFinal}/g,json.widthFinal-2).replace(/{@left}/g,json.left).replace(/{@groupId}/g,json.groupId).replace(/{@userId}/g,json.userId).replace(/{@stateName}/g,json.stateName).replace(/{@projectId}/g,json.projectId).replace(/{@beforeNodes}/g,json.beforeNodes).replace(/{@nodetype}/g,json.nodeType);
 		}
 		/**
 		 * 取得视图html

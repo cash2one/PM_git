@@ -78,7 +78,7 @@ function getProj($wrap_id,$user_id,$stateSelect=0,$proj_id=0)
 {
 		$proj_c=spClass('m_project_v');
 		//构造查询条件
-		$sql="SELECT proj_id AS nodeId,proj_name AS title,prod_name AS title2,proj_state AS state,user_name AS user,proj_start AS start,proj_end AS end,proj_endDate AS final,user_id AS userId FROM project_v";
+		$sql="SELECT proj_id AS nodeId,proj_name AS title,prod_name AS title2,proj_psdUrl as nodeType,proj_state AS state,user_name AS user,proj_start AS start,proj_end AS end,proj_endDate AS final,user_id AS userId FROM project_v";
 		$order=" order by start ASC";
 		
 		$conn="";
@@ -110,7 +110,7 @@ function getPnod($proj_id,$user_id,$type,$stateSelect=100)
 {
 		$proj_c=spClass('m_proj_node_v');
 		//构造查询条件
-		$sql="SELECT pnod_id AS nodeId,pnod_name AS title,proj_name AS title2,prod_name AS title3,pnod_state AS state,user_name AS user,pnod_time_s AS start,pnod_time_e AS end,pnod_time_r AS final,user_id AS userId,proj_id AS pId,res_user_id AS puserId FROM proj_node_v";
+		$sql="SELECT pnod_id AS nodeId,pnod_name AS title,proj_psdUrl as nodeType,proj_name AS title2,prod_name AS title3,pnod_state AS state,user_name AS user,pnod_time_s AS start,pnod_time_e AS end,pnod_time_r AS final,user_id AS userId,proj_id AS pId,res_user_id AS puserId FROM proj_node_v";
 		$conn="";
 		$order=" order by start ASC";
 

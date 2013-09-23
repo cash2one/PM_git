@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.26, created on 2013-05-03 15:54:48
+<?php /* Smarty version 2.6.26, created on 2013-09-04 16:42:59
          compiled from ../tmp/cache/productTestUrl.html */ ?>
 <li><a class="pmLink" href="http://123.58.175.173:9045/" target="_blank">梦幻西游</a></li>
 <li><a class="pmLink" href="http://123.58.175.173:9073/" target="_blank">天下贰</a></li>
@@ -18,4 +18,5 @@
 <li><a class="pmLink" href="http://cms.netease.com:9095" target="_blank">天下3</a></li>
 <li><a class="pmLink" href="http://cms.netease.com:9094/" target="_blank">武魂</a></li>
 <li><a class="pmLink" href="http://cms.netease.com:9106/" target="_blank">龙剑</a></li>
+<li><a class="pmLink" href="http://cms.netease.com:9103/" target="_blank">英雄三国</a></li>
 <li><a class="pmLink" href="暂无" target="_blank">网站联盟</a></li>

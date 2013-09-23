@@ -65,8 +65,18 @@
 				<dd class="controler">
 				<a href="<{$smarty.const.APP_URL}>?c=webservice&a=loginJump&type=weekreport&id=<{$rs.proj_id}>&userAccount={@userAccount}&userPwd={@userPwd}" target="blank" class="pmLink">查看周报</a>
                 </dd>
+            <{elseif $rs.msg_type==4}>
+                <dd class="list_content">
+                    <p></p>
+                    <p class="msg_context"><{$rs.msg_context}></p>
+                </dd>
+                <dd class="controler">
+                    <a href="<{$smarty.const.APP_URL}>?c=msgshow&mid=<{$rs.msg_medal}>&uid=<{$rs.msg_userid}>&userAccount={@userAccount}&userPwd={@userPwd}" target="blank" class="pmLink">我要围观</a>
+                </dd>
 			<{/if}>
 		</dl>
+        <{if $rs.msg_type==4}>
+        <{/if}>
 		<{/foreach}>
 		<{else}>
 		<p class="nomessage">没有相应的信息</p>

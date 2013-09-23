@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.26, created on 2013-04-15 14:45:55
+<?php /* Smarty version 2.6.26, created on 2013-09-04 16:28:35
          compiled from project/nodes.html */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('function', 'spUrl', 'project/nodes.html', 19, false),array('modifier', 'default', 'project/nodes.html', 21, false),array('modifier', 'date_format', 'project/nodes.html', 59, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('function', 'spUrl', 'project/nodes.html', 20, false),array('modifier', 'default', 'project/nodes.html', 22, false),array('modifier', 'date_format', 'project/nodes.html', 97, false),)), $this); ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -16,6 +16,7 @@ unset($_smarty_tpl_vars);
 "></script>
 <style type="text/css">
 .tab{width:250px;}
+.search .tab{width: auto;}
 </style>
 </head>
 <body class="manage nodes">
@@ -27,7 +28,7 @@ unset($_smarty_tpl_vars);
 
 <article class="content">
 
-	<section class="search">
+	<!--<section class="search">
 		<h1><?php echo $this->_tpl_vars['title']; ?>
 </h1>
 		<?php if ($this->_tpl_vars['type'] == 1): ?>
@@ -68,7 +69,62 @@ unset($_smarty_tpl_vars);
 			<a id="searchTab3" href="<?php echo $this->_plugins['function']['spUrl'][0][0]->__template_spUrl(array('c' => 'pnode','a' => 'show','type' => 3), $this);?>
 " title="已经延期的流程">延</a>
 		</div>
-	</section>
+	</section>-->
+    <section class="search">
+        <h1><?php echo $this->_tpl_vars['title']; ?>
+</h1>
+        <div class="tab classTab<?php echo $this->_tpl_vars['type']; ?>
+" style="right:10px;text-align: left;">
+            <a id="searchTab1" href="<?php echo $this->_plugins['function']['spUrl'][0][0]->__template_spUrl(array('c' => 'pnode','a' => 'show'), $this);?>
+">全</a>
+
+            <span class="dot">&nbsp;</span>
+            <a id="orginTab1" href="<?php echo $this->_plugins['function']['spUrl'][0][0]->__template_spUrl(array('c' => 'pnode','a' => 'show','type' => 10), $this);?>
+" title="网站组内的提单">内</a>
+            <span class="dot">&nbsp;</span>
+            <a id="orginTab2" href="<?php echo $this->_plugins['function']['spUrl'][0][0]->__template_spUrl(array('c' => 'pnode','a' => 'show','type' => 100), $this);?>
+" title="redmine上的单">RD</a>
+
+            <?php if ($this->_tpl_vars['hasGroup']): ?>
+            <span class="dot">&nbsp;</span>
+            <a id="orginTab3" href="<?php echo $this->_plugins['function']['spUrl'][0][0]->__template_spUrl(array('c' => 'pnode','a' => 'show','type' => 1000), $this);?>
+" title="小组内的单">组</a>
+            <?php endif; ?>
+        </div>
+        <div class="tab searchTab<?php echo $this->_tpl_vars['ctype']; ?>
+" style="position: static;margin-top:10px;background: #eee;padding: 10px;border: 1px solid #999;border-radius: 5px;">
+            <a id="searchTab2" href="<?php echo $this->_plugins['function']['spUrl'][0][0]->__template_spUrl(array('c' => 'pnode','a' => 'show','ctype' => 2,'type' => $this->_tpl_vars['ptype']), $this);?>
+" title="今天需要完成的项目">今</a>
+            <span class="dot">&nbsp;</span>
+            <a id="searchTab3" href="<?php echo $this->_plugins['function']['spUrl'][0][0]->__template_spUrl(array('c' => 'pnode','a' => 'show','ctype' => 3,'type' => $this->_tpl_vars['ptype']), $this);?>
+" title="已经延期的项目">延</a>
+        </div>
+        <?php if ($this->_tpl_vars['type'] == 1 || $this->_tpl_vars['type'] == 10 || $this->_tpl_vars['type'] == 100): ?>
+        <form method="post" action="<?php echo $this->_plugins['function']['spUrl'][0][0]->__template_spUrl(array('c' => 'pnode','a' => 'show'), $this);?>
+" onsubmit="return PMS.checkSearch()">
+            <span>搜索</span>
+            <input type="text" class="itext select" name="spn" id="spn" readonly value="<?php echo ((is_array($_tmp=@$this->_tpl_vars['prod_name'])) ? $this->_run_mod_handler('default', true, $_tmp, "选择产品") : smarty_modifier_default($_tmp, "选择产品")); ?>
+"/>
+            <input type="hidden" name="spid" id="spid" value="<?php echo ((is_array($_tmp=@$this->_tpl_vars['prod_id'])) ? $this->_run_mod_handler('default', true, $_tmp, '0') : smarty_modifier_default($_tmp, '0')); ?>
+"/>
+            <input type="text" class="itext select date" id="ssn" readonly value="<?php echo ((is_array($_tmp=@$this->_tpl_vars['state_list'][$this->_tpl_vars['proj_state']])) ? $this->_run_mod_handler('default', true, $_tmp, "选择状态") : smarty_modifier_default($_tmp, "选择状态")); ?>
+"/>
+            <input type="hidden" name="ssid" id="ssid" value="<?php echo $this->_tpl_vars['proj_state']; ?>
+"/>
+            <input type="text" class="itext select date" id="sd1" name="sd1" readonly value="<?php echo ((is_array($_tmp=@$this->_tpl_vars['search_dates'])) ? $this->_run_mod_handler('default', true, $_tmp, "开始日期") : smarty_modifier_default($_tmp, "开始日期")); ?>
+"/> <span>-</span>
+            <input type="text" class="itext select date" id="sd2" name="sd2" readonly value="<?php echo ((is_array($_tmp=@$this->_tpl_vars['search_datee'])) ? $this->_run_mod_handler('default', true, $_tmp, "结束日期") : smarty_modifier_default($_tmp, "结束日期")); ?>
+"/>
+            <input type="text" class="itext" name="sk" id="search_sk" value="<?php echo ((is_array($_tmp=@$this->_tpl_vars['search_key'])) ? $this->_run_mod_handler('default', true, $_tmp, "输入项目标题关键字") : smarty_modifier_default($_tmp, "输入项目标题关键字")); ?>
+" onclick="if(this.value == '输入项目标题关键字')this.value = ''" />
+            <input type="submit" value="" title="查询" id="search_btn" class="btnc btnc_search"/>
+            <span style="font-size:12px;color:#666666">结果:<?php echo $this->_tpl_vars['pager']['total_count']; ?>
+条</span>
+        </form>
+        <?php endif; ?>
+
+
+    </section>
 
 	<table class="table3">
       <thead>

@@ -52,7 +52,12 @@
 
     <nav id="PMS_mainNav" class="clearfix">
         <a class="mywork" href="<{spUrl c=project_bll a=myWork}>">我的工作</a>
+        <{if $smarty.cookies.pm_user_power!=255}>
         <a class="manage" href="<{spUrl c=project a=show type=1000}>">查询管理</a>
+        <{/if}>
+        <{if $smarty.cookies.pm_user_power==255}>
+        <a class="manage" href="<{spUrl c=user a=showlist}>">查询管理</a>
+        <{/if}>
         <a class="create" href="<{spUrl c=project a=project_add}>">创建项目</a>
         <!-- <a class="tools" href="<{spUrl c=project_bll a=projects}>">百宝箱</a> -->
         <a class="pgsys" href="<{spUrl c=pguser a=myGrowRecord}>">P&G系统入口</a>
@@ -71,17 +76,19 @@
         </figure>
 
         <figure class="manage">
-            <a class="projects" href="<{spUrl c=project a=show}>">全部项目</a>
-            <a class="nodes" href="<{spUrl c=pnode a=show}>">全部流程</a>
+            <{if $smarty.cookies.pm_user_power!=255}>
+            <a class="projects" href="<{spUrl c=project a=show type=1000}>">全部项目</a>
+            <a class="nodes" href="<{spUrl c=pnode a=show type=1000}>">全部流程</a>
             <a class="tool-files" href="<{spUrl c=toolFiles}>">设计稿</a>
             <a class="work" href="<{spUrl c=user a=work}>">组员工作</a>
-            <a class="wraps" href="<{spUrl c=wrap}>">项目集</a>
+            <{/if}>
+            <!--<a class="wraps" href="<{spUrl c=wrap}>">项目集</a>-->
             <a class="products" href="<{spUrl c=product a=slist}>">产品管理</a>
             <a class="users" href="<{spUrl c=user a=showlist}>">通讯录</a>
             <{if $smarty.cookies.pm_user_power==0}>
             <a class="power2" href="<{spUrl c=user a=power2}>">权限管理</a>
             <{/if}>
-            <a class="group" href="<{spUrl c=group a=glist}>" title="开发中">项目分组</a>
+            <!--<a class="group" href="<{spUrl c=group a=glist}>" title="开发中">项目分组</a>-->
         </figure>
 
         <figure class="tools">
