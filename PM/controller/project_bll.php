@@ -353,6 +353,7 @@ class project_bll extends spController
 	
 	
 	// 编辑项目显示
+    //2013.10.15 MAX分配的外包单，指向一个外包合同类的帐号，CC也要看到。先用hack写死的方法。
 	function projEdit()
 	{
 		$proj_id=$this->spArgs('id');

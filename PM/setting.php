@@ -370,7 +370,8 @@ function getRedmineProdType(){
         'xy3'=>4,
         'yxsg'=>34,
         'zd'=>36,
-        'zh'=>14
+        'zh'=>14,
+        'uu'=>42
     );
     return $r_ProdType;
 }
