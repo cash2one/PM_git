@@ -122,7 +122,34 @@ class pnode extends spController
 			echo '{"rs":"0","des":"修改过程中出现了某些错误，请向系统管理员反映。"}';
 		}
 	}
-	
+	//2013.10.15 外包设计同步一个单到CC & doudou 17
+    function pnodAnsyc($pnode,$proj_id,$pnod_state=20){
+        $role=pmUser('role');
+        $power=pmUser('power');
+        $mPnod=spClass('m_proj_node');
+       // if(/*$role==2&&$power==1*/pmUser('id')==114){
+            //MAX.设计师审核员
+            $pnode['proj_id']=$proj_id;
+            $pnode['pnod_state']=$pnod_state;
+			/*
+            $pnode['user_id']=83;//hack  写死了CCuserid
+            if(!$mPrond_id=$mPnod->create($pnode))
+                pmResult('0','操作失败：流程插入失败','json');
+			*/
+            $pnode['user_id']=17;//hack  写死了doudou userid
+            if(!$mPrond_id=$mPnod->create($pnode))
+                pmResult('0','操作失败：流程插入失败','json');
+
+        //  }
+        return $mPrond_id;
+    }
+    function getCPId(){
+        //hack! 写死外包设计的id 145
+        return 145;
+    }
+    function getCPId2(){
+        return 88;
+    }
 	//保存全部流程
 	function pnodSaveAll()
 	{
@@ -155,7 +182,7 @@ class pnode extends spController
 			if($array["pnod_time_e"]) $newArray["pnod_time_e"]=$array["pnod_time_e"];
 			return $newArray;
 		}
-		
+
 		
 		//
 		$Sql=pmGetTablesSQL("proj_node","pnod_id",array("proj_node.*","user.user_name"),array("user"),array("proj_node.user_id=user.user_id"),"proj_id=".pmFliterSqlInput($proj_id));
@@ -187,7 +214,17 @@ class pnode extends spController
 					{
 						$pnodSQLSelect=array("pnod_id"=>$aRow["pnod_id"]);
 						if(!$mPnod->update($pnodSQLSelect,$targetData)) pmResult('0','操作失败：['.$oPnod['pnod_name'].']流程修改失败','json');
-						
+                        //外包单同步！！！1.外包合同类
+                        if($targetData['user_id']==$this->getCPId()){
+                            $cpPnodId=$this->pnodAnsyc($targetData,pmFliterSqlInput($proj_id),$oPnod['pnod_state']);
+                            $mMessage->init("有新的外包设计单到啦！具体情况鸡胖懒得写了，程序逻辑很复杂啊。总之就是有新的外包设计单啦！快去看看(￣▽￣)/",$proj_id,$cpPnodId)->toUser(array(83,17,114))->send();
+                        }
+                        //外包单同步！！！2.外包设计类
+                        if($targetData['user_id']==$this->getCPId2()){
+                            $cpPnodId=$this->pnodAnsyc($targetData,pmFliterSqlInput($proj_id),$oPnod['pnod_state']);
+                            $mMessage->init("有新的外包设计单到啦！这是设计外包的，非合同类的！快去看看(￣▽￣)/",$proj_id,$cpPnodId)->toUser(array(17,114))->send();
+                        }
+
 						//如果流程己经开始，则需要进行记录和通知
 						if($isWillRecord)
 						{
@@ -225,9 +262,20 @@ class pnode extends spController
 				//流程默认要求审核
 				$targetData["pnod_state2"]=1;
 				//dump($targetData);
-				if($targetData)
+				if($targetData){
 					if(!$mPrond_id=$mPnod->create($targetData))  
 						pmResult('0','操作失败：流程插入失败','json');
+                    //外包单同步！！！
+                    if($targetData['user_id']==$this->getCPId()){
+                        $cpPnodId=$this->pnodAnsyc($targetData,pmFliterSqlInput($proj_id));
+                        $mMessage->init("有新的外包设计单到啦！具体情况鸡胖懒得写了，程序逻辑很复杂啊。总之就是有新的外包设计单啦！快去看看(￣▽￣)/",$proj_id,$cpPnodId)->toUser(array(83,17,114))->send();
+                    }
+                    if($targetData['user_id']==$this->getCPId2()){
+                        $cpPnodId=$this->pnodAnsyc($targetData,pmFliterSqlInput($proj_id),$oPnod['pnod_state']);
+                        $mMessage->init("有新的外包设计单到啦！这是设计外包的，非合同类的！快去看看(￣▽￣)/",$proj_id,$cpPnodId)->toUser(array(17,114))->send();
+                    }
+                    //外包单同步end。
+                }
 				if($isWillRecord)
 				{
 					$mMessage->init("$userName 将流程 <strong>".$aRow['pnod_name']."</strong> 按排给您负责",$proj_id)->toUser($aRow["user_id_n"])->send();
@@ -288,12 +336,19 @@ class pnode extends spController
 		if($user_power<2)
 		{
 			//审核员以上安排流程
-			$condition="(user_id=0 or pnod_time_s is NULL or pnod_time_e is NULL) and pnod_state<50 and pnod_state>15 and res_user_id<>$user_id";
+            // 2013.10.24 MAX 增加一个留空设计师的需求。 留空设计师的id为147
+			$condition="(user_id=0 or user_id=147 or pnod_time_s is NULL or pnod_time_e is NULL) and pnod_state<50 and pnod_state>15 and res_user_id<>$user_id";
+            //max只需要 2013.10.30 读取待安排的设计流程
+            if($user_role==2){
+                $condition.=" and pnod_type=$user_role";
+            }
+            // end max
 			if($user_power==1)
 				$condition.=" and pnod_type=$user_role";
 			$rows_rs=$mNode->findAll($condition);
 			if(!$rows_rs)$rows_rs=array();
 		}
+
 		//一般人安排的流程
 		$condition="(user_id=0 or pnod_time_s is NULL or pnod_time_e is NULL) and pnod_state<50 and pnod_state>15 and res_user_id=".$user_id;
 		$rows_rs2=$mNode->findAll($condition);

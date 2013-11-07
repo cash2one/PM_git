@@ -339,7 +339,7 @@ html,body{font-size:14px;background:#d3e5f3}
 .job-skill-setting,.user-skill-setting{margin-top: 15px;}
 .skilltojob .skill-title{height: 40px;text-align: center;border: 1px solid #999;border-radius: 5px;line-height: 40px;font-size: 16px;font-family: microsoft yahei;background: -webkit-linear-gradient(top, #F8F8F8, #E1E1E1);}
 .skill-list{background: #fff;padding: 20px 100px;}
-.edit-sure{text-decoration: none;font-size: 16px;padding: 5px 25px;border-radius: 5px;background: -webkit-linear-gradient(top, #F8970E, #F84B00);color: #EEE;font-family: microsoft yahei;}
+.edit-sure{text-decoration: none;font-size: 16px;padding: 5px 25px;border-radius: 5px;background:#f84b00;background: -webkit-linear-gradient(top, #F8970E, #F84B00);color: #EEE;font-family: microsoft yahei;}
 .edit-sure:hover{background: -webkit-linear-gradient(top, #F84B00, #F8452B);}
 .skilltojob .skill-list li{height: 30px;line-height: 30px;overflow: hidden;border-bottom: 1px dotted #AAA;margin: 2px;}
 .skilltojob .skill-list label{width: 130px;float: left;}

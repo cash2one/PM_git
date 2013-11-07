@@ -136,6 +136,54 @@
 </table>
 <{/if}>
 
+<{if $rows_node_check2}>
+<h2>待审核前置流程</h2>
+<table class="table3">
+    <thead>
+    <tr class="btop">
+        <td width="14%" class="bleft">所属产品</td>
+        <td width="30%">流程内容</td>
+        <td width="30%">所属项目</td>
+        <td width="10%">执行人</td>
+        <td width="10%">状态</td>
+        <td width="6%" class="bright">审核人</td>
+    </tr>
+    </thead>
+    <{foreach from=$rows_node_check2 item=rs}>
+    <tr id="check_pnod_row_<{$rs.pnod_id}>">
+        <td class="bleft"><{$rs.prod_name}></td>
+        <td><a href="javascript:PMS.showNode(<{$rs.pnod_id}>,{pass:1})"><{$rs.pnod_name}></a></td>
+        <td><{$rs.proj_name}></td>
+        <td><{$rs.user_name|default:"待定"}></td>
+        <td></td>
+        <td class="bright"></td>
+    </tr>
+    <{/foreach}>
+    <{foreach from=$rows_node_last item=rs}>
+    <tr id="check_pnod_row_<{$rs.pnod_id}>" class="rowcolor10">
+        <td class="bleft"><{$rs.prod_name}></td>
+        <td><a href="javascript:PMS.showNode(<{$rs.pnod_id}>)"><{$rs.pnod_name}></a></td>
+        <td class="tleft"><{$rs.proj_name}></td>
+        <td><{$rs.user_name|default:"待定"}></td>
+        <td>审核通过</td>
+        <td class="bright"><{$rs.passBy}></td>
+    </tr>
+    <{/foreach}>
+    <{foreach from=$rows_node_last_reject item=rs}>
+    <tr id="check_pnod_row_<{$rs.pnod_id}>" class="rowcolor10">
+        <td class="bleft"><{$rs.prod_name}></td>
+        <td><a href="javascript:PMS.showNode(<{$rs.pnod_id}>)"><{$rs.pnod_name}></a></td>
+        <td class="tleft"><{$rs.proj_name}></td>
+        <td><{$rs.user_name|default:"待定"}></td>
+        <td>退回</td>
+        <td class="bright"><{$rs.passBy}></td>
+    </tr>
+    <{/foreach}>
+    <tfoot class="nopage"><tr><td colspan="6"></td></tr></tfoot>
+</table>
+
+<{/if}>
+
 <{if ($isShowCheckAll||$isShowCheckDesign)&&$rows_node_check||$rows_node_last||$rows_node_last_reject}>
 <h2>待审核-流程</h2>
 <table class="table3">

@@ -7,6 +7,13 @@ class redminesys extends spController
     function index()
     {
     }
+	function logResult($word='') {
+		$fp = fopen("tmp/log/log.txt","a");
+		flock($fp, LOCK_EX) ;
+		fwrite($fp,"执行日期：".strftime("%Y%m%d%H%M%S",time())."\n".$word."\n");
+		flock($fp, LOCK_UN);
+		fclose($fp);
+	}
 
 
     function getDemand()
@@ -108,7 +115,11 @@ class redminesys extends spController
                 $nodelist['proj_node1']['pnod_desc'] = $pDesc; //流程描述
 
                 $result = spClass('m_project')->addProject($project_row, $nodelist, array('user_id' => $pHolder, 'user_name' => $pHolderName, 'testNode' => false), $pParent);
-
+				if(!$result){
+					$this->logResult('error:'.$project_row['proj_name']);
+				}else{
+					$this->logResult('success:'.$project_row['proj_name']);
+				}
             }
 
         }

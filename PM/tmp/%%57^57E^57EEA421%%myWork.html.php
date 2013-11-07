@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.26, created on 2013-09-18 11:10:36
+<?php /* Smarty version 2.6.26, created on 2013-10-18 17:10:53
          compiled from project/myWork.html */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'spUrl', 'project/myWork.html', 40, false),array('modifier', 'default', 'project/myWork.html', 157, false),)), $this); ?>
@@ -173,6 +173,80 @@ unset($_smarty_tpl_vars);
   <?php endforeach; endif; unset($_from); ?>
   <tfoot class="nopage"><tr><td colspan="6"></td></tr></tfoot>
 </table>
+<?php endif; ?>
+
+<?php if ($this->_tpl_vars['rows_node_check2']): ?>
+<h2>待审核前置流程</h2>
+<table class="table3">
+    <thead>
+    <tr class="btop">
+        <td width="14%" class="bleft">所属产品</td>
+        <td width="30%">流程内容</td>
+        <td width="30%">所属项目</td>
+        <td width="10%">执行人</td>
+        <td width="10%">状态</td>
+        <td width="6%" class="bright">审核人</td>
+    </tr>
+    </thead>
+    <?php $_from = $this->_tpl_vars['rows_node_check2']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
+    foreach ($_from as $this->_tpl_vars['rs']):
+?>
+    <tr id="check_pnod_row_<?php echo $this->_tpl_vars['rs']['pnod_id']; ?>
+">
+        <td class="bleft"><?php echo $this->_tpl_vars['rs']['prod_name']; ?>
+</td>
+        <td><a href="javascript:PMS.showNode(<?php echo $this->_tpl_vars['rs']['pnod_id']; ?>
+,{pass:1})"><?php echo $this->_tpl_vars['rs']['pnod_name']; ?>
+</a></td>
+        <td><?php echo $this->_tpl_vars['rs']['proj_name']; ?>
+</td>
+        <td><?php echo ((is_array($_tmp=@$this->_tpl_vars['rs']['user_name'])) ? $this->_run_mod_handler('default', true, $_tmp, "待定") : smarty_modifier_default($_tmp, "待定")); ?>
+</td>
+        <td></td>
+        <td class="bright"></td>
+    </tr>
+    <?php endforeach; endif; unset($_from); ?>
+    <?php $_from = $this->_tpl_vars['rows_node_last']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
+    foreach ($_from as $this->_tpl_vars['rs']):
+?>
+    <tr id="check_pnod_row_<?php echo $this->_tpl_vars['rs']['pnod_id']; ?>
+" class="rowcolor10">
+        <td class="bleft"><?php echo $this->_tpl_vars['rs']['prod_name']; ?>
+</td>
+        <td><a href="javascript:PMS.showNode(<?php echo $this->_tpl_vars['rs']['pnod_id']; ?>
+)"><?php echo $this->_tpl_vars['rs']['pnod_name']; ?>
+</a></td>
+        <td class="tleft"><?php echo $this->_tpl_vars['rs']['proj_name']; ?>
+</td>
+        <td><?php echo ((is_array($_tmp=@$this->_tpl_vars['rs']['user_name'])) ? $this->_run_mod_handler('default', true, $_tmp, "待定") : smarty_modifier_default($_tmp, "待定")); ?>
+</td>
+        <td>审核通过</td>
+        <td class="bright"><?php echo $this->_tpl_vars['rs']['passBy']; ?>
+</td>
+    </tr>
+    <?php endforeach; endif; unset($_from); ?>
+    <?php $_from = $this->_tpl_vars['rows_node_last_reject']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
+    foreach ($_from as $this->_tpl_vars['rs']):
+?>
+    <tr id="check_pnod_row_<?php echo $this->_tpl_vars['rs']['pnod_id']; ?>
+" class="rowcolor10">
+        <td class="bleft"><?php echo $this->_tpl_vars['rs']['prod_name']; ?>
+</td>
+        <td><a href="javascript:PMS.showNode(<?php echo $this->_tpl_vars['rs']['pnod_id']; ?>
+)"><?php echo $this->_tpl_vars['rs']['pnod_name']; ?>
+</a></td>
+        <td class="tleft"><?php echo $this->_tpl_vars['rs']['proj_name']; ?>
+</td>
+        <td><?php echo ((is_array($_tmp=@$this->_tpl_vars['rs']['user_name'])) ? $this->_run_mod_handler('default', true, $_tmp, "待定") : smarty_modifier_default($_tmp, "待定")); ?>
+</td>
+        <td>退回</td>
+        <td class="bright"><?php echo $this->_tpl_vars['rs']['passBy']; ?>
+</td>
+    </tr>
+    <?php endforeach; endif; unset($_from); ?>
+    <tfoot class="nopage"><tr><td colspan="6"></td></tr></tfoot>
+</table>
+
 <?php endif; ?>
 
 <?php if (( $this->_tpl_vars['isShowCheckAll'] || $this->_tpl_vars['isShowCheckDesign'] ) && $this->_tpl_vars['rows_node_check'] || $this->_tpl_vars['rows_node_last'] || $this->_tpl_vars['rows_node_last_reject']): ?>

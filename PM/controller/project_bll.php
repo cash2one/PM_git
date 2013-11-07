@@ -1,10 +1,19 @@
 <?php
 class project_bll extends spController
 {
-	
+    function logResult($word='') {
+        $fp = fopen("tmp/log/log.txt","a");
+        flock($fp, LOCK_EX) ;
+        fwrite($fp,"执行日期：".strftime("%Y%m%d%H%M%S",time())."\n".$word."\n");
+        flock($fp, LOCK_UN);
+        fclose($fp);
+    }
 	//我的工作
 	function myWork()
 	{
+
+        $this->logResult('success:'.'分割线');
+        $mPronCheck=spClass('m_pron_check');
        // $this->jump("http://192.168.10.16:8080/oa/index.php?c=project_bll&a=project_show&id=2893");
 		//我的待办流程输出
 		$user=pmUser("all","html");
@@ -25,9 +34,25 @@ class project_bll extends spController
 			//我的待审核流程-13.8.22 改 分组内
 			//$condition=array('pnod_state'=>'17');
             $sql="select * from proj_node_v where pnod_state=17";
+            //max 只负责设计师的流程审核
+            if($role_id=='2'){
+                $sql.=' and pnod_type=2';
+
+            }
+
+            //max end
             $sql.=$this->groupIn();
 			$rows_rs=$mNode->spPager($this->spArgs('topage',1),50)->findSql($sql);
-			$this->rows_node_check=$rows_rs;
+            $rows_rs2=array();
+
+            //2013.10.18 增加前置流程需要自己审核的流程。
+            $rows_rs2_id=$mNode->findSql('SELECT pron_check.pron_check_id from pron_check left join proj_node_v  on pron_check.pron_id=proj_node_v.pnod_id where pron_check.state=0 and proj_node_v.user_id='.$user_id);
+            if($rows_rs2_id){
+                $rows_rs2=$mNode->findSql('select proj_node_v.* from proj_node_v left join pron_check on pron_check.p_pron_id=proj_node_v.pnod_id where pron_check.pron_check_id='.$rows_rs2_id[0]['pron_check_id'].' and proj_node_v.pnod_state=18');
+                $this->rows_node_check2=$rows_rs2;
+
+            }
+            $this->rows_node_check=$rows_rs;
             //13.09.04 不显示已搞掂的东西
 			//$this->rows_node_last=json_decode(file_get_contents("tmp/cache/pNodesLastState15.txt"),true);
 			//$this->rows_node_last_reject=json_decode(file_get_contents("tmp/cache/pNodesLastState20.txt"),true);
