@@ -135,7 +135,8 @@ function getProjLevel()
 								)),
 					 10=>array('name'=>'无级别','data'=>array(
 								1=>'组织贡献类',
-					 			2=>'其它'
+					 			2=>'其它',
+                                3=>'redmine单'
 								))
 				);
 	return $list;

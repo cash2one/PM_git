@@ -97,7 +97,7 @@ class webservice extends spController
 			//先更新时间，减少多用户并发
 			$m_sys->update(NULL,array('sys_birthday_creat_date'=>date('Y-m-d')));
 			//生成生日流程
-			spClass('m_user')->createBirthdayProjectWithMoth($todayArray['mon']);
+			//spClass('m_user')->createBirthdayProjectWithMoth($todayArray['mon']);
 		}
 		pushBaseInfo($WCONFIG);
 	}

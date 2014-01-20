@@ -527,7 +527,7 @@ class project extends spController
         // juetion start 查看子项目是否全部完成
         $child_proj=$m_pg_proj_contri->findSql("select p.proj_state from project p,
 									pg_proj_contri pc where p.proj_id = pc.proj_id and
-									pc.p_proj_id=".$proj_id." and p.proj_state >15");
+									pc.p_proj_id=".$proj_id." and p.proj_state >15 and p.proj_state<>100");
         if ($child_proj) {
             $this->msg='操作不成功:还有子项目未完成';
             $this->display('public/message.html');
