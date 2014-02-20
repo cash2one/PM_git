@@ -188,6 +188,31 @@ class redminesys extends spController
             }
 
         }
+        //20140126 高彬需求 redmine过来的日常需求单 同步到一个单下面的各种流程
+        if($pType==$track_id&& $this->getToUserId($pAssto)==39&& $pMethod == 'create'){
+            $nodeArray=array(
+                'pnode_name0'=>'',
+                'pnode_type_name0'=>'编辑',
+                'pnode_type0'=>1,
+                'pnode_type2_name0'=>'需求整理',
+                'pnode_type20'=>1,
+                'pnode_time_s'=>'2014-01-08',
+                'pnode_time_e'=>'2014-01-08'
+            );
+            $nodelist=array();
+            $nodelist['proj_node0']['pnod_time_s']=$pStartdate;
+            $nodelist['proj_node0']['pnod_time_e']=$pStartdate;/*$PDuedate糕饼|5779|高彬|5779 - 浮生浮躁易浮夸！ 说: (2014-01-27 18:13:30)
+日常运维类单都是要当天完成的，所以你起止时间都设定相同就好了*/
+            $nodelist['proj_node0']['pnod_type']=10;
+            $nodelist['proj_node0']['pnod_type2']=1;
+            $nodelist['proj_node0']['user_id']=157;// 流程名为***单号运维类需求，类型选择：编辑-后续跟进，执行人暂定为黄秋婵-157。高彬say
+            $nodelist['proj_node0']['pnod_name']='redmine单号:#'.$pRedmindId.'运维类需求';
+            $nodelist['proj_node0']['pnod_state']=20;//原来是$proj_state;（小马需求，不需审核直接进行）
+            $nodelist['proj_node0']['pnod_state2']=0;//流程默认需要审核
+            $nodelist['proj_node0']['proj_id']=5347;//流程默认需要审核
+            $nodelist['proj_node0']['pnod_desc']='来自redmine的运维单，具体地址为：<a href="'.$pRedurl.'" target="_blank">'.$pRedurl.'</a>';
+            $result=spClass('m_proj_node')->insertlist($nodelist);
+        }
         $row = array(
             'red_details' => $content,
             'red_ct' => $PDuedate,

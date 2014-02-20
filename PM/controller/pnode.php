@@ -166,7 +166,11 @@ class pnode extends spController
 		$allRowsArray=$this->spArgs("allRowsData");
 		$mPnod=spClass('m_proj_node');
 		$pnodSQLSelect=array();
-		//dump($allRowsArray);
+
+        //改为发邮件 2014.01.24 -志鹏
+        $projectName=spClass('m_project')->find(array('proj_id'=>$proj_id));
+        $projectName=$projectName['proj_name'];
+        //echo $projectName;
 		
 		//过滤生成最终要写入数据库的数据
 		function getModifyArray($array)
@@ -191,7 +195,7 @@ class pnode extends spController
 		$oPnods=$mPnod->findSql($Sql);
 		
 		$mMessage=spClass('m_message');
-  		$msg_context="$userName 进行了如下操作：<br/>";
+  		$msg_context="<strong>"."$userName </strong>进行了如下操作：<br/>";
 		
 		//是否需要记录和通知
 		if($oProject["proj_state"]==50) $isWillRecord=false;
@@ -283,8 +287,49 @@ class pnode extends spController
 				}
 			}
 		}
-		if($isWillRecord)
-			$mMessage->init($msg_context,$proj_id,$pnod_id)->toProject()->send();
+		if($isWillRecord){
+            //$mMessage->init($msg_context,$proj_id,$pnod_id)->toProject()->send();
+            $isIncPuser=true;
+            $isIncProdUser=false;
+            $user_array=array();
+        //2014.01.22 改为发邮件，太懒了，不抽象类了，直接在这里写吧
+            //取得项目所有相关人员
+            $user_rela = spClass("m_project")->findSql("select user_id from proj_node where proj_id=" . $proj_id . " and user_id<>''");
+            foreach ($user_rela as $k) {
+                array_push($user_array, $k["user_id"]);
+            }
+            //$user_array=array_merge($user_array,$user_rela);
+            //加入项目负责人
+            $project = spClass("m_project")->find(array("proj_id" => $proj_id));
+            if ($isIncPuser) array_push($user_array, $project["user_id"]);
+            //加入产品负责人
+            if ($isIncProdUser) {
+                $user_array2 = spCLass("m_product")->getUserArray($project["prod_id"], $fron_str = "p");
+                //dump($user_array2);
+                if ($user_array2) $user_array = array_merge($user_array, $user_array2);
+            }
+            //dump($user_array); die();
+            //$userList = array_merge($userList, $user_array);
+           // echo json_encode($user_array);
+            //构造邮件主题内容：
+            $mailContent='<!DOCTYPE html><head><style>strong{color:#FF3000;}</style></head><body style="font-family:microsoft yahei;padding:10px;line-height:2"><p style="font-size:16px;line-height:28px;">PM项目：<a href="http://192.168.10.16:8080/oa/index.php?c=project_bll&a=project_show&id='.$proj_id.'">'.$projectName.'</a><p><hr><p style="font-size:14px;">'.$msg_context.'</p></body></html>';
+           // echo $mailContent;
+            import('extensions/nie-message/nie-mail.php');
+            $mailToArray=array();
+            foreach($user_array as $id){
+                $mailTo=spClass('m_user')->find(array('user_id'=>$id));
+               array_push($mailToArray,$mailTo['user_mail']);
+            }
+            $mail=new nieMail;
+            $result=$mail->write(array(
+                'subject'=>'【PM系统通知】项目流程变动通知-'.date("Y-m-d"),
+                'body'=>$mailContent,
+                'to'=>$mailToArray
+            ))->send();
+        }
+
+        //2014.01.22 改为发邮件，太懒了，不抽象类了，直接在这里写吧 end
+
 		pmResult('1','操作成功！','json');
 	}
 	

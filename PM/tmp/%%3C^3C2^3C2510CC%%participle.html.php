@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.26, created on 2013-09-04 16:57:09
+<?php /* Smarty version 2.6.26, created on 2014-02-17 14:18:42
          compiled from tool/participle.html */ ?>
 <!DOCTYPE html>
 <html>
@@ -15,7 +15,7 @@
     <script src="themes/boot/js/bootstrap.min.js"></script>
     <script src="themes/icheck/jquery.icheck.min.js"></script>
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-    <script src="https://rawgithub.com/timrwood/moment/2.1.0/min/moment.min.js"></script>
+    <script src="http://momentjs.com/downloads/moment.min.js"></script>
 
 
     <style>

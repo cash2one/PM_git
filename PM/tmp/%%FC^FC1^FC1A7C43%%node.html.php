@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.26, created on 2013-07-10 11:21:02
+<?php /* Smarty version 2.6.26, created on 2014-01-26 17:27:50
          compiled from project/node.html */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('modifier', 'date_format', 'project/node.html', 6, false),array('modifier', 'default', 'project/node.html', 17, false),array('function', 'spUrl', 'project/node.html', 45, false),)), $this); ?>
@@ -39,13 +39,13 @@ smarty_core_load_plugins(array('plugins' => array(array('modifier', 'date_format
 			<?php endforeach; endif; unset($_from); ?>
 			</ul>
 	</dd>
-	<!-- 
+
     <dt style="line-height:25px;padding-bottom:0">流程描述</dt>
     <dd style="max-height:200px;overflow:auto;" >
         <p><?php echo $this->_tpl_vars['pnod']['pnod_desc']; ?>
 </p>
     </dd>
- 	-->
+ 	
 	<dt style="line-height:25px;padding-bottom:0">相关事件</dt>
 	<dd style="max-height:200px;overflow:auto;" id="popwin-event-box">
         <?php $_from = $this->_tpl_vars['events']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
