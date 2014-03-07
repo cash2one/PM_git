@@ -65,6 +65,55 @@ class notice extends spController
 		$this->cNodesNext=$cNodesNext;
 		$this->display("notice/weekReport.html");
 	}
+
+    function dayMail()
+    {
+        $now=getdate(strtotime(date('Y-m-d H:i:s')));
+        $mProject=spClass("m_project");
+        //$nowS=$nowE=getdate(strtotime(date('2011-09-18 00:00:00')));
+        //dump($now);
+        //$now["wday"]==0?$thisWday=7:$thisWday=$now["wday"];
+        $nowS=date('Y-m-d H:i:s', strtotime($now['year'].'-'.$now['mon'].'-'.($now["mday"]-1)));
+        $nowE=date('Y-m-d H:i:s', strtotime($now['year'].'-'.$now['mon'].'-'.($now["mday"])));
+        //dump($nowS);
+       // dump($nowE);
+        $arrayLast=array();
+        $arrayNext=array();
+        $cProjectsLast=$mProject->findSql("SELECT project.prod_id,prod_ename,proj_name,proj_url,prod_name FROM project LEFT JOIN product on project.prod_id=product.prod_id where proj_endDate>'$nowS' and proj_endDate<'$nowE' and proj_state<=15 ORDER BY project.prod_id");
+        //dump($mProject->dumpSql());
+        foreach($cProjectsLast as $cProjectLast)
+        {
+            //$arrayLast[$cProjectLast["prod_id"]]
+            if($arrayLast[$cProjectLast["prod_id"]]=="") $arrayLast[$cProjectLast["prod_id"]]=array();
+            array_push($arrayLast[$cProjectLast["prod_id"]],$cProjectLast);
+        }
+
+        //dump($arrayLast);
+        $cProjectsNext=spClass("m_project")->findSql("SELECT project.prod_id,project.proj_id,prod_ename,proj_name,proj_url,prod_name FROM project LEFT JOIN product on project.prod_id=product.prod_id where proj_state=20 ORDER BY project.prod_id");
+        //dump($cProjectsNext);
+
+        $connString;
+
+        $cNodesNext=spClass("m_project")->findSql("SELECT proj_id,pnod_name FROM proj_node where pnod_state=20 ORDER BY pnod_time_s ASC");
+
+        foreach($cProjectsNext as &$p)
+        {
+            foreach($cNodesNext as $next)
+            {
+                if($next["proj_id"]==$p["proj_id"])
+                    $p["nodes"]==""?$p["nodes"]=$next["pnod_name"]:$p["nodes"].=" | ".$next["pnod_name"];
+            }
+            if($p["nodes"]=="") $p["nodes"]="流程均已完成，请进行提交。";
+            if($arrayNext[$p["prod_id"]]=="") $arrayNext[$p["prod_id"]]=array();
+            array_push($arrayNext[$p["prod_id"]],$p);
+        }
+        //dump($arrayNext);
+
+        $this->arrayLast=$arrayLast;
+        $this->arrayNext=$arrayNext;
+        $this->cNodesNext=$cNodesNext;
+        $this->display("notice/dayReport.html");
+    }
 	
 	function message()
 	{

@@ -21,6 +21,25 @@ function sendWeekMail()
 	}
 }
 
+function sendDayMail(){
+    import('extensions/nie-message/nie-mail.php');
+    //在服务器才发，测试机不发
+    if($_SERVER['HTTP_HOST']=='192.168.10.16:8080')
+    {
+        $mailcontent=file_get_contents("http://192.168.10.16:8080/oa/index.php?c=notice&a=dayMail");
+        $mail=new nieMail;
+        $result=$mail->write(array(
+            'subject'=>'网站组每天需求类项目汇总（PM自动邮件）'.date("Y-m-d"),
+            'body'=>$mailcontent,
+            'to'=>array('gzzhuzhipeng@corp.netease.com','zhumin@corp.netease.com','gzlijiarong@corp.netease.com'),
+            //'cc'=>array('ethan@corp.netease.com')
+        ))->send();
+        if($result){
+            //echo 'Mail sented!';
+        }
+    }
+}
+
 function pushBaseInfo($WCONFIG)
 {
 	$tasklist='';
@@ -87,6 +106,7 @@ class webservice extends spController
 
 				//**** 逢周一发周报邮件
 				if($todayArray["wday"]==1){sendWeekMail();}
+                sendDayMail();//TO CC
 		}
 		
 		//以下程序每月由且仅由第一个访问的人执行:生日
